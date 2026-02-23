@@ -283,11 +283,20 @@ const RegistrationForm: React.FC = () => {
         }
 
         setIsSubmitting(true);
+        
+        if (!SCRIPT_URL) {
+            console.error('CRITICAL: VITE_SCRIPT_URL is not defined in environment variables.');
+            alert('Configuration Error: Backend URL (VITE_SCRIPT_URL) is missing in Vercel. Please add it and redeploy.');
+            setIsSubmitting(false);
+            return;
+        }
+
         setSubmissionProgress(10);
         setSubmissionStage('Preparing data...');
         setErrors({});
 
         try {
+
             const payload: any = { ...formData };
             
             if (formData.trackFile) {
