@@ -110,25 +110,25 @@ const RegistrationForm: React.FC = () => {
     const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
         
-        // Extract all digits from the input
-        let allDigits = value.replace(/\D/g, ''); 
+        // 1. Get ONLY the digits from the input
+        let digits = value.replace(/\D/g, ''); 
         
-        // Handle common autofill prefixes
-        // 1. If starts with 91 and has 12 digits (+919876543210)
-        if (allDigits.startsWith('91') && allDigits.length > 10) {
-            allDigits = allDigits.slice(2);
-        }
-        // 2. If starts with 0 and has 11 digits (09876543210)
-        else if (allDigits.startsWith('0') && allDigits.length === 11) {
-            allDigits = allDigits.slice(1);
-        }
-        
-        // Final sanity check: Limit to 10 digits
-        if (allDigits.length > 10) {
-            allDigits = allDigits.slice(0, 10);
+        // 2. If it starts with '91', it's coming from the prefix or a paste
+        // We strip it once to get the actual 10-digit number
+        if (digits.startsWith('91')) {
+            digits = digits.slice(2);
+        } else if (digits.startsWith('0')) {
+            // Also handle users who type a leading 0
+            digits = digits.slice(1);
         }
         
-        const formattedValue = '+91 ' + allDigits;
+        // 3. Limit to 10 digits max
+        if (digits.length > 10) {
+            digits = digits.slice(0, 10);
+        }
+        
+        // 4. Always re-apply the uniform +91 format
+        const formattedValue = '+91 ' + digits;
         setFormData(prev => ({ ...prev, [name]: formattedValue }));
     };
 
