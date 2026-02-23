@@ -1,73 +1,83 @@
-# React + TypeScript + Vite
+# ⚡ Talentron '26 Official Entry Form
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The official registration portal for **Talentron '26**, a premier inter-college cultural festival hosted at **Zeal College of Engineering and Research (ZCOER), Pune**. This application is designed to handle high-volume registrations for various categories including Music, Dance, Drama, Band, and Street Play.
 
-Currently, two official plugins are available:
+![Talentron Banner](public/assets/logos/talentron-logo.jpg)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## React Compiler
+- **🎨 Pop-Art Aesthetic**: A bold, modern, and vibrant design language featuring thick borders, multi-colored shadows, and interactive glassmorphism.
+- **📱 PWA Ready**: Fully installable as a Progressive Web App for a native mobile experience.
+- **🔍 SEO Optimized**: Dynamic meta tags and clean URL structures using `BrowserRouter` for maximum discoverability.
+- **🛡️ Secure Implementation**: Zero hardcoded secrets. Environment-based configuration for sensitive API endpoints and payment IDs.
+- **📶 Offline Capabilities**: Service worker implementation for basic offline caching and faster load times.
+- **💳 Multi-modal Payment**: manual UPI verification with dynamic QR code generation and mobile deep-linking Support.
+- **🚦 Smart Validation**: Real-time age calculation (16-35) and field validation to ensure clean data submission.
+- **📊 Form Progress Persistence**: 3-step intuitive registration flow with file upload support.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+- **Frontend**: React 19 + TypeScript + Vite
+- **Styling**: Vanilla CSS (Premium Design System)
+- **Routing**: React Router 7 (`BrowserRouter`)
+- **Backend Data**: Google Apps Script (Custom execution engine)
+- **Deployment**: Vercel
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🚀 Getting Started
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Local Setup
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+1. **Clone the repository**:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+   ```bash
+   git clone https://github.com/Shravan4507/talentron-entry-form.git
+   cd talentron-entry-form
+   ```
+
+2. **Install dependencies**:
+
+   ```bash
+   npm install
+   ```
+
+3. **Configure Environment Variables**:
+   Copy the example file and fill in your keys:
+
+   ```bash
+   cp .env.example .env
+   ```
+
+   _Required Variables:_
+   - `VITE_UPI_ID`: Your UPI ID for receiving payments.
+   - `VITE_SCRIPT_URL`: The endpoint URL for the backend Google App Script.
+
+4. **Run Development Server**:
+   ```bash
+   npm run dev
+   ```
+
+### 🚢 Deployment (Vercel)
+
+This project is optimized for **Vercel**. When deploying:
+
+1. Connect your GitHub repository to Vercel.
+2. In the **Environment Variables** settings, add `VITE_UPI_ID` and `VITE_SCRIPT_URL`.
+3. Vercel will automatically detect the `vercel.json` config and handle SPA routing.
+
+## 📁 Project Structure
+
+```text
+src/
+├── components/     # Reusable UI components (Navbar, Footer, SEO, etc.)
+├── pages/          # Page views (Home, Competitions, Registration, Legal, 404)
+├── data/           # JSON data for colleges and competition details
+├── utils/          # Helper functions and asset path managers
+└── App.tsx         # Main routing and global layout
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 📜 License & Author
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Handcrafted by **[Shrvan](https://www.instagram.com/069.f5/)**.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+© 2026 Talentron. All rights reserved.
+Official Initiative of Zeal College of Engineering and Research, Pune.
