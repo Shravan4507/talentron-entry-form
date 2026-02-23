@@ -1,0 +1,110 @@
+.competitions-page {
+  width: 100%;
+  min-height: 100vh;
+  padding: 140px 5% 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.comp-header {
+  text-align: center;
+  margin-bottom: 8rem;
+  max-width: 1200px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.main-title-wrapper {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.comp-description {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  letter-spacing: 0.05rem;
+  font-weight: 500;
+  margin-top: 0.5rem;
+  margin-bottom: -5rem;
+}
+
+.subtitle-wrapper {
+    margin: -1rem;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    transform: scale(0.8);
+}
+
+.competitions-grid {
+  width: 100%;
+  max-width: 1400px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 3rem;
+  padding: 2rem 0;
+}
+
+@media (max-width: 768px) {
+    .competitions-page {
+        padding: 110px 1.5rem 60px;
+    }
+
+    .comp-header {
+        margin-bottom: 4rem;
+        gap: 0.5rem;
+    }
+
+    .subtitle-wrapper {
+        transform: scale(0.65);
+        margin: -1.5rem 0 -1rem;
+    }
+
+    .comp-description {
+        font-size: clamp(0.95rem, 3.5vw, 1.4rem);
+        margin-top: 0;
+        margin-bottom: -2rem;
+    }
+
+    .competitions-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 1rem 0.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .competitions-page {
+        padding: 90px 0.75rem 40px;
+    }
+
+    .comp-header {
+        margin-bottom: 3rem;
+    }
+
+    .subtitle-wrapper {
+        transform: scale(0.55);
+        margin: -1.5rem 0 -1.5rem;
+    }
+
+    .comp-description {
+        margin-top: 0.25rem;
+        margin-bottom: -1rem;
+        font-size: 1rem;
+    }
+
+    .competitions-grid {
+        gap: 2rem;
+        max-width: 100%;
+        padding: 0.5rem;
+    }
+}
