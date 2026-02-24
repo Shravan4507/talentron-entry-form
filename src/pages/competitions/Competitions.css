@@ -58,19 +58,26 @@
     }
 
     .comp-header {
-        margin-bottom: 4rem;
-        gap: 0.5rem;
+        margin-bottom: 3.5rem;
+        gap: 0;
     }
 
     .subtitle-wrapper {
-        transform: scale(0.65);
-        margin: -1.5rem 0 -1rem;
+        transform: scale(1.1);
+        margin: 0;
+        z-index: 2;
+    }
+
+    .main-title-wrapper {
+        transform: scale(1.6);
+        margin: 1.5rem 0 1.2rem;
+        z-index: 1;
     }
 
     .comp-description {
-        font-size: clamp(0.95rem, 3.5vw, 1.4rem);
-        margin-top: 0;
-        margin-bottom: -2rem;
+        font-size: 1.2rem;
+        margin-top: 1rem;
+        margin-bottom: 2rem;
     }
 
     .competitions-grid {
@@ -88,18 +95,24 @@
     }
 
     .comp-header {
-        margin-bottom: 3rem;
+        margin-bottom: 2rem;
+        gap: 0;
     }
 
     .subtitle-wrapper {
-        transform: scale(0.55);
-        margin: -1.5rem 0 -1.5rem;
+        transform: scale(0.95); /* Scaled down for tiny screens */
+        margin: 0;
+    }
+
+    .main-title-wrapper {
+        transform: scale(1.2); /* Visible but not overflowing */
+        margin: 1rem 0;
     }
 
     .comp-description {
-        margin-top: 0.25rem;
-        margin-bottom: -1rem;
-        font-size: 1rem;
+        margin-top: 0.5rem;
+        margin-bottom: 0;
+        font-size: 0.95rem;
     }
 
     .competitions-grid {

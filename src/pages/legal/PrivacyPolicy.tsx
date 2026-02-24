@@ -1,4 +1,3 @@
-import React from 'react';
 import OutlinedTitle from '../../components/heading/OutlinedTitle';
 import SEO from '../../components/navigation/SEO';
 import './LegalPage.css';
@@ -24,33 +23,32 @@ const PrivacyPolicy: React.FC = () => {
 
             <div className="legal-content">
                 <h2>1. Information We Collect</h2>
-                <p>When you register for Talentron '26, we collect specific personal information to facilitate your participation in our competitions. This includes:</p>
+                <p>To facilitate your registration and participation in Talentron '26, we collect the following personal information:</p>
                 <ul>
-                    <li>Name (First and Last)</li>
-                    <li>Email Address</li>
-                    <li>Phone Number and WhatsApp Number</li>
-                    <li>Date of Birth</li>
-                    <li>College Name</li>
-                    <li>Competition Category and Team Details</li>
+                    <li><strong>Personal Details:</strong> Full Name, Email Address, and Date of Birth.</li>
+                    <li><strong>Contact Information:</strong> Active mobile number and WhatsApp number for event coordination.</li>
+                    <li><strong>Academic Details:</strong> College name and student status verification.</li>
+                    <li><strong>Participation Details:</strong> Competition category (genre), team type, and track files (if applicable).</li>
+                    <li><strong>Payment Information:</strong> We collect Transaction IDs and screenshots of payment receipts to verify registration fees.</li>
                 </ul>
 
                 <h2>2. How We Use Your Information</h2>
-                <p>The information we collect is used solely for the following purposes:</p>
+                <p>Your data is processed solely for the organization of Talentron '26:</p>
                 <ul>
-                    <li>Processing your registration for specific art forms.</li>
-                    <li>Communicating essential event updates, schedules, and audition details.</li>
-                    <li>Verifying your eligibility based on age and college affiliation.</li>
-                    <li>Organizing team registrations and coordinating with group representatives.</li>
+                    <li>Verifying eligibility (age 16-27) and college affiliation.</li>
+                    <li>Processing payments and confirming successful registrations.</li>
+                    <li>Communicating schedules, audition slots, and rules updates.</li>
+                    <li>On-site check-ins and performance coordination.</li>
                 </ul>
 
                 <h2>3. Data Protection</h2>
-                <p>We implement a variety of security measures to maintain the safety of your personal information. Your data is stored securely and is only accessible by the authorized organizing committee members of Talentron '26.</p>
+                <p>We implement security measures to protect your data. Your information is stored using Google's secure infrastructure (specifically Google Apps Script and related services) and is only accessible by the authorized Talentron '26 organizing committee.</p>
 
                 <h2>4. Sharing of Information</h2>
-                <p>We do not sell, trade, or otherwise transfer your personal information to outside parties. This does not include trusted partners who assist us in conducting the event, so long as those parties agree to keep this information confidential.</p>
+                <p>We do NOT sell or trade your personal information. Data is only shared with internal committee members and trusted technical partners (like Google) who assist us in operating our platform and conducting the event, under strict confidentiality.</p>
 
                 <h2>5. Contact Us</h2>
-                <p>If you have any questions regarding this privacy policy, you may contact the organizing committee at Zeal College of Engineering and Research, Pune.</p>
+                <p>For any privacy-related queries, please contact the Talentron Organizing Committee at Zeal College of Engineering and Research, Pune.</p>
             </div>
         </div>
     );

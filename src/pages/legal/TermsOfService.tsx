@@ -1,4 +1,3 @@
-import React from 'react';
 import OutlinedTitle from '../../components/heading/OutlinedTitle';
 import SEO from '../../components/navigation/SEO';
 import './LegalPage.css';
@@ -24,29 +23,28 @@ const TermsOfService: React.FC = () => {
 
             <div className="legal-content">
                 <h2>1. Acceptance of Terms</h2>
-                <p>By registering for Talentron '26, you agree to be bound by these Terms of Service. If you are registering on behalf of a team, you represent that you have the authority to bind all team members to these terms.</p>
+                <p>By registering for Talentron '26, you agree to these terms. If registering for a team, you represent that all members have authorized you to accept these terms on their behalf.</p>
 
-                <h2>2. Eligibility</h2>
-                <p>Participants must be bonafide students of a recognized college. A valid College ID card must be presented at the time of auditions and the final event. Any discrepancy in eligibility details may lead to immediate disqualification.</p>
+                <h2>2. Eligibility & Age Limit</h2>
+                <p>Participation is open to students aged <strong>16 to 27 years</strong> only. A valid College ID card is mandatory. Any discrepancies in age or academic status will result in immediate disqualification without refund.</p>
 
-                <h2>3. Registration & Team Participation</h2>
+                <h2>3. Registration & Fees</h2>
                 <ul>
-                    <li><strong>Solo/Group:</strong> Specific categories (Drama, Band, Street Play) are strictly for groups. Music and Dance allow solo or group entries.</li>
-                    <li><strong>Group Details:</strong> For group registrations, the person registering (the representative) must provide full details of all team members at the time of auditions.</li>
-                    <li><strong>Accuracy:</strong> All information provided during registration must be accurate. False information will result in cancellation of the entry.</li>
+                    <li><strong>Non-Refundable:</strong> All registration fees are strictly <strong>NON-REFUNDABLE</strong> under any circumstances, including absence or disqualification.</li>
+                    <li><strong>Payment Verification:</strong> It is the participant's responsibility to provide an accurate Transaction ID and a clear screenshot of the payment. Fake or incorrect details will lead to immediate cancellation.</li>
                 </ul>
 
-                <h2>4. Code of Conduct</h2>
-                <p>Participants are expected to maintain professional behavior. Any form of misconduct, use of inappropriate language, or violation of campus rules at ZCOER Pune will lead to disqualification and potential reporting to your home institution.</p>
+                <h2>4. Scheduling & Punctuality</h2>
+                <p>Performance slots are allocated solely by the organizers. Failure to report at the designated time will result in automatic disqualification. Participants are advised to arrive at least 60 minutes before their scheduled slot.</p>
 
-                <h2>5. Content Ownership & Media</h2>
-                <p>By participating, you grant Talentron '26 the right to record, photograph, and use your performance for promotional purposes across digital and print media.</p>
+                <h2>5. Performance & Interruptions</h2>
+                <p>Restarts due to technical issues, audio failures, or external disturbances are granted solely at the judges' discretion. In case of an emergency, participants must signal an organizer immediately. The judges' decision to continue or terminate a performance is final.</p>
 
-                <h2>6. Decision Finality</h2>
-                <p>The decisions of the judges and the Talentron organizing committee are final and binding in all matters related to the competitions. No appeals will be entertained.</p>
+                <h2>6. Code of Conduct</h2>
+                <p>Misconduct, inappropriate behavior, or violation of the event's code of conduct will lead to immediate disqualification. ZCOER Pune campus rules must be strictly followed.</p>
 
-                <h2>7. Changes to Terms</h2>
-                <p>The organizing committee reserves the right to modify these terms at any time. It is the participant's responsibility to check for updates.</p>
+                <h2>7. Final Authority</h2>
+                <p>All decisions made by the Talentron '26 judges and organizing committee are <strong>final and binding</strong>. No appeals or disputes will be entertained.</p>
             </div>
         </div>
     );
