@@ -8,8 +8,16 @@ const Footer = () => {
       <div className="footer-content">
         <div className="footer-top">
           <div className="footer-brand">
-            <img src={assetPath('/assets/logos/talentron-logo.jpg')} alt="Talentron Logo" className="footer-brand-logo" />
+            <img src={assetPath('/assets/logos/Logo-Star.jpg')} alt="Talentron Logo" className="footer-brand-logo" />
             <p>Empowering the next generation of digital talent through innovation and technology.</p>
+          </div>
+          <div className="footer-links-column">
+            <h4>Quick Links</h4>
+            <div className="footer-quick-links">
+              <Link to="/">Home</Link>
+              <Link to="/rules">General Rules</Link>
+              <Link to="/competitions">All Competitions</Link>
+            </div>
           </div>
           <div className="footer-location">
             <h4>Location</h4>

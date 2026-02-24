@@ -9,21 +9,15 @@
   align-items: center;
   transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   background: linear-gradient(
-    to bottom, 
-    rgba(0, 0, 0, 0.95) 0%, 
-    rgba(0, 0, 0, 0.7) 40%, 
-    rgba(0, 0, 0, 0.3) 75%, 
+    to bottom,
+    rgba(0, 0, 0, 0.95) 0%,
+    rgba(0, 0, 0, 0.7) 40%,
+    rgba(0, 0, 0, 0.3) 75%,
     transparent 100%
   );
   backdrop-filter: blur(0px);
 }
 
-.navbar.scrolled {
-  height: 80px;
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(15px);
-  border-bottom: 2px solid rgba(255, 255, 255, 0.05);
-}
 
 .navbar.menu-open {
   background: #000 !important;
@@ -38,6 +32,25 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 5%;
+  position: relative; /* For absolute centering of the logo */
+}
+
+.navbar-center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto; /* Enable link clicking */
+}
+
+.navbar-center-logo {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.9;
 }
 
 .navbar-brand {
@@ -55,13 +68,11 @@
   transition: transform 0.3s ease;
 }
 
-.brand-text {
-  font-family: inherit;
-  font-weight: 900;
-  font-size: 1.4rem;
-  letter-spacing: 2px;
-  color: #fff;
-  text-shadow: 2px 2px 0px #000;
+.brand-logo-text {
+  height: 35px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(2px 2px 0px #000);
 }
 
 .navbar-links.desktop {
@@ -83,7 +94,7 @@
 }
 
 .nav-link::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: 0;
   left: 0;
@@ -230,7 +241,7 @@
   .navbar-links.desktop {
     display: none;
   }
-  
+
   .mobile-toggle {
     display: flex;
   }
@@ -241,12 +252,19 @@
     height: 80px;
   }
   
-  .brand-text {
-    font-size: 1.1rem;
-    letter-spacing: 1px;
+  .navbar-logo {
+    display: none; /* Hide Star logo */
+  }
+
+  .brand-logo-text {
+    height: 20px;
   }
   
-  .navbar-logo {
-    height: 40px;
+  .navbar-center-logo {
+    height: 50px;
+  }
+
+  .navbar-brand {
+    gap: 0;
   }
 }

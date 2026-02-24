@@ -51,6 +51,34 @@
   max-width: 400px;
 }
 
+.footer-links-column {
+  flex: 1;
+}
+
+.footer-links-column h4 {
+  font-size: 1.1rem;
+  margin-bottom: 1.2rem;
+  color: #ffffff;
+}
+
+.footer-quick-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.footer-quick-links a {
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+}
+
+.footer-quick-links a:hover {
+  color: #ff0059;
+  transform: translateX(5px);
+}
+
 .footer-location {
   flex: 1;
 }

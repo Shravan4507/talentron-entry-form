@@ -3,6 +3,7 @@ import Home from './pages/home/Home';
 import Competitions from './pages/competitions/Competitions';
 import GenreDetails from './pages/competitions/GenreDetails';
 import RegistrationForm from './pages/competitions/RegistrationForm';
+import Rules from './pages/rules/Rules';
 import PrivacyPolicy from './pages/legal/PrivacyPolicy';
 import TermsOfService from './pages/legal/TermsOfService';
 import NotFound from './pages/NotFound';
@@ -35,6 +36,7 @@ function AppContent() {
           <Route path="/competitions" element={<Competitions />} />
           <Route path="/competitions/:genre" element={<GenreDetails />} />
           <Route path="/register/:category" element={<RegistrationForm />} />
+          <Route path="/rules" element={<Rules />} />
           <Route path="/privacy-policy" element={<PrivacyPolicy />} />
           <Route path="/terms-of-service" element={<TermsOfService />} />
           <Route path="*" element={<NotFound />} />

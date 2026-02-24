@@ -5,22 +5,14 @@ import './Navbar.css';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
   const menuItems = [
     { label: 'Home', link: '/' },
+    { label: 'Rules', link: '/rules' },
     { label: 'Competitions', link: '/competitions' },
   ];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   // Close menu when route changes
   useEffect(() => {
@@ -28,11 +20,17 @@ const Navbar = () => {
   }, [location]);
 
   return (
-    <nav className={`navbar ${scrolled ? 'scrolled' : ''} ${isOpen ? 'menu-open' : ''}`}>
+    <nav className={`navbar ${isOpen ? 'menu-open' : ''}`}>
       <div className="navbar-container">
         <div className="navbar-brand" onClick={() => navigate('/')}>
-          <img src={assetPath('/assets/logos/talentron-logo.jpg')} alt="Talentron Logo" className="navbar-logo" />
-          <span className="brand-text">TALENTRON '26</span>
+          <img src={assetPath('/assets/logos/Logo-Star.jpg')} alt="Talentron Logo" className="navbar-logo" />
+          <img src={assetPath('/assets/logos/Logo_Talentron.png')} alt="Talentron Brand" className="brand-logo-text" />
+        </div>
+
+        <div className="navbar-center">
+          <a href="https://zcoer.in" target="_blank" rel="noopener noreferrer">
+            <img src={assetPath('/assets/logos/ZCOER-Logo-White.png')} alt="ZCOER Logo" className="navbar-center-logo" />
+          </a>
         </div>
 
         {/* Desktop Links */}

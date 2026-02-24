@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import OutlinedTitle from '../../components/heading/OutlinedTitle';
 import SEO from '../../components/navigation/SEO';
+import { assetPath } from '../../utils/assetPath';
 import './Home.css';
 
 const Home = () => {
@@ -40,7 +41,9 @@ const Home = () => {
             
             <div className="hero-section">
                 <div className="hero-content">
-                    <div className="hero-badge">TALENTRON '26</div>
+                    <div className="hero-badge">
+                        <img src={assetPath('/assets/logos/Logo_Talentron.png')} alt="Talentron '26" className="hero-badge-logo" />
+                    </div>
                     <div className="hero-title-wrapper">
                         <OutlinedTitle 
                             text="ARE YOU READY?" 

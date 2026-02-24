@@ -2,7 +2,7 @@
 
 The official registration portal for **Talentron '26**, a premier inter-college cultural festival hosted at **Zeal College of Engineering and Research (ZCOER), Pune**. This application is designed to handle high-volume registrations for various categories including Music, Dance, Drama, Band, and Street Play.
 
-![Talentron Banner](public/assets/logos/talentron-logo.jpg)
+![Talentron Banner](public/assets/logos/Logo-Star.jpg)
 
 ## ✨ Features
 
