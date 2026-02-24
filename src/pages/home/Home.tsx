@@ -9,8 +9,33 @@ const Home = () => {
     return (
         <div className="home-page">
             <SEO 
-                title="Submit Your Entry"
-                description="The official entry form for Talentron '26. Register now and showcase your talent."
+                title="Official Entry Form | Talentron '26 | Zeal College Pune"
+                description="Register for Talentron '26, Pune's biggest college cultural festival at Zeal College of Engineering and Research. Music, Dance, Drama, and more. Showcase your talent now!"
+                keywords="Talentron, Talentron 2026, Zeal College Pune, ZCOER, Zeal Fest, Pune Cultural Competition, Talentron Registration, Singing Competition Pune, Dancing Competition Pune"
+                schema={{
+                    "@context": "https://schema.org",
+                    "@type": "Event",
+                    "name": "Talentron '26",
+                    "startDate": "2026-03-01", 
+                    "location": {
+                        "@type": "Place",
+                        "name": "Zeal College of Engineering and Research",
+                        "address": {
+                            "@type": "PostalAddress",
+                            "streetAddress": "Narhe",
+                            "addressLocality": "Pune",
+                            "addressRegion": "MH",
+                            "postalCode": "411041",
+                            "addressCountry": "IN"
+                        }
+                    },
+                    "description": "Talentron '26 is an inter-college cultural competition featuring music, dance, drama, and more.",
+                    "organizer": {
+                        "@type": "Organization",
+                        "name": "Zeal Education Society",
+                        "url": "https://www.talentron.in"
+                    }
+                }}
             />
             
             <div className="hero-section">
