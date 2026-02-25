@@ -14,23 +14,35 @@ interface FormData {
     cellPhone: string;
     whatsappNumber: string;
     dob: string;
+    sex: string;
     collegeName: string;
     teamType: string;
     genre: string;
-    trackFile: File | null;
     paymentScreenshot: File | null;
     transactionId: string;
+    groupSize: string;
+    paymentType: 'Full' | 'Advance';
+    agreedToRules: boolean;
 }
 
-const UPI_ID = import.meta.env.VITE_UPI_ID || "shravan45x@pingpay";
+const UPI_ID = import.meta.env.VITE_UPI_ID || "your-upi-id@bank";
 const SCRIPT_URL = import.meta.env.VITE_SCRIPT_URL || "";
 
-const PRICING: { [key: string]: { solo: number, group: number } } = {
-    'Music': { solo: 150, group: 600 },
-    'Dance': { solo: 150, group: 700 },
-    'Drama': { solo: 0, group: 900 },
-    'Band': { solo: 0, group: 1200 },
-    'Street Play': { solo: 0, group: 800 }
+
+// Precise mapping based on user request
+const getPerPersonPrice = (category: string, teamType: string): number => {
+    if (category === 'Music') {
+        if (teamType === 'Solo') return 200;
+        if (teamType === 'Duet') return 150;
+    }
+    if (category === 'Dance') {
+        if (teamType === 'Solo') return 200;
+        if (teamType === 'Group') return 150;
+    }
+    if (category === 'Drama') return 100;
+    if (category === 'Band') return 200;
+    if (category === 'Street Play') return 100;
+    return 0;
 };
 
 const RegistrationForm: React.FC = () => {
@@ -45,12 +57,15 @@ const RegistrationForm: React.FC = () => {
         cellPhone: '+91 ',
         whatsappNumber: '+91 ',
         dob: '',
+        sex: '',
         collegeName: '',
         teamType: '',
         genre: '',
-        trackFile: null,
         paymentScreenshot: null,
-        transactionId: ''
+        transactionId: '',
+        groupSize: '',
+        paymentType: 'Full',
+        agreedToRules: false
     });
 
     const [age, setAge] = useState<number | null>(null);
@@ -60,10 +75,8 @@ const RegistrationForm: React.FC = () => {
     const [submissionProgress, setSubmissionProgress] = useState(0);
     const [submissionStage, setSubmissionStage] = useState('');
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
-    const fileInputRef = useRef<HTMLInputElement>(null);
     const screenshotInputRef = useRef<HTMLInputElement>(null);
 
-    const fixedGroupCategories = ['Drama', 'Band', 'Street Play'];
 
     useEffect(() => {
         const checkMobile = () => {
@@ -78,7 +91,7 @@ const RegistrationForm: React.FC = () => {
             setFormData(prev => ({ 
                 ...prev, 
                 genre: category,
-                teamType: fixedGroupCategories.includes(category) ? 'Group' : prev.teamType 
+                teamType: ['Drama', 'Band', 'Street Play'].includes(category) ? 'Group' : prev.teamType 
             }));
         }
     }, [category]);
@@ -132,23 +145,41 @@ const RegistrationForm: React.FC = () => {
         setFormData(prev => ({ ...prev, [name]: formattedValue }));
     };
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            setFormData(prev => ({ ...prev, trackFile: e.target.files![0] }));
-        }
-    };
-
-    const handleDrop = (e: React.DragEvent) => {
-        e.preventDefault();
-        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-            setFormData(prev => ({ ...prev, trackFile: e.dataTransfer.files[0] }));
-        }
-    };
 
     const handleScreenshotChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
             setFormData(prev => ({ ...prev, paymentScreenshot: e.target.files![0] }));
         }
+    };
+
+    const handleComposeEmail = () => {
+        const recipient = "shravan45x@gmail.com";
+        const subject = `Audition Video - ${formData.firstName} ${formData.lastName} - ${category}`;
+        const body = `Hi Talentron Team,
+
+I am registering for the ${category} category (${formData.teamType}).
+
+I will be sending my audition video/track for the online round.
+
+Name: ${formData.firstName} ${formData.lastName}
+Category: ${category}
+Team Type: ${formData.teamType}
+
+[Please attach your video or paste Drive link here]`;
+
+        // Primary: Gmail Web Compose (Highly reliable for Chrome/Android users)
+        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${recipient}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        
+        // Secondary: Standard mailto (Fallback for other clients)
+        const mailtoUrl = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body).replace(/\n/g, '%0D%0A')}`;
+
+        // Attempt to open Gmail first in a new tab
+        window.open(gmailUrl, '_blank');
+        
+        // Also trigger mailto as a fallback for those not logged into Gmail
+        setTimeout(() => {
+            window.location.href = mailtoUrl;
+        }, 500);
     };
 
     const handleScreenshotDrop = (e: React.DragEvent) => {
@@ -168,9 +199,19 @@ const RegistrationForm: React.FC = () => {
 
     const getRegistrationAmount = () => {
         if (!category) return 0;
-        const priceObj = PRICING[category];
-        if (!priceObj) return 0;
-        return formData.teamType === 'Solo' ? priceObj.solo : priceObj.group;
+        const perPerson = getPerPersonPrice(category, formData.teamType);
+        
+        let multiplier = 1;
+        if (formData.teamType === 'Duet') multiplier = 2;
+        if (formData.teamType === 'Group') multiplier = parseInt(formData.groupSize) || 0;
+        
+        const totalAmount = perPerson * multiplier;
+        
+        if (formData.teamType === 'Group' && formData.paymentType === 'Advance') {
+            return Math.ceil(totalAmount * 0.20); // 20% Advance
+        }
+        
+        return totalAmount;
     };
 
     const nextStep = () => {
@@ -209,8 +250,13 @@ const RegistrationForm: React.FC = () => {
             // DOB and Age
             if (!formData.dob || formData.dob.length < 10) {
                 newErrors.dob = "Please enter a valid Date of Birth.";
-            } else if (age !== null && (age < 16 || age > 35)) {
-                newErrors.dob = "Participant age must be between 16 and 35.";
+            } else if (age !== null && (age < 16 || age > 27)) {
+                newErrors.dob = "Participant age must be between 16 and 27.";
+            }
+
+            // Sex
+            if (!formData.sex) {
+                newErrors.sex = "Please select your gender.";
             }
 
             // College
@@ -218,19 +264,22 @@ const RegistrationForm: React.FC = () => {
                 newErrors.collegeName = "Please select or enter your college name.";
             }
 
-            // Team Type
+            // Team Type & Group Size
             if (!formData.teamType) {
                 newErrors.teamType = "Please select a team type.";
+            } else if (formData.teamType === 'Group') {
+                const limits = category === 'Dance' ? { min: 3, max: 14 } : (category === 'Street Play' ? { min: 8, max: 20 } : { min: 3, max: 20 });
+                const size = parseInt(formData.groupSize);
+                if (!formData.groupSize) {
+                    newErrors.groupSize = "Please enter the number of members in your group.";
+                } else if (isNaN(size) || size < limits.min || size > limits.max) {
+                    newErrors.groupSize = `Total members for ${category === 'Street Play' ? 'Nukkad Natak' : category} must be between ${limits.min} and ${limits.max}.`;
+                }
             }
         }
 
         if (step === 2) {
-            if (formData.trackFile) {
-                const maxSize = 50 * 1024 * 1024; // 50MB
-                if (formData.trackFile.size > maxSize) {
-                    newErrors.trackFile = "File size exceeds 50MB limit.";
-                }
-            }
+            // No blocking validation for email submission
         }
 
         if (Object.keys(newErrors).length > 0) {
@@ -277,6 +326,10 @@ const RegistrationForm: React.FC = () => {
             newErrors.transactionId = "Transaction ID must be exactly 12 digits.";
         }
 
+        if (!formData.agreedToRules) {
+            newErrors.agreedToRules = "Mandatory: Please accept the rules and privacy policy.";
+        }
+
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors);
             return;
@@ -295,48 +348,42 @@ const RegistrationForm: React.FC = () => {
         setSubmissionStage('Preparing data...');
         setErrors({});
 
+        const sessionId = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        
         try {
-
-            const payload: any = { ...formData };
-            
-            if (formData.trackFile) {
-                setSubmissionStage('Encoding performance track...');
-                setSubmissionProgress(30);
-                payload.trackFile = {
-                    base64: await fileToBase64(formData.trackFile),
-                    type: formData.trackFile.type,
-                    name: formData.trackFile.name
-                };
-            }
-
+            // 1. Handle Payment Screenshot (Usually small)
+            let paymentScreenshotData = null;
             if (formData.paymentScreenshot) {
-                setSubmissionStage('Encoding payment details...');
-                setSubmissionProgress(50);
-                payload.paymentScreenshot = {
+                setSubmissionStage('Processing payment receipt...');
+                setSubmissionProgress(5);
+                paymentScreenshotData = {
                     base64: await fileToBase64(formData.paymentScreenshot),
                     type: formData.paymentScreenshot.type,
-                    name: formData.paymentScreenshot.name
+                    name: `Payment_${formData.transactionId}_${formData.paymentScreenshot.name}`
                 };
             }
 
-            setSubmissionStage('Uploading to server...');
-            setSubmissionProgress(70);
 
-            // Simulate smooth progress while waiting for fetch
-            const progressInterval = setInterval(() => {
-                setSubmissionProgress(prev => (prev < 90 ? prev + 1 : prev));
-            }, 500);
+            // 3. Final Submission (Form Data)
+            setSubmissionStage('Finalizing registration...');
+            setSubmissionProgress(90);
+
+            const finalPayload = {
+                ...formData,
+                sessionId,
+                mode: 'final',
+                paymentScreenshot: paymentScreenshotData,
+                groupSize: formData.teamType === 'Group' ? formData.groupSize : (formData.teamType === 'Duet' ? '2' : '1'),
+                paymentType: formData.paymentType,
+                totalActualAmount: getRegistrationAmount()
+            };
 
             await fetch(SCRIPT_URL, {
                 method: 'POST',
                 mode: 'no-cors',
-                body: JSON.stringify(payload),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
+                body: JSON.stringify(finalPayload)
             });
 
-            clearInterval(progressInterval);
             setSubmissionProgress(100);
             setSubmissionStage('Registration Complete!');
 
@@ -455,6 +502,18 @@ const RegistrationForm: React.FC = () => {
                                 />
                                 {errors.dob && <span className="field-error">{errors.dob}</span>}
                             </div>
+                            <div className="form-group">
+                                <SearchableDropdown 
+                                    label="Sex*"
+                                    options={['Male', 'Female', 'Other']}
+                                    value={formData.sex}
+                                    onChange={(val) => setFormData(prev => ({ ...prev, sex: val }))}
+                                    placeholder="Select Gender"
+                                    required
+                                    allowManual={false}
+                                />
+                                {errors.sex && <span className="field-error">{errors.sex}</span>}
+                            </div>
                             <div className="form-group full-width">
                                 <SearchableDropdown 
                                     label="College Name*"
@@ -469,21 +528,42 @@ const RegistrationForm: React.FC = () => {
                             <div className="form-group full-width">
                                 <SearchableDropdown 
                                     label="Team*"
-                                    options={['Solo', 'Group']}
+                                    options={category === 'Music' ? ['Solo', 'Duet'] : ['Solo', 'Group']}
                                     value={formData.teamType}
                                     onChange={(val) => setFormData(prev => ({ ...prev, teamType: val }))}
                                     placeholder="Select Team Type"
                                     required
-                                    readOnly={category ? fixedGroupCategories.includes(category) : false}
+                                    readOnly={category ? ['Drama', 'Band', 'Street Play'].includes(category) : false}
                                     allowManual={false}
                                 />
                                 {errors.teamType && <span className="field-error">{errors.teamType}</span>}
-                                {formData.teamType === 'Group' && (
+                                {formData.teamType !== 'Solo' && (
                                     <p className="group-note">
-                                        <strong>Note:</strong> You will be required to provide full details for all team members at the time of the audition.
+                                        <strong>Note:</strong> You will be required to provide full details for all your teammates ({formData.teamType === 'Duet' ? '1 partner' : 'all members'}) at the time of the audition.
                                     </p>
                                 )}
                             </div>
+
+                            {formData.teamType === 'Group' && (
+                                <div className="form-group full-width">
+                                    <label>Total Team Members (Including Leader)*</label>
+                                    <input 
+                                        type="number" 
+                                        name="groupSize"
+                                        value={formData.groupSize}
+                                        onChange={handleChange}
+                                        placeholder="Enter total number of participants"
+                                        min={category === 'Dance' ? "3" : (category === 'Street Play' ? "8" : "3")}
+                                        max={category === 'Dance' ? "14" : (category === 'Street Play' ? "20" : "20")}
+                                        required
+                                    />
+                                    {errors.groupSize && <span className="field-error">{errors.groupSize}</span>}
+                                    <p className="input-hint">
+                                        {category === 'Dance' ? "Team size: 3 to 14 " : (category === 'Street Play' ? "Team size: 8 to 20 " : "Specify the exact count of ")}
+                                        members in your group (including leader).
+                                    </p>
+                                </div>
+                            )}
                         </div>
                         <div className="form-footer">
                             <button type="button" className="submit-btn" onClick={nextStep}>CONTINUE TO NEXT STEP</button>
@@ -494,32 +574,32 @@ const RegistrationForm: React.FC = () => {
 
                 {step === 2 && (
                     <div className="form-step">
-                        <div className="upload-section">
-                            <h2 className="step-title">Upload your Track (Optional)</h2>
-                            <p className="step-desc">If you have a backing track or any audio/video material for your performance, please upload it here.</p>
-                            
-                            <div 
-                                className={`dropzone ${formData.trackFile ? 'has-file' : ''}`}
-                                onDragOver={(e) => e.preventDefault()}
-                                onDrop={handleDrop}
-                                onClick={() => fileInputRef.current?.click()}
-                            >
-                                <input 
-                                    type="file" 
-                                    ref={fileInputRef} 
-                                    style={{ display: 'none' }} 
-                                    onChange={handleFileChange}
-                                    accept="audio/*,video/*"
-                                />
-                                <div className="dropzone-content">
-                                    <div className="upload-icon">
-                                        {formData.trackFile ? '✓' : '↑'}
-                                    </div>
-                                    <h3>{formData.trackFile ? formData.trackFile.name : 'Drag & Drop File Here'}</h3>
-                                    <p>{formData.trackFile ? `${(formData.trackFile.size / (1024 * 1024)).toFixed(2)} MB` : 'or Click to Browse'}</p>
+                        <div className="email-submission-section">
+                            <h2 className="step-title">Step 2: {['Street Play', 'Band'].includes(category || '') ? 'Audition' : 'Performance Track'} Submission</h2>
+                            <div className="email-card">
+                                <div className="email-icon">📧</div>
+                                <h3>Send your {['Street Play', 'Band'].includes(category || '') ? 'Audition' : 'Performance Track'} via Email</h3>
+                                
+                                <div className="email-instructions">
+                                    <ul>
+                                        <li><strong>Deadline:</strong> Send by <strong>14th March</strong></li>
+                                        <li><strong>Format:</strong> Drive Link or Attachment</li>
+                                        <li><strong>Email:</strong> shravan45x@gmail.com</li>
+                                    </ul>
                                 </div>
+
+                                <button 
+                                    type="button"
+                                    onClick={handleComposeEmail}
+                                    className="compose-email-btn"
+                                >
+                                    COMPOSE {['Street Play', 'Band'].includes(category || '') ? 'AUDITION' : 'TRACK'} EMAIL
+                                </button>
+                                
+                                <p className="email-note">
+                                    Click the button above to auto-draft your submission email. You can also do this after completing the registration.
+                                </p>
                             </div>
-                            <p className="file-formats">Supported formats: MP3, WAV, MP4, MOV, etc.</p>
                         </div>
                         <div className="form-footer">
                             <button type="button" className="submit-btn" onClick={nextStep}>CONTINUE TO PAYMENT</button>
@@ -532,9 +612,38 @@ const RegistrationForm: React.FC = () => {
                     <div className="form-step">
                         <div className="payment-section">
                             <h2 className="step-title">Final Step: Payment</h2>
+                            
+                            {formData.teamType === 'Group' && (
+                                <div className="payment-mode-selector">
+                                    <p className="selector-label">Choose Payment Plan:</p>
+                                    <div className="mode-options">
+                                        <div 
+                                            className={`mode-card ${formData.paymentType === 'Full' ? 'active' : ''}`}
+                                            onClick={() => setFormData(prev => ({ ...prev, paymentType: 'Full' }))}
+                                        >
+                                            <div className="mode-radio"></div>
+                                            <div className="mode-info">
+                                                <h4>Full Payment</h4>
+                                                <p>Pay 100% of the registration fee now.</p>
+                                            </div>
+                                        </div>
+                                        <div 
+                                            className={`mode-card ${formData.paymentType === 'Advance' ? 'active' : ''}`}
+                                            onClick={() => setFormData(prev => ({ ...prev, paymentType: 'Advance' }))}
+                                        >
+                                            <div className="mode-radio"></div>
+                                            <div className="mode-info">
+                                                <h4>Advance (20%)</h4>
+                                                <p>Pay 20% now, pay the rest later. Our team will contact you.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
                             <div className="amount-card">
-                                <span>Registration Amount:</span>
-                                <span className="amount-value">₹{amount}</span>
+                                <span>{formData.paymentType === 'Advance' ? 'Advance Amount:' : 'Total Amount:'}</span>
+                                <span className="amount-value">₹{getRegistrationAmount()}</span>
                             </div>
 
                             <div className="payment-methods">
@@ -551,7 +660,7 @@ const RegistrationForm: React.FC = () => {
                                             PAY NOW (Only available on Phones)
                                         </div>
                                     )}
-                                    <p className="upi-id-copy">UPI ID: <strong>{UPI_ID}</strong></p>
+                                    <p className="upi-id-copy">Secure Payment via UPI</p>
                                 </div>
                             </div>
 
@@ -595,6 +704,20 @@ const RegistrationForm: React.FC = () => {
                                     />
                                     {errors.transactionId && <span className="field-error">{errors.transactionId}</span>}
                                     <p className="input-hint">Enter the 12-digit Ref No. / Transaction ID from your payment app.</p>
+
+                                    <div className="rules-agreement-checkbox">
+                                        <label className="checkbox-container">
+                                            <input 
+                                                type="checkbox" 
+                                                checked={formData.agreedToRules}
+                                                onChange={(e) => setFormData(prev => ({ ...prev, agreedToRules: e.target.checked }))}
+                                            />
+                                            <span className="checkbox-text">
+                                                I have read and agree to all the <a href="/rules" target="_blank" rel="noopener noreferrer">General Rules</a>, <a href={`/competitions/${category}`} target="_blank" rel="noopener noreferrer">Competition-specific Rules</a>, and <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">Privacy Policy</a> & <a href="/terms-of-service" target="_blank" rel="noopener noreferrer">Terms & Conditions</a>.*
+                                            </span>
+                                        </label>
+                                        {errors.agreedToRules && <span className="field-error">{errors.agreedToRules}</span>}
+                                    </div>
                                     <div className="verification-warning">
                                         <strong>⚠️ VERIFICATION NOTICE:</strong> Every Transaction ID is manually verified against our bank statement. Entry of a false or reused ID will lead to <strong>immediate disqualification</strong> and blacklisting from all future Talentron events.
                                     </div>

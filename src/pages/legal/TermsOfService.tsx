@@ -25,26 +25,33 @@ const TermsOfService: React.FC = () => {
                 <h2>1. Acceptance of Terms</h2>
                 <p>By registering for Talentron '26, you agree to these terms. If registering for a team, you represent that all members have authorized you to accept these terms on their behalf.</p>
 
-                <h2>2. Eligibility & Age Limit</h2>
-                <p>Participation is open to students aged <strong>16 to 27 years</strong> only. A valid College ID card is mandatory. Any discrepancies in age or academic status will result in immediate disqualification without refund.</p>
+                <h2>2. Eligibility & Verification</h2>
+                <p>Participation is open to students aged <strong>16 to 27 years</strong> only. A valid College ID or Government-issued ID card is mandatory for verification. Any discrepancies in age or status will result in immediate disqualification without refund.</p>
 
-                <h2>3. Registration & Fees</h2>
+                <h2>3. Registration & Team Management</h2>
                 <ul>
-                    <li><strong>Non-Refundable:</strong> All registration fees are strictly <strong>NON-REFUNDABLE</strong> under any circumstances, including absence or disqualification.</li>
-                    <li><strong>Payment Verification:</strong> It is the participant's responsibility to provide an accurate Transaction ID and a clear screenshot of the payment. Fake or incorrect details will lead to immediate cancellation.</li>
+                    <li><strong>Non-Refundable:</strong> All registration fees are strictly <strong>non-refundable</strong>, including for those eliminated in auditions or absent during slots.</li>
+                    <li><strong>No Changes:</strong> Team member changes or replacements are not allowed after registration without prior written approval from the organizing committee.</li>
+                    <li><strong>Verification:</strong> Providing incorrect Transaction IDs or fake payment screenshots will lead to immediate cancellation.</li>
                 </ul>
 
-                <h2>4. Scheduling & Punctuality</h2>
-                <p>Performance slots are allocated solely by the organizers. Failure to report at the designated time will result in automatic disqualification. Participants are advised to arrive at least 60 minutes before their scheduled slot.</p>
+                <h2>4. Auditions & Selection</h2>
+                <p>Shortlisting involves both offline and online auditions depending on the category. Only shortlisted participants/teams are eligible for the Finals. Judges' decisions on qualifying participants are final and absolute.</p>
 
-                <h2>5. Performance & Interruptions</h2>
-                <p>Restarts due to technical issues, audio failures, or external disturbances are granted solely at the judges' discretion. In case of an emergency, participants must signal an organizer immediately. The judges' decision to continue or terminate a performance is final.</p>
+                <h2>5. Punctuality & Reporting</h2>
+                <p>Participants must report at least <strong>30 minutes</strong> before their allotted slot. Failure to report on time may result in slot shifts, point deductions, or automatic disqualification.</p>
 
-                <h2>6. Code of Conduct</h2>
-                <p>Misconduct, inappropriate behavior, or violation of the event's code of conduct will lead to immediate disqualification. ZCOER Pune campus rules must be strictly followed.</p>
+                <h2>6. Track & Props Submission</h2>
+                <p>All performance tracks must be submitted in <strong>MP3 format via email</strong> at least 48 hours before the event. Pendrives/Physical storage will NOT be accepted. Participants are responsible for managing and immediately removing their own props and instruments.</p>
 
-                <h2>7. Final Authority</h2>
-                <p>All decisions made by the Talentron '26 judges and organizing committee are <strong>final and binding</strong>. No appeals or disputes will be entertained.</p>
+                <h2>7. Prohibited Items & Safety</h2>
+                <p>Strictly prohibited: Fire, smoke machines, crackers, real weapons, sharp objects, and hazardous liquids. Any damage to the venue or equipment will be the sole financial responsibility of the involved participants.</p>
+
+                <h2>8. Content & Conduct</h2>
+                <p>Vulgarity, abusive language, hate speech, political insults, or obscenity is strictly prohibited. Plagiarism or copying performances will lead to immediate disqualification. Misconduct with judges or organizers will result in eviction from the event.</p>
+
+                <h2>9. Final Authority</h2>
+                <p>The organizing committee reserves the right to modify rules, schedules, or formats as needed. All decisions made by Talentron '26 judges and organizers are <strong>final and binding</strong>. ZCOER Pune campus rules must be strictly followed.</p>
             </div>
         </div>
     );

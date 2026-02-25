@@ -1,0 +1,74 @@
+.rule-book-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: #ffea00;
+    color: #000;
+    text-decoration: none;
+    padding: 1rem 2.5rem;
+    border-radius: 5rem;
+    font-weight: 900;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 4px solid #000;
+    box-shadow: 6px 6px 0px #000;
+    width: fit-content;
+}
+
+.rule-book-btn:hover {
+    background: #fff;
+    color: #ff0059;
+}
+
+.rule-book-btn:active {
+    transform: scale(0.98);
+}
+
+.btn-icon {
+    font-size: 1.4rem;
+}
+
+/* Specific variants for placement */
+.rule-book-btn.hero-btn {
+    padding: 1.2rem 3.5rem;
+    font-size: 1.3rem;
+}
+
+.rule-book-btn.footer-btn {
+    padding: 0.8rem 1.8rem;
+    font-size: 1rem;
+    border-width: 3px;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.rule-book-btn.rules-page-btn {
+    background: #fff;
+    margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+    .rule-book-btn,
+    .rule-book-btn.hero-btn {
+        width: 100%;
+        max-width: 320px;
+        justify-content: center;
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+        border-width: 3px;
+        box-shadow: 4px 4px 0px #000;
+    }
+    
+    .btn-icon {
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .rule-book-btn,
+    .rule-book-btn.hero-btn {
+        max-width: 280px;
+        padding: 0.7rem 1.2rem;
+        font-size: 0.85rem;
+    }
+}

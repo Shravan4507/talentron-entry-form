@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { assetPath } from '../../utils/assetPath';
+import RuleBookButton from '../navigation/RuleBookButton';
 import './Footer.css';
 
 const Footer = () => {
@@ -8,8 +9,14 @@ const Footer = () => {
       <div className="footer-content">
         <div className="footer-top">
           <div className="footer-brand">
-            <img src={assetPath('/assets/logos/Logo-Star.jpg')} alt="Talentron Logo" className="footer-brand-logo" />
+            <div className="footer-brand-logos">
+              <img src={assetPath('/assets/logos/Logo-Star.png')} alt="Talentron Logo" className="footer-star-logo" />
+              <img src={assetPath('/assets/logos/Logo_Talentron_1.png')} alt="Talentron Brand" className="footer-text-logo" />
+            </div>
             <p>Empowering the next generation of digital talent through innovation and technology.</p>
+            <div style={{ marginTop: '1.5rem' }}>
+              <RuleBookButton className="footer-btn" />
+            </div>
           </div>
           <div className="footer-links-column">
             <h4>Quick Links</h4>

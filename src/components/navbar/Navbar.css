@@ -35,22 +35,20 @@
   position: relative; /* For absolute centering of the logo */
 }
 
-.navbar-center {
+
+.navbar-center.desktop {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
   display: flex;
   align-items: center;
-  justify-content: center;
-  pointer-events: auto; /* Enable link clicking */
+  gap: 50px;
 }
 
-.navbar-center-logo {
-  height: 60px;
-  width: auto;
-  object-fit: contain;
-  opacity: 0.9;
+.navbar-right.desktop {
+  display: flex;
+  align-items: center;
 }
 
 .navbar-brand {
@@ -58,15 +56,17 @@
   align-items: center;
   gap: 1.2rem;
   cursor: pointer;
+  position: relative;
+  z-index: 10;
 }
 
 .navbar-logo {
-  height: 50px;
-  border-radius: 50%;
-  border: 2px solid #000;
-  filter: drop-shadow(4px 4px 0px #ff0059);
-  transition: transform 0.3s ease;
+  height: 65px;
+  width: auto;
+  object-fit: contain;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
 
 .brand-logo-text {
   height: 35px;
@@ -82,12 +82,13 @@
 }
 
 .nav-link {
+  font-family: 'Qasira', sans-serif;
   color: #fff;
   text-decoration: none;
-  font-weight: 800;
-  font-size: 1.05rem;
+  font-weight: 500;
+  font-size: 1.25rem;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   transition: all 0.3s ease;
   position: relative;
   padding: 8px 0;
@@ -206,12 +207,13 @@
 }
 
 .mobile-nav-link {
-  font-size: 2.5rem;
-  font-weight: 900;
+  font-family: 'Qasira', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 500;
   color: #fff;
   text-decoration: none;
   text-transform: uppercase;
-  letter-spacing: 4px;
+  letter-spacing: 5px;
   transition: all 0.3s;
   -webkit-text-stroke: 1px rgba(255, 255, 255, 0.2);
 }
@@ -238,7 +240,8 @@
 }
 
 @media (max-width: 1024px) {
-  .navbar-links.desktop {
+  .navbar-center.desktop,
+  .navbar-right.desktop {
     display: none;
   }
 
@@ -260,9 +263,6 @@
     height: 20px;
   }
   
-  .navbar-center-logo {
-    height: 50px;
-  }
 
   .navbar-brand {
     gap: 0;

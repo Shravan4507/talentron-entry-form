@@ -119,7 +119,7 @@
   padding: 1rem 1.5rem;
   background: rgba(255, 234, 0, 0.15);
   border-left: 5px solid #ffea00;
-  border-radius: 1rem;
+  border-radius: 7rem;
   font-size: 0.95rem;
   color: #fff;
   line-height: 1.5;
@@ -170,6 +170,18 @@
   background: rgba(255, 0, 89, 0.05);
 }
 
+.dropzone.error {
+  border-color: #ff4d4d;
+  background: rgba(255, 77, 77, 0.1);
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
 .dropzone.mini {
   min-height: 80px;
   padding: 1rem;
@@ -203,6 +215,20 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
+}
+
+.upload-error-msg {
+  color: #ff4d4d;
+  font-weight: 900;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  background: rgba(255, 77, 77, 0.1);
+  padding: 0.8rem 1.5rem;
+  border-radius: 7rem;
+  border: 2px solid #ff4d4d;
+  display: inline-block;
+  margin: 1rem 0;
 }
 
 /* Payment Section */
@@ -356,10 +382,8 @@
   transition: all 0.2s;
 }
 
-.submit-btn:hover {
-  transform: translate(-3px, -3px);
-  box-shadow: 12px 12px 0px #000;
-  background: #ff1a6c;
+.submit-btn:active {
+  transform: scale(0.98);
 }
 
 .back-btn {
@@ -547,4 +571,272 @@
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.4);
   font-weight: 600;
+}
+
+/* Payment Mode Selector */
+.payment-mode-selector {
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.selector-label {
+  font-size: 1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+  color: #ffea00;
+  letter-spacing: 1px;
+}
+
+.mode-options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+.mode-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1.2rem;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+}
+
+.mode-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.mode-card.active {
+  background: rgba(255, 0, 89, 0.1);
+  border: 4px solid #ff0059;
+  box-shadow: 8px 8px 0px #000;
+}
+
+.mode-radio {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  flex-shrink: 0;
+  position: relative;
+  margin-top: 3px;
+}
+
+.mode-card.active .mode-radio {
+  border-color: #ff0059;
+}
+
+.mode-card.active .mode-radio::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  background: #ff0059;
+  border-radius: 50%;
+}
+
+.mode-info h4 {
+  font-size: 1.1rem;
+  font-weight: 900;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.mode-info p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+@media (max-width: 600px) {
+  .mode-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Email Submission Styles */
+.email-submission-section {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.email-card {
+  background: rgba(0, 0, 0, 0);
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 2rem;
+  padding: 3rem 2rem;
+  margin: 2rem 0;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.email-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+}
+
+.email-card h3 {
+  font-size: 1.8rem;
+  font-weight: 900;
+  margin-bottom: 1rem;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.email-desc {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  max-width: 500px;
+  margin: 0 auto 2rem;
+}
+
+.email-instructions {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+  margin-bottom: 2.5rem;
+  text-align: left;
+  max-width: 400px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 2px solid rgba(255, 255, 255, 0.05);
+}
+
+.email-instructions ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.email-instructions li {
+  font-size: 1rem;
+  margin-bottom: 0.8rem;
+  color: #fff;
+}
+
+.email-instructions li:last-child {
+  margin-bottom: 0;
+}
+
+.email-instructions strong {
+  color: #ffea00;
+}
+
+.compose-email-btn {
+  display: block;
+  background: #ffea00;
+  color: #000;
+  text-decoration: none;
+  padding: 1.2rem 2rem;
+  border-radius: 50rem;
+  font-weight: 900;
+  font-size: 1.1rem;
+  letter-spacing: 1px;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 4px solid #000;
+  box-shadow: 6px 6px 0px #000;
+  margin: 0 auto 1.5rem;
+  width: fit-content;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.compose-email-btn:active {
+  transform: scale(0.98);
+}
+
+.email-note {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 600;
+  line-height: 1.5;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+  .email-card {
+    padding: 2rem 1.5rem;
+  }
+  
+  .email-card h3 {
+    font-size: 1.5rem;
+  }
+}
+
+/* Rules Agreement Checkbox Styles */
+.rules-agreement-checkbox {
+  margin: 1.5rem 0;
+  padding: 1.2rem;
+  background: rgba(255, 234, 0, 0);
+  border-radius: 1.2rem;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.rules-agreement-checkbox:hover {
+  background: rgba(255, 234, 0, 0);
+  border-color: rgba(255, 234, 0, 0);
+}
+
+.checkbox-container {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-container input {
+  width: 20px;
+  height: 20px;
+  margin-top: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 4px;
+  cursor: pointer;
+  accent-color: #ffea00;
+}
+
+.checkbox-text {
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.5;
+  font-weight: 600;
+}
+
+.checkbox-text a {
+  color: #ffea00;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.checkbox-text a:hover {
+  color: #fff;
+  text-decoration-color: #fff;
+}
+
+@media (max-width: 600px) {
+  .rules-agreement-checkbox {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+  
+  .checkbox-text {
+    font-size: 0.85rem;
+  }
 }

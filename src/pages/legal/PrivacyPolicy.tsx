@@ -25,20 +25,21 @@ const PrivacyPolicy: React.FC = () => {
                 <h2>1. Information We Collect</h2>
                 <p>To facilitate your registration and participation in Talentron '26, we collect the following personal information:</p>
                 <ul>
-                    <li><strong>Personal Details:</strong> Full Name, Email Address, and Date of Birth.</li>
-                    <li><strong>Contact Information:</strong> Active mobile number and WhatsApp number for event coordination.</li>
+                    <li><strong>Personal Details:</strong> Full Name, Email Address, Date of Birth, and Sex/Gender.</li>
+                    <li><strong>Contact Information:</strong> Active mobile number and WhatsApp number for coordination.</li>
                     <li><strong>Academic Details:</strong> College name and student status verification.</li>
                     <li><strong>Participation Details:</strong> Competition category (genre), team type, and track files (if applicable).</li>
-                    <li><strong>Payment Information:</strong> We collect Transaction IDs and screenshots of payment receipts to verify registration fees.</li>
+                    <li><strong>Payment Information:</strong> Transaction IDs and screenshots of payment receipts to verify registration fees.</li>
                 </ul>
 
                 <h2>2. How We Use Your Information</h2>
                 <p>Your data is processed solely for the organization of Talentron '26:</p>
                 <ul>
-                    <li>Verifying eligibility (age 16-27) and college affiliation.</li>
+                    <li>Verifying eligibility (age 16-27) and academic status.</li>
                     <li>Processing payments and confirming successful registrations.</li>
                     <li>Communicating schedules, audition slots, and rules updates.</li>
-                    <li>On-site check-ins and performance coordination.</li>
+                    <li>Generating certificates of participation and excellence.</li>
+                    <li>On-site check-ins and stage management.</li>
                 </ul>
 
                 <h2>3. Data Protection</h2>

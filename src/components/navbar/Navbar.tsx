@@ -23,18 +23,13 @@ const Navbar = () => {
     <nav className={`navbar ${isOpen ? 'menu-open' : ''}`}>
       <div className="navbar-container">
         <div className="navbar-brand" onClick={() => navigate('/')}>
-          <img src={assetPath('/assets/logos/Logo-Star.jpg')} alt="Talentron Logo" className="navbar-logo" />
-          <img src={assetPath('/assets/logos/Logo_Talentron.png')} alt="Talentron Brand" className="brand-logo-text" />
+          <img src={assetPath('/assets/logos/Logo-Star.png')} alt="Talentron Logo" className="navbar-logo" />
+          <img src={assetPath('/assets/logos/Logo_Talentron_1.png')} alt="Talentron Brand" className="brand-logo-text" />
         </div>
 
-        <div className="navbar-center">
-          <a href="https://zcoer.in" target="_blank" rel="noopener noreferrer">
-            <img src={assetPath('/assets/logos/ZCOER-Logo-White.png')} alt="ZCOER Logo" className="navbar-center-logo" />
-          </a>
-        </div>
 
-        {/* Desktop Links */}
-        <div className="navbar-links desktop">
+        {/* Desktop Links - Center */}
+        <div className="navbar-center desktop">
           {menuItems.map((item) => (
             <Link 
               key={item.label} 
@@ -44,6 +39,10 @@ const Navbar = () => {
               {item.label}
             </Link>
           ))}
+        </div>
+
+        {/* Desktop Register - Right */}
+        <div className="navbar-right desktop">
           <button className="nav-register-btn" onClick={() => navigate('/competitions')}>
             Register Now
           </button>

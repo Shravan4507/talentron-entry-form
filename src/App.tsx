@@ -27,6 +27,7 @@ function AppContent() {
           contrast={1.2} zoom={0.9}
         />
         <div className="grainient-blur-overlay" />
+        <div className="grainient-dim-overlay" />
       </div>
 
       <Navbar />

@@ -1,100 +1,205 @@
 .genre-details-page {
-  padding: 140px 5% 80px;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  z-index: 10;
-  position: relative;
+    font-family: 'Goride', sans-serif;
+    width: 100%;
+    min-height: 100vh;
+    padding: 140px 5% 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .genre-header {
-  margin-bottom: 4rem;
-  text-align: center;
+    margin-bottom: 4rem;
+    text-align: center;
 }
 
 .genre-content {
-  max-width: 800px;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
+    width: 100%;
+    max-width: 1100px;
 }
 
-.info-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 4px solid #000;
-  border-radius: 2rem;
-  padding: 3rem;
-  text-align: center;
-  box-shadow: 10px 10px 0px rgba(0, 0, 0, 0.5);
+.competitions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    margin-bottom: 4rem;
 }
 
-.info-card h2 {
-  font-family: var(--font-display);
-  font-size: 2.5rem;
-  margin-bottom: 1.5rem;
-  color: #ff0059;
+.competition-detail-card {
+    background: rgba(0, 0, 0, 0.65);
+    border: 3px solid #000;
+    border-radius: 2.5rem;
+    padding: 3.5rem;
+    backdrop-filter: blur(15px);
+    box-shadow: 12px 12px 0px #000;
 }
 
-.info-card p {
-  font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.7);
-  line-height: 1.6;
+.comp-info-main h2 {
+    font-family: 'Goride Extended', sans-serif;
+    font-size: 3rem;
+    font-weight: 500;
+    color: #ffea00;
+    margin-bottom: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.comp-badges {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.badge {
+    padding: 0.5rem 1.2rem;
+    border-radius: 2rem;
+    font-size: 0.9rem;
+    font-weight: 800;
+    border: 2px solid #000;
+}
+
+.badge.type {
+    background: #00d1ff;
+    color: #000;
+}
+
+.badge.prize {
+    background: #ffea00;
+    color: #000;
+}
+
+.description {
+    font-family: 'Teen', sans-serif;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 3.5rem;
+    max-width: 850px;
+}
+
+/* Two Column Rules Grid */
+.rules-container-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.rules-column h3 {
+    font-family: 'Goride Extended', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: #ffea00;
+    margin-bottom: 1.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    display: inline-block;
+    border-bottom: 3px solid #ffea00;
+    padding-bottom: 0.3rem;
+}
+
+.rules-column.specific h3 {
+    color: #ff0059;
+    border-color: #ff0059;
+}
+
+.rules-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.rule-item {
+    font-family: 'Teen', sans-serif;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+    position: relative;
+    font-weight: 500;
+}
+
+.rule-item::before {
+    content: "⚡";
+    position: absolute;
+    left: 0;
+    font-size: 0.9rem;
+    color: #ffea00;
+}
+
+.rules-column.specific .rule-item::before {
+    color: #ff0059;
 }
 
 .navigation-actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 2rem;
 }
 
 .back-link {
-  color: #fff;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 1.1rem;
-  opacity: 0.7;
-  transition: opacity 0.2s;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 800;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
 }
 
 .back-link:hover {
-  opacity: 1;
+    color: #ffea00;
+    transform: translateX(-5px);
 }
 
 .register-cta {
-  background: #ffea00;
-  color: #000;
-  padding: 1rem 3rem;
-  border-radius: 3rem;
-  text-decoration: none;
-  font-weight: 900;
-  font-size: 1.2rem;
-  text-transform: uppercase;
-  border: 4px solid #000;
-  box-shadow: 6px 6px 0px #000;
-  transition: all 0.2s;
+    font-family: 'Goride Extended', sans-serif;
+    background: #ff0059;
+    color: #fff;
+    text-decoration: none;
+    padding: 1.2rem 3rem;
+    border-radius: 3rem;
+    font-size: 1.4rem;
+    font-weight: 500;
+    border: 3px solid #000;
+    box-shadow: 8px 8px 0px #000;
+    transition: all 0.2s ease;
+    letter-spacing: 1px;
 }
 
 .register-cta:hover {
-  transform: translate(-2px, -2px);
-  box-shadow: 8px 8px 0px #000;
-  background: #fff;
+    transform: scale(1.05);
+    background: #ffea00;
+    color: #000;
+}
+
+@media (max-width: 1024px) {
+    .rules-container-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+    }
 }
 
 @media (max-width: 768px) {
-  .genre-details-page {
-    padding: 100px 1.5rem 60px;
-  }
-  
-  .info-card {
-    padding: 2rem;
-  }
-  
-  .navigation-actions {
-    flex-direction: column;
-    text-align: center;
-  }
+    .competition-detail-card {
+        padding: 2rem;
+    }
+
+    .comp-info-main h2 {
+        font-size: 2rem;
+    }
+
+    .navigation-actions {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .register-cta {
+        width: 100%;
+        text-align: center;
+        padding: 1rem;
+    }
 }

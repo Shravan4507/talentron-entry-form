@@ -1,4 +1,5 @@
 .competitions-page {
+  font-family: 'Goride', sans-serif;
   width: 100%;
   min-height: 100vh;
   padding: 140px 5% 80px;
@@ -11,36 +12,50 @@
 
 .comp-header {
   text-align: center;
-  margin-bottom: 8rem;
-  max-width: 1200px;
+  margin-bottom: clamp(2rem, 8vw, 8rem);
+  max-width: 1400px;
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0;
+  padding-top: clamp(1rem, 5vw, 4rem);
+}
+
+.comp-logo-subtitle {
+    height: clamp(150px, 28vw, 520px);
+    margin-top: clamp(-10rem, -8vw, -3rem);
+    margin-bottom: clamp(-20rem, -18vw, -6rem); /* Reduced negative margin to add space */
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(clamp(4px, 0.5vw, 8px) clamp(4px, 0.5vw, 8px) 0px #000);
+    z-index: 2;
 }
 
 .main-title-wrapper {
-  margin: 0;
+  margin: clamp(0.5rem, 1.5vw, 2.5rem) 0; /* Increased margin for more space */
   display: flex;
   justify-content: center;
   width: 100%;
+  z-index: 1;
+}
+
+.comp-logo-main {
+    height: clamp(210px, 42vw, 780px);
+    margin-top: clamp(-10rem, -6vw, -2rem);
+    margin-bottom: clamp(-15rem, -10vw, -4rem);
+    width: auto;
+    object-fit: contain;
+    filter: drop-shadow(clamp(6px, 0.8vw, 14px) clamp(6px, 0.8vw, 14px) 0px #000);
 }
 
 .comp-description {
+  font-family: 'Teen', sans-serif;
   color: rgba(255, 255, 255, 0.85);
-  font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+  font-size: clamp(0.85rem, 1.5vw, 1.4rem);
   letter-spacing: 0.05rem;
   font-weight: 500;
-  margin-top: 0.5rem;
-  margin-bottom: -5rem;
-}
-
-.subtitle-wrapper {
-    margin: -1rem;
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    transform: scale(0.8);
+  margin-top: clamp(0.5rem, 2vw, 2rem);
+  text-transform: uppercase;
 }
 
 .competitions-grid {
@@ -57,33 +72,10 @@
         padding: 110px 1.5rem 60px;
     }
 
-    .comp-header {
-        margin-bottom: 3.5rem;
-        gap: 0;
-    }
-
-    .subtitle-wrapper {
-        transform: scale(1.1);
-        margin: 0;
-        z-index: 2;
-    }
-
-    .main-title-wrapper {
-        transform: scale(1.6);
-        margin: 1.5rem 0 1.2rem;
-        z-index: 1;
-    }
-
-    .comp-description {
-        font-size: 1.2rem;
-        margin-top: 1rem;
-        margin-bottom: 2rem;
-    }
-
     .competitions-grid {
         grid-template-columns: 1fr;
         gap: 2.5rem;
-        max-width: 500px;
+        max-width: 440px;
         margin: 0 auto;
         padding: 1rem 0.5rem;
     }
@@ -92,27 +84,6 @@
 @media (max-width: 480px) {
     .competitions-page {
         padding: 90px 0.75rem 40px;
-    }
-
-    .comp-header {
-        margin-bottom: 2rem;
-        gap: 0;
-    }
-
-    .subtitle-wrapper {
-        transform: scale(0.95); /* Scaled down for tiny screens */
-        margin: 0;
-    }
-
-    .main-title-wrapper {
-        transform: scale(1.2); /* Visible but not overflowing */
-        margin: 1rem 0;
-    }
-
-    .comp-description {
-        margin-top: 0.5rem;
-        margin-bottom: 0;
-        font-size: 0.95rem;
     }
 
     .competitions-grid {

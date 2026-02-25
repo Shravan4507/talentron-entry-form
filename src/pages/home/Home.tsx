@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
-import OutlinedTitle from '../../components/heading/OutlinedTitle';
 import SEO from '../../components/navigation/SEO';
 import { assetPath } from '../../utils/assetPath';
+import RuleBookButton from '../../components/navigation/RuleBookButton';
 import './Home.css';
 
 const Home = () => {
@@ -41,22 +41,13 @@ const Home = () => {
             
             <div className="hero-section">
                 <div className="hero-content">
-                    <div className="hero-badge">
-                        <img src={assetPath('/assets/logos/Logo_Talentron.png')} alt="Talentron '26" className="hero-badge-logo" />
-                    </div>
-                    <div className="hero-title-wrapper">
-                        <OutlinedTitle 
-                            text="ARE YOU READY?" 
-                            fillColor="linear-gradient(180deg, #ff0059 0%, #ff8c00 100%)" 
-                            outlineColor="#000000" 
-                            shadowColor="#000000"
-                            hasGrain={true}
+                    <div className="hero-main-container">
+                        <img 
+                            src={assetPath('/assets/logos/hero_section.png')} 
+                            alt="Talentron '26 - Are You Ready? Join the biggest student-led competition in Pune." 
+                            className="hero-main-image" 
                         />
                     </div>
-                    <p className="hero-description">
-                        Join the biggest student-led competition in Pune. 
-                        Singing, Dancing, Dramatics, and more – choose your stage.
-                    </p>
                     <div className="cta-container">
                         <button 
                             className="primary-cta"
@@ -64,6 +55,7 @@ const Home = () => {
                         >
                             REGISTER NOW
                         </button>
+                        <RuleBookButton className="hero-btn" />
                     </div>
                 </div>
             </div>

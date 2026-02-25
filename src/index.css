@@ -19,6 +19,27 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'Qasira';
+  src: url('/fonts/Qasira.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Goride';
+  src: url('/fonts/Goride-Sans.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Goride Extended';
+  src: url('/fonts/Goride-Sans-Extended.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
   margin: 0;
   padding: 0;
