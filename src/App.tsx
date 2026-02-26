@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, Outlet, useLocation } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
 import Home from './pages/home/Home';
 import Competitions from './pages/competitions/Competitions';
 import GenreDetails from './pages/competitions/GenreDetails';
@@ -12,12 +13,19 @@ import Grainient from './components/background/Grainient';
 import Navbar from './components/navbar/Navbar';
 import Footer from './components/footer/Footer';
 import ScrollToTop from './components/navigation/ScrollToTop';
+import PageTransition from './components/navigation/PageTransition';
+import TopLoadingBar from './components/navigation/TopLoadingBar';
+import BackToTop from './components/navigation/BackToTop';
 import './components/background/Grainient.css';
 import './App.css';
 
-function AppContent() {
+function RootLayout() {
+  const location = useLocation();
+
   return (
     <div className="app-container">
+      <TopLoadingBar />
+      <BackToTop />
       <ScrollToTop />
       <div className="grainient-background-wrapper">
         <Grainient
@@ -33,17 +41,11 @@ function AppContent() {
       <Navbar />
 
       <main className="content">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/competitions" element={<Competitions />} />
-          <Route path="/competitions/:genre" element={<GenreDetails />} />
-          <Route path="/register/:category" element={<RegistrationForm />} />
-          <Route path="/rules" element={<Rules />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-          <Route path="/terms-of-service" element={<TermsOfService />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <AnimatePresence mode="wait">
+          <PageTransition key={location.pathname}>
+            <Outlet />
+          </PageTransition>
+        </AnimatePresence>
       </main>
 
       <Footer />
@@ -51,12 +53,26 @@ function AppContent() {
   );
 }
 
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <RootLayout />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: 'competitions', element: <Competitions /> },
+      { path: 'competitions/:genre', element: <GenreDetails /> },
+      { path: 'register/:category', element: <RegistrationForm /> },
+      { path: 'rules', element: <Rules /> },
+      { path: 'contact', element: <Contact /> },
+      { path: 'privacy-policy', element: <PrivacyPolicy /> },
+      { path: 'terms-of-service', element: <TermsOfService /> },
+      { path: '*', element: <NotFound /> },
+    ],
+  },
+]);
+
 function App() {
-  return (
-    <Router>
-      <AppContent />
-    </Router>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

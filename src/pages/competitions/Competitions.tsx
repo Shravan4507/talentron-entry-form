@@ -1,6 +1,8 @@
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { competitionsData } from '../../data/competitionsData';
 import PopArtCard from '../../components/card/PopArtCard';
+import CardSkeleton from '../../components/card/CardSkeleton';
 import SEO from '../../components/navigation/SEO';
 import { assetPath } from '../../utils/assetPath';
 import './Competitions.css';
@@ -18,6 +20,14 @@ const getGenreImage = (category: string) => {
 
 const Competitions: React.FC = () => {
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setLoading(false);
+        }, 800);
+        return () => clearTimeout(timer);
+    }, []);
 
     // Get unique categories
     const categories = Array.from(new Set(competitionsData.map(c => c.category))).map(cat => ({
@@ -49,16 +59,20 @@ const Competitions: React.FC = () => {
             </div>
 
             <div className="competitions-grid">
-                {categories.map((cat, index) => (
-                    <PopArtCard
-                        key={index}
-                        backgroundImage={getGenreImage(cat.name)}
-                        footerText="VIEW GENRE"
-                        onClick={() => navigate(`/competitions/${encodeURIComponent(cat.name)}`)}
-                        onButtonClick={() => navigate(`/register/${encodeURIComponent(cat.name)}`)}
-                        animationDelay={`${index * 0.05}s`}
-                    />
-                ))}
+                {loading ? (
+                    [...Array(5)].map((_, i) => <CardSkeleton key={i} />)
+                ) : (
+                    categories.map((cat, index) => (
+                        <PopArtCard
+                            key={index}
+                            backgroundImage={getGenreImage(cat.name)}
+                            footerText="VIEW GENRE"
+                            onClick={() => navigate(`/competitions/${encodeURIComponent(cat.name)}`)}
+                            onButtonClick={() => navigate(`/register/${encodeURIComponent(cat.name)}`)}
+                            animationDelay={`${index * 0.05}s`}
+                        />
+                    ))
+                )}
             </div>
         </div>
     );

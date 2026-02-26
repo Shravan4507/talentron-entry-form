@@ -1,0 +1,44 @@
+.back-to-top-float {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 3px solid #000;
+    border-radius: 1.5rem;
+    box-shadow: 6px 6px 0px #000;
+    color: #fff;
+    font-size: 2rem;
+    font-weight: 900;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.back-to-top-float:hover {
+    background: #ffea00;
+    color: #000;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.arrow-icon {
+    margin-bottom: 4px; /* Optical alignment */
+}
+
+@media (max-width: 768px) {
+    .back-to-top-float {
+        bottom: 1.5rem;
+        right: 1.5rem;
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+        border-radius: 1rem;
+        box-shadow: 4px 4px 0px #000;
+    }
+}

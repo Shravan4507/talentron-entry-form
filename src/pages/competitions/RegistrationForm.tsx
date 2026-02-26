@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useBlocker } from 'react-router-dom';
 import OutlinedTitle from '../../components/heading/OutlinedTitle';
 import SEO from '../../components/navigation/SEO';
 import SearchableDropdown from '../../components/searchable-dropdown/SearchableDropdown';
@@ -76,6 +76,34 @@ const RegistrationForm: React.FC = () => {
     const [submissionStage, setSubmissionStage] = useState('');
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const screenshotInputRef = useRef<HTMLInputElement>(null);
+
+    // Navigation Guard (Dirty Form)
+    const isDirty = formData.firstName !== '' || 
+                    formData.lastName !== '' || 
+                    formData.email !== '' || 
+                    formData.cellPhone !== '+91 ' || 
+                    formData.whatsappNumber !== '+91 ' || 
+                    formData.collegeName !== '' || 
+                    formData.transactionId !== '';
+
+    useBlocker(({ nextLocation }) => {
+        if (isDirty && !isSuccess && !isSubmitting && nextLocation.pathname !== location.pathname) {
+            return !window.confirm("You have unsaved form data. Are you sure you want to leave this page?");
+        }
+        return false;
+    });
+
+    // Also handle browser-level refresh/back
+    useEffect(() => {
+        const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+            if (isDirty && !isSuccess && !isSubmitting) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        };
+        window.addEventListener('beforeunload', handleBeforeUnload);
+        return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+    }, [isDirty, isSuccess, isSubmitting]);
 
 
     useEffect(() => {
