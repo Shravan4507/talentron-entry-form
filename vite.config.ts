@@ -4,4 +4,16 @@ import react from '@vitejs/plugin-react-swc'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
+          'vendor-firebase': ['firebase/app', 'firebase/auth', 'firebase/firestore', 'firebase/storage'],
+          'vendor-utils': ['xlsx', 'file-saver', 'jszip', 'framer-motion'],
+        }
+      }
+    },
+    chunkSizeWarningLimit: 1000, 
+  }
 })

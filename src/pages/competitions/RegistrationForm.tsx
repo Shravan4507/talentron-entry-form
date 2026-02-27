@@ -419,8 +419,8 @@ Team Type: ${formData.teamType}
             newErrors.paymentScreenshot = "Please upload payment screenshot.";
             alert('Please upload a screenshot of your payment for verification.');
         } else if (formData.paymentScreenshot) {
-            if (formData.paymentScreenshot.size > 256 * 1024) { // 256KB
-                newErrors.paymentScreenshot = "Screenshot must be less than 256KB. Please compress your image.";
+            if (formData.paymentScreenshot.size > 1024 * 1024) { // 1MB
+                newErrors.paymentScreenshot = "Screenshot must be less than 1MB. Please compress your image.";
             }
         }
 
