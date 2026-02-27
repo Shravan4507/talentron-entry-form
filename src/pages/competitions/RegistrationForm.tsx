@@ -506,23 +506,6 @@ Team Type: ${formData.teamType}
                 return;
             }
 
-            // Check Screenshot Filename
-            if (formData.paymentScreenshot) {
-                const ssRef = collection(db, "registrations");
-                const ssQ = query(ssRef, where("screenshotFileName", "==", formData.paymentScreenshot.name));
-                const ssSnap = await getDocs(ssQ);
-                
-                if (!ssSnap.empty) {
-                    setIsSubmitting(false);
-                    setSubmissionStage('');
-                    setSubmissionProgress(0);
-                    alert("MALPRACTICE DETECTED: A screenshot with this filename already exists. Please rename your screenshot file and try again. If you believe this is an error, please contact our management team.");
-                    setErrors({ paymentScreenshot: "Try changing the name of your screenshot file." });
-                    // We don't delete the lock here, Admin should review manual errors
-                    return;
-                }
-            }
-
             // 1. Save INITIAL Registration Data to Firestore (Draft State)
             // We save this first so if the screenshot upload fails, we still have their info.
             setSubmissionStage('Recording registration data...');
