@@ -32,10 +32,5 @@ dist-ssr
 .vercel
 
 # Firebase
-firebase.json
-firestore.rules
-storage.rules
-firestore.indexes.json
-.firebaserc
 *-debug.log
 

@@ -1,0 +1,53 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // THE MASTER ADMIN OVERRIDE
+    function isAdmin() {
+      return request.auth != null && 
+             exists(/databases/$(database)/documents/admins/$(request.auth.uid));
+    }
+
+    // REGISTRATIONS COLLECTION
+    match /registrations/{registrationId} {
+      allow create: if true; 
+      allow read: if true; // Allow anyone to check eligibility/status
+      
+      // ONLY admins can update approved/rejected records. 
+      // Participants can only update while pending.
+      allow update: if isAdmin() || (resource.data.status == 'payment_upload_pending' || resource.data.status == 'pending');
+      allow delete: if isAdmin();
+    }
+
+    // AUDIT LOGS (Admin only)
+    match /audit_logs/{logId} {
+      allow read: if isAdmin();
+      allow create: if isAdmin();
+    }
+    
+    // TRANSACTION LOCKS
+    match /transaction_locks/{txId} {
+      allow get, create: if true;
+      allow list, delete, update: if isAdmin();
+    }
+
+    // METADATA & COUNTERS
+    match /metadata/{docId} {
+      // Admins need read/write for invoice generation
+      // Participants should NOT touch this
+      allow read, write: if isAdmin();
+    }
+
+    // ADMINS LIST (Locked tight)
+    match /admins/{adminId} {
+      allow read: if true; // Needed to check permission status
+      allow write: if false; 
+    }
+
+    // EMAIL AUTOMATION
+    match /mail/{mailId} {
+      allow create: if true; 
+      allow read, list, update, delete: if isAdmin();
+    }
+  }
+}
