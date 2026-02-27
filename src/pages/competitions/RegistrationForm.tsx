@@ -1,10 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate, useBlocker } from 'react-router-dom';
+import { useParams, useNavigate, useBlocker, Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import OutlinedTitle from '../../components/heading/OutlinedTitle';
 import SEO from '../../components/navigation/SEO';
+import { assetPath } from '../../utils/assetPath';
 import SearchableDropdown from '../../components/searchable-dropdown/SearchableDropdown';
 import DatePicker from '../../components/date-picker/DatePicker';
 import collegesData from '../../data/colleges.json';
+import { db, storage, auth, googleProvider } from '../../lib/firebase';
+import { collection, doc, setDoc, getDoc, updateDoc, serverTimestamp, query, where, getDocs } from 'firebase/firestore';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { signInWithPopup, onAuthStateChanged } from 'firebase/auth';
+import type { User } from 'firebase/auth';
 import './RegistrationForm.css';
 
 interface FormData {
@@ -21,12 +28,12 @@ interface FormData {
     paymentScreenshot: File | null;
     transactionId: string;
     groupSize: string;
-    paymentType: 'Full' | 'Advance';
+    paymentType: 'Full';
     agreedToRules: boolean;
 }
 
 const UPI_ID = import.meta.env.VITE_UPI_ID || "your-upi-id@bank";
-const SCRIPT_URL = import.meta.env.VITE_SCRIPT_URL || "";
+
 
 
 // Precise mapping based on user request
@@ -75,6 +82,8 @@ const RegistrationForm: React.FC = () => {
     const [submissionProgress, setSubmissionProgress] = useState(0);
     const [submissionStage, setSubmissionStage] = useState('');
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
+    const [currentUser, setCurrentUser] = useState<User | null>(null);
+    const [isGoogleLoading, setIsGoogleLoading] = useState(false);
     const screenshotInputRef = useRef<HTMLInputElement>(null);
 
     // Navigation Guard (Dirty Form)
@@ -104,6 +113,75 @@ const RegistrationForm: React.FC = () => {
         window.addEventListener('beforeunload', handleBeforeUnload);
         return () => window.removeEventListener('beforeunload', handleBeforeUnload);
     }, [isDirty, isSuccess, isSubmitting]);
+
+    // Auth state observer
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            setCurrentUser(user);
+            if (user && formData.email === '') {
+                const [firstName, ...lastNameParts] = (user.displayName || '').split(' ');
+                setFormData(prev => ({
+                    ...prev,
+                    firstName: firstName || '',
+                    lastName: lastNameParts.join(' ') || '',
+                    email: user.email || ''
+                }));
+            }
+        });
+        return () => unsubscribe();
+    }, [formData.email]);
+
+    const handleGoogleSignIn = async () => {
+        setIsGoogleLoading(true);
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            const user = result.user;
+
+            // 1. Preemptive Check: Is this email already in our database?
+            setSubmissionStage('Verifying eligibility...');
+            const q = query(collection(db, "registrations"), where("email", "==", user.email));
+            const snap = await getDocs(q);
+
+            if (!snap.empty) {
+                const data = snap.docs[0].data();
+                const isSame = data.genre === category;
+                
+                // Immediately sign out to keep session clean
+                await auth.signOut();
+                
+                if (isSame) {
+                    alert(`This competition is already registered by you.`);
+                } else {
+                    alert(`LIMIT REACHED: You are already registered for "${data.genre}". According to Talentron Rules, a participant can only enter ONE competition.`);
+                }
+                
+                // Reset form email to block progress
+                setFormData(prev => ({ ...prev, email: '' }));
+                setIsGoogleLoading(false);
+                return;
+            }
+
+            // 2. Clear to proceed
+            const [firstName, ...lastNameParts] = (user.displayName || '').split(' ');
+            setFormData(prev => ({
+                ...prev,
+                firstName: firstName || '',
+                lastName: lastNameParts.join(' ') || '',
+                email: user.email || ''
+            }));
+            
+            setErrors(prev => {
+                const newErrors = { ...prev };
+                delete newErrors.email;
+                return newErrors;
+            });
+        } catch (error) {
+            console.error("Google Sign In Error:", error);
+            alert("Failed to sign in with Google. Please try again.");
+        } finally {
+            setIsGoogleLoading(false);
+        }
+    };
 
 
     useEffect(() => {
@@ -142,6 +220,18 @@ const RegistrationForm: React.FC = () => {
             setAge(null);
         }
     }, [formData.dob]);
+    
+    // Lock body scroll when overlay is active
+    useEffect(() => {
+        if (isSubmitting || isSuccess) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'unset';
+        }
+        return () => {
+            document.body.style.overflow = 'unset';
+        };
+    }, [isSubmitting, isSuccess]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -182,12 +272,12 @@ const RegistrationForm: React.FC = () => {
 
     const handleComposeEmail = () => {
         const recipient = "shravan45x@gmail.com";
-        const subject = `Audition Video - ${formData.firstName} ${formData.lastName} - ${category}`;
+        const subject = `Round 1 Video - ${formData.firstName} ${formData.lastName} - ${category}`;
         const body = `Hi Talentron Team,
-
-I am registering for the ${category} category (${formData.teamType}).
-
-I will be sending my audition video/track for the online round.
+ 
+ I am registering for the ${category} category (${formData.teamType}).
+ 
+ I will be sending my Round 1 video/track for the online round.
 
 Name: ${formData.firstName} ${formData.lastName}
 Category: ${category}
@@ -233,13 +323,7 @@ Team Type: ${formData.teamType}
         if (formData.teamType === 'Duet') multiplier = 2;
         if (formData.teamType === 'Group') multiplier = parseInt(formData.groupSize) || 0;
         
-        const totalAmount = perPerson * multiplier;
-        
-        if (formData.teamType === 'Group' && formData.paymentType === 'Advance') {
-            return Math.ceil(totalAmount * 0.20); // 20% Advance
-        }
-        
-        return totalAmount;
+        return perPerson * multiplier;
     };
 
     const nextStep = () => {
@@ -264,13 +348,13 @@ Team Type: ${formData.teamType}
                 newErrors.email = "Please enter a valid email address.";
             }
 
-            // Phone numbers
-            const phoneDigits = formData.cellPhone.replace('+91 ', '');
+            // Phone numbers - Robust digit extraction
+            const phoneDigits = (formData.cellPhone.split('+91')[1] || '').replace(/\D/g, '');
             if (phoneDigits.length !== 10) {
                 newErrors.cellPhone = "Please enter a valid 10-digit mobile number.";
             }
 
-            const whatsappDigits = formData.whatsappNumber.replace('+91 ', '');
+            const whatsappDigits = (formData.whatsappNumber.split('+91')[1] || '').replace(/\D/g, '');
             if (whatsappDigits.length !== 10) {
                 newErrors.whatsappNumber = "Please enter a valid 10-digit WhatsApp number.";
             }
@@ -325,17 +409,7 @@ Team Type: ${formData.teamType}
         window.scrollTo(0, 0);
     };
 
-    const fileToBase64 = (file: File): Promise<string> => {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => {
-                const base64String = (reader.result as string).split(',')[1];
-                resolve(base64String);
-            };
-            reader.onerror = (error) => reject(error);
-        });
-    };
+
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -345,8 +419,8 @@ Team Type: ${formData.teamType}
             newErrors.paymentScreenshot = "Please upload payment screenshot.";
             alert('Please upload a screenshot of your payment for verification.');
         } else if (formData.paymentScreenshot) {
-            if (formData.paymentScreenshot.size > 5 * 1024 * 1024) { // 5MB
-                newErrors.paymentScreenshot = "Screenshot must be less than 5MB.";
+            if (formData.paymentScreenshot.size > 256 * 1024) { // 256KB
+                newErrors.paymentScreenshot = "Screenshot must be less than 256KB. Please compress your image.";
             }
         }
 
@@ -364,69 +438,219 @@ Team Type: ${formData.teamType}
         }
 
         setIsSubmitting(true);
-        
-        if (!SCRIPT_URL) {
-            console.error('CRITICAL: VITE_SCRIPT_URL is not defined in environment variables.');
-            alert('Configuration Error: Backend URL (VITE_SCRIPT_URL) is missing in Vercel. Please add it and redeploy.');
-            setIsSubmitting(false);
-            return;
-        }
-
         setSubmissionProgress(10);
-        setSubmissionStage('Preparing data...');
+        setSubmissionStage('Preparing secure upload...');
         setErrors({});
 
         const sessionId = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         
         try {
-            // 1. Handle Payment Screenshot (Usually small)
-            let paymentScreenshotData = null;
-            if (formData.paymentScreenshot) {
-                setSubmissionStage('Processing payment receipt...');
-                setSubmissionProgress(5);
-                paymentScreenshotData = {
-                    base64: await fileToBase64(formData.paymentScreenshot),
-                    type: formData.paymentScreenshot.type,
-                    name: `Payment_${formData.transactionId}_${formData.paymentScreenshot.name}`
-                };
+            // 0. Pre-submission checks (Duplicates & Malpractice)
+            setSubmissionStage('Verifying registration uniqueness...');
+            
+            // Comprehensive Email Check (Only 1 registration allowed total)
+            const emailRef = collection(db, "registrations");
+            const emailAnyQ = query(emailRef, where("email", "==", formData.email));
+            const emailSnap = await getDocs(emailAnyQ);
+            
+            if (!emailSnap.empty) {
+                const existingDoc = emailSnap.docs[0].data();
+                const isSameGenre = existingDoc.genre === formData.genre;
+                
+                setIsSubmitting(false);
+                setSubmissionStage('');
+                setSubmissionProgress(0);
+                
+                if (isSameGenre) {
+                    alert(`MALPRACTICE DETECTED: This competition ("${formData.genre}") is already registered by you. If you believe this is an error, please contact our management team.`);
+                    setErrors({ email: `Already registered for ${formData.genre}.` });
+                } else {
+                    alert(`LIMIT EXCEEDED: You can only participate in one competition at Talentron '26. You are already registered for "${existingDoc.genre}". If you wish to switch, please contact our management team.`);
+                    setErrors({ email: `Already registered for ${existingDoc.genre}. (Only 1 entry allowed)` });
+                }
+                return;
             }
 
+            // 0a. Check for recent submission (Spam Protection)
+            const lastSub = sessionStorage.getItem('last_submission_time');
+            if (lastSub && Date.now() - parseInt(lastSub) < 60000) { // 1 minute cooldown
+                setIsSubmitting(false);
+                alert("Please wait 1 minute before submitting again.");
+                return;
+            }
 
-            // 3. Final Submission (Form Data)
-            setSubmissionStage('Finalizing registration...');
-            setSubmissionProgress(90);
+            // 0b. ATOMIC LOCK for Transaction ID (Race Condition Fix)
+            setSubmissionStage('Securing transaction lock...');
+            const lockRef = doc(db, "transaction_locks", formData.transactionId);
+            const lockSnap = await getDoc(lockRef);
+            
+            if (lockSnap.exists()) {
+                setIsSubmitting(false);
+                setSubmissionStage('');
+                setSubmissionProgress(0);
+                alert("MALPRACTICE DETECTED: This Transaction ID has already been used. If you believe this is an error, please contact our management team.");
+                setErrors({ transactionId: "This Transaction ID is already registered." });
+                return;
+            }
 
-            const finalPayload = {
-                ...formData,
-                sessionId,
-                mode: 'final',
-                paymentScreenshot: paymentScreenshotData,
+            // Create the lock record immediately
+            try {
+                await setDoc(lockRef, { 
+                    email: formData.email, 
+                    lockedAt: serverTimestamp() 
+                });
+            } catch (err) {
+                // If this fails, someone else just created it between our check and write
+                setIsSubmitting(false);
+                alert("Transaction ID already in use. Please check and try again.");
+                return;
+            }
+
+            // Check Screenshot Filename
+            if (formData.paymentScreenshot) {
+                const ssRef = collection(db, "registrations");
+                const ssQ = query(ssRef, where("screenshotFileName", "==", formData.paymentScreenshot.name));
+                const ssSnap = await getDocs(ssQ);
+                
+                if (!ssSnap.empty) {
+                    setIsSubmitting(false);
+                    setSubmissionStage('');
+                    setSubmissionProgress(0);
+                    alert("MALPRACTICE DETECTED: A screenshot with this filename already exists. Please rename your screenshot file and try again. If you believe this is an error, please contact our management team.");
+                    setErrors({ paymentScreenshot: "Try changing the name of your screenshot file." });
+                    // We don't delete the lock here, Admin should review manual errors
+                    return;
+                }
+            }
+
+            // 1. Save INITIAL Registration Data to Firestore (Draft State)
+            // We save this first so if the screenshot upload fails, we still have their info.
+            setSubmissionStage('Recording registration data...');
+            setSubmissionProgress(40);
+
+            const regDocRef = doc(db, "registrations", sessionId);
+            const registrationData = {
+                firstName: formData.firstName,
+                lastName: formData.lastName,
+                email: formData.email,
+                cellPhone: formData.cellPhone,
+                whatsappNumber: formData.whatsappNumber,
+                dob: formData.dob,
+                sex: formData.sex,
+                collegeName: formData.collegeName,
+                teamType: formData.teamType,
+                genre: formData.genre,
                 groupSize: formData.teamType === 'Group' ? formData.groupSize : (formData.teamType === 'Duet' ? '2' : '1'),
-                paymentType: formData.paymentType,
-                totalActualAmount: getRegistrationAmount()
+                transactionId: formData.transactionId,
+                totalActualAmount: getRegistrationAmount(),
+                sessionId: sessionId,
+                status: 'payment_upload_pending', // Intermediate status
+                submittedAt: serverTimestamp()
             };
 
-            await fetch(SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: JSON.stringify(finalPayload)
-            });
+            await setDoc(regDocRef, registrationData);
 
+            let screenshotURL = "";
+
+            // 2. Upload Screenshot to Firebase Storage
+            if (formData.paymentScreenshot) {
+                setSubmissionStage('Uploading payment receipt...');
+                setSubmissionProgress(60);
+                
+                const fileExtension = formData.paymentScreenshot.name.split('.').pop();
+                const fileName = `payments/${formData.transactionId}_${Date.now()}.${fileExtension}`;
+                const storageRef = ref(storage, fileName);
+                
+                try {
+                    const uploadResult = await uploadBytes(storageRef, formData.paymentScreenshot);
+                    screenshotURL = await getDownloadURL(uploadResult.ref);
+                } catch (uploadErr) {
+                    console.error("Screenshot upload failed:", uploadErr);
+                    setSubmissionStage('Upload failed! Retrying...');
+                    // We don't crash here yet, we keep the doc in 'payment_upload_pending'
+                    throw new Error("Screenshot upload failed. Your data is saved, but please contact admin to provide proof.");
+                }
+            }
+
+            // 3. Finalize Registration Status
+            setSubmissionStage('Finalizing entry...');
+            setSubmissionProgress(90);
+
+            await updateDoc(regDocRef, {
+                screenshotURL: screenshotURL,
+                screenshotFileName: formData.paymentScreenshot ? formData.paymentScreenshot.name : '',
+                status: 'pending' // Final status for admin review
+            });
+            
+            sessionStorage.setItem('last_submission_time', Date.now().toString());
             setSubmissionProgress(100);
             setSubmissionStage('Registration Complete!');
 
             setTimeout(() => {
                 setIsSubmitting(false);
                 setIsSuccess(true);
+                window.scrollTo(0, 0);
+                // Clear the rest of the form but KEEP the firstName and genre for the success card
+                setFormData(prev => ({
+                    ...prev,
+                    email: '',
+                    cellPhone: '+91 ',
+                    whatsappNumber: '+91 ',
+                    dob: '',
+                    collegeName: '',
+                    transactionId: '',
+                    paymentScreenshot: null,
+                    agreedToRules: false
+                }));
+                // We don't reset the step to 1 here, we let the Success Overlay handle the view
             }, 800);
         } catch (error) {
-            console.error('Submission error:', error);
-            alert('There was an error submitting your registration. Please try again.');
+            console.error('Firebase Submission error:', error);
+            alert('There was an error connecting to our database. Please check your internet and try again.');
             setIsSubmitting(false);
         } finally {
             setSubmissionProgress(0);
             setSubmissionStage('');
         }
+    };
+
+    const handleSuccessClose = async () => {
+        // 1. Clear all cookies
+        const cookies = document.cookie.split(";");
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            const eqPos = cookie.indexOf("=");
+            const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+            document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+        }
+
+        // 2. Clear local auth state/session
+        try {
+            await auth.signOut();
+        } catch (err) {
+            console.error("Sign out error:", err);
+        }
+
+        setIsSuccess(false);
+        setFormData({
+            firstName: '',
+            lastName: '',
+            email: '',
+            cellPhone: '+91 ',
+            whatsappNumber: '+91 ',
+            dob: '',
+            sex: '',
+            collegeName: '',
+            teamType: category === 'Music' ? 'Solo' : (['Drama', 'Band', 'Street Play'].includes(category || '') ? 'Group' : 'Solo'),
+            genre: category || '',
+            paymentScreenshot: null,
+            transactionId: '',
+            groupSize: category === 'Dance' ? '3' : (category === 'Street Play' ? '8' : '3'),
+            paymentType: 'Full',
+            agreedToRules: false
+        });
+        setStep(1);
+        navigate('/');
     };
 
     const amount = getRegistrationAmount();
@@ -488,15 +712,40 @@ Team Type: ${formData.teamType}
                             </div>
                             <div className="form-group full-width">
                                 <label>Email Address*</label>
-                                <input 
-                                    type="email" 
-                                    name="email" 
-                                    value={formData.email} 
-                                    onChange={handleChange} 
-                                    required 
-                                    placeholder="Enter your Email Address"
-                                />
-                                {errors.email && <span className="field-error">{errors.email}</span>}
+                                <div className={`email-input-wrapper ${currentUser ? 'authenticated' : ''}`}>
+                                    <input 
+                                        type="email" 
+                                        name="email" 
+                                        value={formData.email} 
+                                        onChange={handleChange} 
+                                        required 
+                                        placeholder="Click 'G' to verify Email"
+                                        readOnly
+                                        onClick={() => !currentUser && handleGoogleSignIn()}
+                                    />
+                                    {!currentUser && (
+                                        <button 
+                                            type="button" 
+                                            className="google-auth-btn" 
+                                            onClick={handleGoogleSignIn}
+                                            disabled={isGoogleLoading}
+                                            title="Sign in with Google"
+                                        >
+                                            {isGoogleLoading ? (
+                                                <div className="mini-spinner"></div>
+                                            ) : (
+                                                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" className="google-icon" />
+                                            )}
+                                        </button>
+                                    )}
+                                </div>
+                                {errors.email && (
+                                    <div className="malpractice-error">
+                                        <span className="field-error">{errors.email}</span>
+                                        <p className="contact-hint">If this is a genuine registration, <Link to="/contact">contact management</Link>.</p>
+                                    </div>
+                                )}
+                                {currentUser && <p className="input-hint success-text">Verified via Google</p>}
                             </div>
                             <div className="form-group">
                                 <label>Cell Phone*</label>
@@ -567,7 +816,7 @@ Team Type: ${formData.teamType}
                                 {errors.teamType && <span className="field-error">{errors.teamType}</span>}
                                 {formData.teamType !== 'Solo' && (
                                     <p className="group-note">
-                                        <strong>Note:</strong> You will be required to provide full details for all your teammates ({formData.teamType === 'Duet' ? '1 partner' : 'all members'}) at the time of the audition.
+                                        <strong>Note:</strong> You will be required to provide full details for all your teammates ({formData.teamType === 'Duet' ? '1 partner' : 'all members'}) at the time of Round 1.
                                     </p>
                                 )}
                             </div>
@@ -603,10 +852,12 @@ Team Type: ${formData.teamType}
                 {step === 2 && (
                     <div className="form-step">
                         <div className="email-submission-section">
-                            <h2 className="step-title">Step 2: {['Street Play', 'Band'].includes(category || '') ? 'Audition' : 'Performance Track'} Submission</h2>
+                            <h2 className="step-title">Step 2: {['Street Play', 'Band'].includes(category || '') ? 'Round 1' : 'Performance Track'} Submission</h2>
                             <div className="email-card">
-                                <div className="email-icon">📧</div>
-                                <h3>Send your {['Street Play', 'Band'].includes(category || '') ? 'Audition' : 'Performance Track'} via Email</h3>
+                                <div className="email-icon">
+                                    <img src={assetPath('/assets/icons/send.png')} alt="Send" />
+                                </div>
+                                <h3>Send your {['Street Play', 'Band'].includes(category || '') ? 'Round 1' : 'Performance Track'} via Email</h3>
                                 
                                 <div className="email-instructions">
                                     <ul>
@@ -621,7 +872,7 @@ Team Type: ${formData.teamType}
                                     onClick={handleComposeEmail}
                                     className="compose-email-btn"
                                 >
-                                    COMPOSE {['Street Play', 'Band'].includes(category || '') ? 'AUDITION' : 'TRACK'} EMAIL
+                                    COMPOSE {['Street Play', 'Band'].includes(category || '') ? 'ROUND 1' : 'TRACK'} EMAIL
                                 </button>
                                 
                                 <p className="email-note">
@@ -641,36 +892,10 @@ Team Type: ${formData.teamType}
                         <div className="payment-section">
                             <h2 className="step-title">Final Step: Payment</h2>
                             
-                            {formData.teamType === 'Group' && (
-                                <div className="payment-mode-selector">
-                                    <p className="selector-label">Choose Payment Plan:</p>
-                                    <div className="mode-options">
-                                        <div 
-                                            className={`mode-card ${formData.paymentType === 'Full' ? 'active' : ''}`}
-                                            onClick={() => setFormData(prev => ({ ...prev, paymentType: 'Full' }))}
-                                        >
-                                            <div className="mode-radio"></div>
-                                            <div className="mode-info">
-                                                <h4>Full Payment</h4>
-                                                <p>Pay 100% of the registration fee now.</p>
-                                            </div>
-                                        </div>
-                                        <div 
-                                            className={`mode-card ${formData.paymentType === 'Advance' ? 'active' : ''}`}
-                                            onClick={() => setFormData(prev => ({ ...prev, paymentType: 'Advance' }))}
-                                        >
-                                            <div className="mode-radio"></div>
-                                            <div className="mode-info">
-                                                <h4>Advance (20%)</h4>
-                                                <p>Pay 20% now, pay the rest later. Our team will contact you.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
+
 
                             <div className="amount-card">
-                                <span>{formData.paymentType === 'Advance' ? 'Advance Amount:' : 'Total Amount:'}</span>
+                                <span>Total Amount:</span>
                                 <span className="amount-value">₹{getRegistrationAmount()}</span>
                             </div>
 
@@ -712,7 +937,12 @@ Team Type: ${formData.teamType}
                                             <span>{formData.paymentScreenshot ? `✓ ${formData.paymentScreenshot.name}` : 'Upload Screenshot / Receipt'}</span>
                                         </div>
                                     </div>
-                                    {errors.paymentScreenshot && <span className="field-error">{errors.paymentScreenshot}</span>}
+                                    {errors.paymentScreenshot && (
+                                        <div className="malpractice-error center">
+                                            <span className="field-error">{errors.paymentScreenshot}</span>
+                                            <p className="contact-hint">If this is a genuine proof, <Link to="/contact">contact management</Link>.</p>
+                                        </div>
+                                    )}
                                 </div>
 
                                 <div className="form-group full-width">
@@ -730,7 +960,12 @@ Team Type: ${formData.teamType}
                                         className="transaction-input"
                                         required
                                     />
-                                    {errors.transactionId && <span className="field-error">{errors.transactionId}</span>}
+                                    {errors.transactionId && (
+                                        <div className="malpractice-error">
+                                            <span className="field-error">{errors.transactionId}</span>
+                                            <p className="contact-hint">If this is a genuine payment, <Link to="/contact">contact management</Link>.</p>
+                                        </div>
+                                    )}
                                     <p className="input-hint">Enter the 12-digit Ref No. / Transaction ID from your payment app.</p>
 
                                     <div className="rules-agreement-checkbox">
@@ -767,39 +1002,86 @@ Team Type: ${formData.teamType}
                 )}
             </div>
 
-            {isSubmitting && (
-                <div className="submission-overlay">
-                    <div className="overlay-content">
-                        <div className="progress-value">{submissionProgress}%</div>
-                        <div className="progress-bar-container">
-                            <div 
-                                className="progress-bar-fill" 
-                                style={{ width: `${submissionProgress}%` }}
-                            ></div>
+            <AnimatePresence>
+                {isSubmitting && (
+                    <motion.div 
+                        className="submission-overlay"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                    >
+                        <div className="overlay-content">
+                            <div className="minimal-loader">
+                                <svg viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(255,255,255,0.1)" strokeWidth="5"/>
+                                    <motion.circle 
+                                        cx="50" cy="50" r="45" fill="none" stroke="#fff" strokeWidth="5" strokeLinecap="round"
+                                        initial={{ pathLength: 0 }}
+                                        animate={{ pathLength: submissionProgress / 100 }}
+                                        transition={{ duration: 0.5, ease: "easeInOut" }}
+                                    />
+                                </svg>
+                                <div className="loader-text">{submissionProgress}%</div>
+                            </div>
+                            <motion.p 
+                                key={submissionStage}
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                className="progress-stage"
+                            >
+                                {submissionStage}
+                            </motion.p>
+                            <p className="progress-disclaim">Securing your entry...</p>
                         </div>
-                        <p className="progress-stage">{submissionStage}</p>
-                        <p className="progress-disclaim">Please do not close or refresh this page.</p>
-                    </div>
-                </div>
-            )}
+                    </motion.div>
+                )}
+            </AnimatePresence>
 
-            {isSuccess && (
-                <div className="success-overlay">
-                    <div className="success-card">
-                        <div className="success-icon">🎉</div>
-                        <h2>REGISTRATION SUCCESSFUL!</h2>
-                        <p className="success-name">Thanks, {formData.firstName}!</p>
-                        <p className="success-msg">
-                            Your application for <strong>{formData.genre}</strong> has been received. 
-                            Our team will verify your payment (Transaction: {formData.transactionId}) 
-                            and you will receive an update soon.
-                        </p>
-                        <button className="home-btn" onClick={() => navigate('/')}>
-                            BACK TO HOME
-                        </button>
-                    </div>
-                </div>
-            )}
+            <AnimatePresence>
+                {isSuccess && (
+                    <motion.div 
+                        className="success-overlay"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                    >
+                        <motion.div 
+                            className="minimal-success-card"
+                            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                            animate={{ scale: 1, opacity: 1, y: 0 }}
+                            transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                        >
+                            <div className="success-badge">
+                                <svg viewBox="0 0 52 52">
+                                    <motion.circle 
+                                        cx="26" cy="26" r="25" fill="none" stroke="#00ff88" strokeWidth="2"
+                                        initial={{ pathLength: 0 }}
+                                        animate={{ pathLength: 1 }}
+                                        transition={{ duration: 0.6 }}
+                                    />
+                                    <motion.path 
+                                        fill="none" stroke="#00ff88" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" 
+                                        d="M14.1 27.2l7.1 7.2 16.7-16.8"
+                                        initial={{ pathLength: 0 }}
+                                        animate={{ pathLength: 1 }}
+                                        transition={{ duration: 0.4, delay: 0.5 }}
+                                    />
+                                </svg>
+                            </div>
+                            <h2 className="minimal-success-title">Success, {formData.firstName}!</h2>
+                            <p className="minimal-success-desc">
+                                We've received your registration for <strong>{formData.genre}</strong>. 
+                                A confirmation will be sent after payment verification.
+                            </p>
+                            <div className="success-footer">
+                                <button className="minimal-home-btn" onClick={handleSuccessClose}>
+                                    CONTINUE
+                                </button>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 };

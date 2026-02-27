@@ -9,6 +9,8 @@ import Contact from './pages/contact/Contact';
 import PrivacyPolicy from './pages/legal/PrivacyPolicy';
 import TermsOfService from './pages/legal/TermsOfService';
 import NotFound from './pages/NotFound';
+import AdminLogin from './pages/admin/AdminLogin';
+import AdminDashboard from './pages/admin/AdminDashboard';
 import Grainient from './components/background/Grainient';
 import Navbar from './components/navbar/Navbar';
 import Footer from './components/footer/Footer';
@@ -66,6 +68,8 @@ const router = createBrowserRouter([
       { path: 'contact', element: <Contact /> },
       { path: 'privacy-policy', element: <PrivacyPolicy /> },
       { path: 'terms-of-service', element: <TermsOfService /> },
+      { path: 'admin-login', element: <AdminLogin /> },
+      { path: 'admin-dashboard', element: <AdminDashboard /> },
       { path: '*', element: <NotFound /> },
     ],
   },

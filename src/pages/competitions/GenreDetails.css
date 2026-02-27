@@ -152,7 +152,6 @@
 
 .back-link:hover {
     color: #ffea00;
-    transform: translateX(-5px);
 }
 
 .register-cta {
@@ -171,7 +170,6 @@
 }
 
 .register-cta:hover {
-    transform: scale(1.05);
     background: #ffea00;
     color: #000;
 }

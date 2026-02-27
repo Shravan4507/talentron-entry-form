@@ -88,8 +88,9 @@ void mainImage(out vec4 o, vec2 C){
   float ws=max(uWarpStrength,0.001);
   float amplitude=uWarpAmplitude/ws;
   float warpTime=t*uWarpSpeed;
+  // Simplified warp for efficiency: single sine call per axis
   tuv.x+=sin(tuv.y*frequency+warpTime)/amplitude;
-  tuv.y+=sin(tuv.x*(frequency*1.5)+warpTime)/(amplitude*0.5);
+  tuv.y+=cos(tuv.x*frequency+warpTime)/amplitude;
 
   vec3 colLav=uColor1;
   vec3 colOrg=uColor2;
@@ -227,7 +228,7 @@ const Grainient: React.FC<GrainientProps> = ({
 
     let raf = 0;
     let lastTime = performance.now();
-    const fpsLimit = 60;
+    const fpsLimit = 30; // Capped at 30fps for CPU savings
     const interval = 1000 / fpsLimit;
 
     const t0 = performance.now();
@@ -278,7 +279,13 @@ const Grainient: React.FC<GrainientProps> = ({
     color3
   ]);
 
-  return <div ref={containerRef} className={`grainient-container ${className}`.trim()} />;
+  return (
+    <div 
+      ref={containerRef} 
+      className={`grainient-container ${className}`.trim()} 
+      style={{ willChange: 'transform' }} // Force GPU acceleration
+    />
+  );
 };
 
 export default Grainient;

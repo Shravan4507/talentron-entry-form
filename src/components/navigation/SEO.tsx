@@ -8,7 +8,7 @@ interface SEOProps {
     image?: string;
     type?: string;
     canonical?: string;
-    schema?: any;
+    schema?: Record<string, unknown>;
 }
 
 const SEO: React.FC<SEOProps> = ({ 

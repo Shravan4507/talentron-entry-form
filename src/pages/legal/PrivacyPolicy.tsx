@@ -37,19 +37,19 @@ const PrivacyPolicy: React.FC = () => {
                 <ul>
                     <li>Verifying eligibility (age 16-27) and academic status.</li>
                     <li>Processing payments and confirming successful registrations.</li>
-                    <li>Communicating schedules, audition slots, and rules updates.</li>
+                    <li>Communicating schedules, Round 1 slots, and rules updates.</li>
                     <li>Generating certificates of participation and excellence.</li>
                     <li>On-site check-ins and stage management.</li>
                 </ul>
 
                 <h2>3. Data Protection</h2>
-                <p>We implement security measures to protect your data. Your information is stored using Google's secure infrastructure (specifically Google Apps Script and related services) and is only accessible by the authorized Talentron '26 organizing committee.</p>
+                <p>We implement security measures to protect your data. Your information is stored using Google's secure infrastructure (specifically Google Apps Script and related services) and is only accessible by the authorized Talentron '26 Management Team.</p>
 
                 <h2>4. Sharing of Information</h2>
-                <p>We do NOT sell or trade your personal information. Data is only shared with internal committee members and trusted technical partners (like Google) who assist us in operating our platform and conducting the event, under strict confidentiality.</p>
+                <p>We do NOT sell or trade your personal information. Data is only shared with internal Management Team members and trusted technical partners (like Google) who assist us in operating our platform and conducting the event, under strict confidentiality.</p>
 
                 <h2>5. Contact Us</h2>
-                <p>For any privacy-related queries, please contact the Talentron Organizing Committee at Zeal College of Engineering and Research, Pune.</p>
+                <p>For any privacy-related queries, please contact the Talentron Management Team at Zeal College of Engineering and Research, Pune.</p>
             </div>
         </div>
     );

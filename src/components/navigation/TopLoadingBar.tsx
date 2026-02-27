@@ -30,6 +30,7 @@ const TopLoadingBar = () => {
             height: '4px',
             background: 'linear-gradient(90deg, #ff0059, #ffc800)',
             zIndex: 9999,
+            willChange: 'transform' // Force GPU acceleration
           }}
         />
       )}

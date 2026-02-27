@@ -30,28 +30,28 @@ const TermsOfService: React.FC = () => {
 
                 <h2>3. Registration & Team Management</h2>
                 <ul>
-                    <li><strong>Non-Refundable:</strong> All registration fees are strictly <strong>non-refundable</strong>, including for those eliminated in auditions or absent during slots.</li>
-                    <li><strong>No Changes:</strong> Team member changes or replacements are not allowed after registration without prior written approval from the organizing committee.</li>
+                    <li><strong>Non-Refundable:</strong> All registration fees are strictly <strong>non-refundable</strong>.</li>
+                    <li><strong>Team Changes:</strong> Team member changes are generally permitted; please notify the Management Team before the performance.</li>
                     <li><strong>Verification:</strong> Providing incorrect Transaction IDs or fake payment screenshots will lead to immediate cancellation.</li>
                 </ul>
 
-                <h2>4. Auditions & Selection</h2>
-                <p>Shortlisting involves both offline and online auditions depending on the category. Only shortlisted participants/teams are eligible for the Finals. Judges' decisions on qualifying participants are final and absolute.</p>
+                <h2>4. Round 1 & Selection</h2>
+                <p>Shortlisting involves both offline and online formats depending on the category. Only shortlisted participants/teams are eligible for the Final Round.</p>
 
                 <h2>5. Punctuality & Reporting</h2>
-                <p>Participants must report at least <strong>30 minutes</strong> before their allotted slot. Failure to report on time may result in slot shifts, point deductions, or automatic disqualification.</p>
+                <p>Participants must report at least <strong>30 minutes</strong> before their competition's Round 1. Failure to report on time may result in slot adjustments or disqualification.</p>
 
                 <h2>6. Track & Props Submission</h2>
-                <p>All performance tracks must be submitted in <strong>MP3 format via email</strong> at least 48 hours before the event. Pendrives/Physical storage will NOT be accepted. Participants are responsible for managing and immediately removing their own props and instruments.</p>
+                <p>All performance tracks should be shared with us via email or on the day of Round 1. We recommend keeping a backup of your track in a pendrive. Participants are responsible for managing and immediately removing their own props and instruments.</p>
 
                 <h2>7. Prohibited Items & Safety</h2>
-                <p>Strictly prohibited: Fire, smoke machines, crackers, real weapons, sharp objects, and hazardous liquids. Any damage to the venue or equipment will be the sole financial responsibility of the involved participants.</p>
+                <p>Strictly prohibited: Fire, smoke machines, crackers, real weapons, sharp objects, and hazardous liquids. Any damage to the venue or equipment will be the responsibility of the involved participants.</p>
 
                 <h2>8. Content & Conduct</h2>
-                <p>Vulgarity, abusive language, hate speech, political insults, or obscenity is strictly prohibited. Plagiarism or copying performances will lead to immediate disqualification. Misconduct with judges or organizers will result in eviction from the event.</p>
+                <p>We encourage creative expression while keeping content suitable for a diverse audience. Plagiarism or copying performances will lead to disqualification. Misconduct with judges or the Management Team will result in eviction from the event.</p>
 
                 <h2>9. Final Authority</h2>
-                <p>The organizing committee reserves the right to modify rules, schedules, or formats as needed. All decisions made by Talentron '26 judges and organizers are <strong>final and binding</strong>. ZCOER Pune campus rules must be strictly followed.</p>
+                <p>The Management Team reserves the right to modify rules, schedules, or formats as needed. ZCOER Pune campus rules must be strictly followed.</p>
             </div>
         </div>
     );

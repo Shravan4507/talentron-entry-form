@@ -1,0 +1,185 @@
+/* Admin Portal Styles */
+
+.admin-login-page, .admin-dashboard-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  z-index: 10;
+  position: relative;
+}
+
+.login-card {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(20px);
+  border: 4px solid #000;
+  border-radius: 2.5rem;
+  padding: 3rem;
+  width: 100%;
+  max-width: 450px;
+  box-shadow: 15px 15px 0px #ffea00;
+  text-align: center;
+}
+
+.login-form {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.login-error {
+  color: #ff0059;
+  font-weight: 800;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+}
+
+.login-btn {
+  background: #ffea00;
+  color: #000;
+  border: 3px solid #000;
+  padding: 1rem;
+  border-radius: 7rem;
+  font-weight: 900;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 5px 5px 0px #000;
+  transition: all 0.2s;
+}
+
+.login-btn:active {
+  transform: scale(0.95);
+}
+
+.home-btn {
+  background: transparent;
+  color: rgba(255,255,255,0.5);
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+/* Dashboard */
+.dashboard-container {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(20px);
+  border: 4px solid #000;
+  border-radius: 2.5rem;
+  padding: 4rem;
+  width: 100%;
+  max-width: 900px;
+  box-shadow: 20px 20px 0px #00ff88;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.logout-btn {
+  background: #ff0059;
+  color: #fff;
+  border: 3px solid #000;
+  padding: 0.8rem 1.5rem;
+  border-radius: 7rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px #000;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.admin-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-radius: 2rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.admin-card h3 {
+  color: #ffea00;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.admin-card p {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.btn-group {
+  display: flex;
+  gap: 1rem;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 1rem;
+  border-radius: 1rem;
+  border: 3px solid #000;
+  font-weight: 900;
+  font-size: 0.9rem;
+  cursor: pointer;
+  box-shadow: 4px 4px 0px #000;
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
+.action-btn:active {
+  transform: scale(0.95);
+}
+
+.action-btn.excel { background: #00ff88; color: #000; }
+.action-btn.csv { background: #00a1ff; color: #fff; }
+.action-btn.storage { background: #ff8c00; color: #fff; width: 100%; }
+
+.export-loader {
+  margin-top: 2rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255,255,255,0.1);
+  border-top: 4px solid #00ff88;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 2rem;
+  }
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+  .btn-group {
+    flex-direction: column;
+  }
+}

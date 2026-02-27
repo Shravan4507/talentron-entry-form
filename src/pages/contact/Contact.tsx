@@ -1,4 +1,3 @@
-import OutlinedTitle from '../../components/heading/OutlinedTitle';
 import SEO from '../../components/navigation/SEO';
 import { assetPath } from '../../utils/assetPath';
 import './Contact.css';
@@ -7,17 +6,21 @@ const Contact = () => {
     const organizers = [
         {
             name: "Shrvan",
-            role: "Event Coordinator",
-            phone: "+91 80104 53267",
+            team: "Technical Team",
+            role: "Head",
+            phone: "+91 94229 58592",
+            email: "shravan45x@gmail.com",
             instagram: "069.f5",
-            image: assetPath("/assets/organizers/shrvan.jpg")
+            image: assetPath("/assets/members/Shrvan.png")
         },
         {
             name: "Team Talentron",
+            team: "MANAGEMENT",
             role: "Technical Support",
             phone: "+91 80104 53267",
+            email: "admin@talentron.in",
             instagram: "talentron.zcoer",
-            image: assetPath("/assets/organizers/support.jpg")
+            image: assetPath("/assets/members/Support.png")
         }
     ];
 
@@ -30,30 +33,33 @@ const Contact = () => {
 
             <div className="contact-container">
                 <header className="contact-header">
-                    <OutlinedTitle 
-                        text="CONTACT US" 
-                        fillColor="linear-gradient(180deg, #00d1ff 0%, #0047ff 100%)" 
-                        outlineColor="#000000" 
-                        shadowColor="#ff0059"
-                    />
+                    <div className="contact-hero-logo">
+                        <img src={assetPath('/assets/logos/contact_us.png')} alt="Contact Us" />
+                    </div>
                     <p className="contact-subtitle">Have questions? Reach out to our organizing committee for assistance.</p>
                 </header>
 
                 <div className="contact-grid">
                     {organizers.map((person, index) => (
-                        <div key={index} className="contact-card">
-                            <div className="contact-image-wrapper">
-                                <img src={person.image} alt={person.name} className="contact-image" />
-                                <div className="contact-role-badge">{person.role}</div>
+                        <div key={index} className="organizer-card">
+                            <div className="organizer-image-container">
+                                <img src={person.image} alt={person.name} className="organizer-img" />
                             </div>
-                            <div className="contact-info">
-                                <h3 className="contact-name">{person.name}</h3>
-                                <div className="contact-details">
-                                    <a href={`tel:${person.phone.replace(/\s/g, '')}`} className="contact-link">
-                                        <span className="icon">📞</span> {person.phone}
+                            
+                            <div className="organizer-content">
+                                <div className="organizer-header-row">
+                                    <h3 className="organizer-name">{person.name}</h3>
+                                    <span className="organizer-handle">@{person.instagram}</span>
+                                </div>
+                                <p className="organizer-role">{person.role}</p>
+                                <p className="organizer-team">{person.team}</p>
+                                
+                                <div className="organizer-contact-info">
+                                    <a href={`tel:${person.phone.replace(/\s/g, '')}`} className="org-contact-link">
+                                        <img src={assetPath('/assets/icons/phone.png')} alt="" className="contact-icon" /> {person.phone}
                                     </a>
-                                    <a href={`https://instagram.com/${person.instagram}`} target="_blank" rel="noopener noreferrer" className="contact-link">
-                                        <span className="icon">📸</span> @{person.instagram}
+                                    <a href={`mailto:${person.email}`} className="org-contact-link">
+                                        <img src={assetPath('/assets/icons/envelope.png')} alt="" className="contact-icon" /> {person.email}
                                     </a>
                                 </div>
                             </div>

@@ -15,12 +15,10 @@ The official registration portal for **Talentron '26**, a premier inter-college 
 - **🚦 Smart Validation**: Real-time age calculation (16-35) and field validation to ensure clean data submission.
 - **📊 Form Progress Persistence**: 3-step intuitive registration flow with file upload support.
 
-## 🛠️ Tech Stack
-
 - **Frontend**: React 19 + TypeScript + Vite
-- **Styling**: Vanilla CSS (Premium Design System)
+- **Styling**: Vanilla CSS (Premium Pop-Art System)
 - **Routing**: React Router 7 (`BrowserRouter`)
-- **Backend Data**: Google Apps Script (Custom execution engine)
+- **Backend & Auth**: Firebase (Firestore, Storage, Auth)
 - **Deployment**: Vercel
 
 ## 🚀 Getting Started

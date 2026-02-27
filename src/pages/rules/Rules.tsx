@@ -21,121 +21,96 @@ const Rules = () => {
             title: 'REGISTRATION',
             points: [
                 'Registration is mandatory for all participants.',
-                'On-spot entries are not allowed unless prior permission is given by the event team.',
-                'Team member changes are not allowed after registration without prior approval of the organizers.',
-                'Replacement of members is allowed only in genuine emergencies and with prior approval.'
+                'Each participant (Solo/Group) is strictly limited to only ONE competition across all genres.',
+                'Multiple registrations using different emails to bypass this will lead to disqualification.',
+                'On-spot registration is available on the day of Round 1 at the venue.',
+                'We allow team member changes if needed; please ensure the Management Team is updated.'
             ]
         },
         {
-            id: 'auditions',
-            title: 'AUDITIONS & SELECTION',
+            id: 'round-1',
+            title: 'ROUND 1 & SELECTION',
             points: [
-                'Dance, Music and Dramatics will have offline auditions.',
-                'Street Play and Band will have online auditions.',
-                'Only shortlisted teams/participants will be allowed to perform in the final round.',
-                'Participants not selected in auditions will be eliminated from further rounds.'
+                'Band will have an online Round 1.',
+                'Dance, Music, Drama, and Street Play will have offline Round 1 at the venue.',
+                'Only shortlisted teams and participants will be invited to perform in the Final Round.'
             ]
         },
         {
             id: 'punctuality',
             title: 'REPORTING & PUNCTUALITY',
             points: [
-                'Participants/teams must report at least 30 minutes before their allotted slot.',
-                'Performance slots are strictly allocated by the organizers.',
-                'Failure to report on time may result in: Performance slot shift, Points deduction, or Disqualification in serious cases.',
-                'If a participant/team is absent during their slot, they will be marked absent and disqualified from that round.'
+                'Participants must be present 30 minutes before their respective competition\'s Round 1.',
+                'Performance slots are allocated by the Management Team.',
+                'If a participant or team is absent during their slot, they may be marked absent for that round.'
             ]
         },
         {
             id: 'time-discipline',
             title: 'TIME DISCIPLINE',
             points: [
-                'All performances must strictly follow the given time limits.',
-                'Exceeding time limits may lead to penalties or disqualification.',
-                'Warning and final bells (if applicable) will be strictly followed.'
+                'All performances are requested to follow the provided time limits.',
+                'Exceeding time limits may lead to disqualification from the round.',
+                'Warning and final signals will be used to help you manage your time.'
             ]
         },
         {
             id: 'tracks',
             title: 'TRACK SUBMISSION',
             points: [
-                'If a track is required, participants can upload it during registration.',
-                'Tracks may also be submitted on the audition day if not uploaded earlier.',
-                'If selected for finals, the final track must be submitted at least 48 hours before the performance.',
-                'Track format: MP3 only. Must be submitted via email. Pendrives will not be accepted.',
-                'Failure to submit tracks within the deadline may result in penalties or disqualification.',
-                'Participants are advised to submit tracks in advance and keep a backup.'
+                'If a track is required, participants can send it to the provided email ID.',
+                'Tracks can also be submitted directly on the day of Round 1.',
+                'If selected for the Final Round, the final track should be shared with us in advance.',
+                'Participants are advised to keep a backup of their tracks in a pendrive.'
             ]
         },
         {
             id: 'props',
             title: 'PROPS, INSTRUMENTS & COSTUMES',
             points: [
-                'All props, costumes, and instruments must be arranged and managed by participants.',
-                'Participants must remove all props immediately after their performance.',
-                'Any damage caused to the venue or equipment will be the responsibility of the participants.'
+                'All props, costumes, and instruments are to be managed by the participants.',
+                'Participants are requested to remove their props immediately after the performance.',
+                'The safety and care of the venue and equipment are shared responsibilities of all participants.'
             ]
         },
         {
             id: 'prohibited',
             title: 'PROHIBITED ITEMS',
             points: [
-                'Strictly prohibited: Fire, Smoke machines, Crackers, Real weapons, Sharp objects, and liquids that may cause damage or slipping hazards.'
+                'To ensure safety, please avoid: Fire, Smoke machines, Crackers, Real weapons, and Sharp objects.'
             ]
         },
         {
             id: 'content',
             title: 'CONTENT GUIDELINES',
             points: [
-                'Vulgarity, abusive language, hate speech, or obscene content is not allowed.',
-                'Political or religious content must not target or insult any community.',
-                'Any content promoting hatred or discrimination may lead to disqualification.',
-                'Plagiarism or copied performances may lead to disqualification.',
-                'Language used must be respectful and suitable for a college audience.'
+                'We encourage creative expression while keeping content suitable for a diverse audience.',
+                'Political or religious themes should be handled with sensitivity towards all communities.',
+                'Please ensure all performances are original and free of plagiarism.'
             ]
         },
         {
             id: 'technical',
-            title: 'TECHNICAL ISSUES & EMERGENCIES',
+            title: 'TECHNICAL ISSUES',
             points: [
-                'Restarts due to technical issues or external disturbances will be granted only at the judges’ discretion.',
-                'Participants must attend technical checks if called by the event team.',
-                'In case of any emergency, participants must immediately inform the organizers.',
-                'Judges will decide whether the performance resumes or is terminated.'
-            ]
-        },
-        {
-            id: 'conduct',
-            title: 'CONDUCT',
-            points: [
-                'Misbehavior, arguing with judges, or violation of event discipline may lead to disqualification.',
-                'Organizers have the right to stop any performance violating rules or safety norms.'
-            ]
-        },
-        {
-            id: 'judging',
-            title: 'JUDGING & RESULTS',
-            points: [
-                'Judges’ decisions are final and binding.',
-                'Arguments or disputes regarding marks will not be entertained.',
-                'In case of a tie, a tie-breaker round will be conducted. Judges’ decision will be final.'
+                'In case of technical issues, the Management Team will facilitate a resolution.',
+                'Participants are encouraged to attend any scheduled technical checks.'
             ]
         },
         {
             id: 'fees',
-            title: 'FEES, REFUNDS & CERTIFICATES',
+            title: 'FEES & CERTIFICATES',
             points: [
-                'Registration fees are strictly non-refundable.',
-                'Participants eliminated in auditions are not eligible for refunds.',
-                'Certificates of participation will be provided to all registered participants who appear for auditions or performances.'
+                'Registration fees are non-refundable.',
+                'Certificates of participation will be provided to all registered participants who appear for their rounds.'
             ]
         },
         {
-            id: 'organizer-rights',
-            title: 'ORGANIZER RIGHTS',
+            id: 'management-rights',
+            title: 'MANAGEMENT RIGHTS',
             points: [
-                'The organizers reserve the right to modify rules, schedules, or formats in case of unavoidable situations.',
-                'Any updates will be communicated to participants.'
+                'The Management Team reserves the right to adjust rules, schedules, or formats if necessary.',
+                'Any such updates will be communicated promptly to the participants.'
             ]
         }
     ];

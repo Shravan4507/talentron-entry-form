@@ -16,105 +16,139 @@
     margin-bottom: 5rem;
 }
 
+.contact-hero-logo {
+    width: 100%;
+    max-width: 550px;
+    margin: 0 auto 2rem;
+}
+
+.contact-hero-logo img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(15px 15px 0px rgba(0, 0, 0, 0.4));
+}
+
 .contact-subtitle {
-    font-size: 1.2rem;
+    font-size: 1.25rem;
     color: rgba(255, 255, 255, 0.9);
-    margin-top: 1.5rem;
-    max-width: 600px;
+    margin-top: 1rem;
+    max-width: 550px;
     margin-inline: auto;
+    font-weight: 500;
 }
 
 .contact-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
     gap: 3rem;
     margin-bottom: 5rem;
 }
 
-.contact-card {
+.organizer-card {
     background: rgba(0, 0, 0, 0.65);
-    border: 3px solid #000;
-    border-radius: 2rem;
-    padding: 2.5rem;
-    text-align: center;
-    backdrop-filter: blur(15px);
-    box-shadow: 12px 12px 0px #000;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.contact-card:hover {
-    transform: translate(-5px, -5px);
-    box-shadow: 18px 18px 0px #00d1ff;
-}
-
-.contact-image-wrapper {
+    border: none; /* Dark purple border */
+    border-radius: 3rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
     position: relative;
-    width: 180px;
-    height: 180px;
-    margin: 0 auto 2rem;
+    overflow: hidden;
 }
 
-.contact-image {
+.organizer-image-container {
+    width: 100%;
+    aspect-ratio: 1 / 1.1; /* Slightly vertical like the reference */
+    border-radius: 1.8rem;
+    overflow: hidden;
+    background: #000;
+}
+
+.organizer-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 50%;
-    border: 4px solid #fff;
-    box-shadow: 0 0 20px rgba(0, 209, 255, 0.3);
+    transition: transform 0.5s ease;
 }
 
-.contact-role-badge {
-    position: absolute;
-    bottom: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #00d1ff;
-    color: #000;
-    padding: 0.4rem 1.2rem;
-    border-radius: 2rem;
-    font-size: 0.85rem;
-    font-weight: 900;
-    border: 2px solid #000;
-    white-space: nowrap;
-}
-
-.contact-name {
-    font-size: 2rem;
-    font-weight: 900;
-    margin-bottom: 1.5rem;
-    color: #fff;
-}
-
-.contact-details {
+.organizer-content {
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    padding: 0 0.5rem 0.5rem;
 }
 
-.contact-link {
+.organizer-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.2rem;
+}
+
+.organizer-name {
+    font-size: 1.8rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0px;
+}
+
+.organizer-handle {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 600;
+}
+
+.organizer-role {
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 500;
+    margin-bottom: 0.8rem;
+}
+
+.organizer-team {
+    font-size: 0.95rem;
+    font-weight: 900;
+    color: #c9ff00; /* Neon yellow/lime like reference */
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
+}
+
+.organizer-contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.org-contact-link {
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 0.8rem;
-    color: #fff;
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
-    font-size: 1.2rem;
+    font-size: 0.95rem;
     font-weight: 600;
-    padding: 0.8rem;
-    border-radius: 1rem;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: all 0.3s ease;
+    padding: 0.6rem 1rem;
+    background: rgba(255, 255, 255, 0);
+    border-radius: 7rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
 }
 
-.contact-link:hover {
-    background: #fff;
-    color: #000;
-    transform: scale(1.05);
+.org-contact-link:hover {
+    color: #00d1ff;
+    border-color: rgba(0, 209, 255, 0.3);
 }
 
-.contact-link .icon {
-    font-size: 1.4rem;
+.org-contact-link .icon,
+.contact-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.8;
 }
 
 .contact-location-section {

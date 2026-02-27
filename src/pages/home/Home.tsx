@@ -43,7 +43,7 @@ const Home = () => {
                 <div className="hero-content">
                     <div className="hero-main-container">
                         <img 
-                            src={assetPath('/assets/logos/hero_section.png')} 
+                            src={assetPath('/assets/logos/hero_section_3.png')} 
                             alt="Talentron '26 - Are You Ready? Join the biggest student-led competition in Pune." 
                             className="hero-main-image" 
                         />

@@ -113,6 +113,70 @@
   box-shadow: 6px 6px 0px #000;
 }
 
+.email-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.google-auth-btn {
+  position: absolute;
+  right: 0.6rem;
+  background: #fff;
+  border: 2px solid #000;
+  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+  padding: 0;
+  overflow: hidden;
+  z-index: 5;
+}
+
+.google-auth-btn:active {
+  transform: scale(0.92);
+}
+
+.google-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.email-input-wrapper input {
+  padding-right: 4.5rem !important;
+  cursor: pointer;
+}
+
+.email-input-wrapper.authenticated input {
+  background: rgba(0, 255, 136, 0.1) !important;
+  border-color: #00ff88 !important;
+  color: #00ff88;
+  cursor: default;
+}
+
+.success-text {
+  color: #00ff88 !important;
+  font-weight: 700;
+}
+
+.mini-spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(0,0,0,0.1);
+  border-top: 3px solid #000;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
 .group-note {
   margin-top: 0.5rem;
   margin-bottom: 0;
@@ -417,153 +481,261 @@
   display: block;
 }
 
+.malpractice-error {
+  margin-top: 0.8rem;
+  padding: 1.2rem;
+  background: rgba(255, 0, 89, 0.08);
+  border: 1px solid rgba(255, 0, 89, 0.2);
+  border-radius: 1rem;
+  animation: shake 0.4s ease-in-out;
+}
+
+.malpractice-error.center {
+  text-align: center;
+}
+
+.malpractice-error .field-error {
+  margin-left: 0;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.contact-hint {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6) !important;
+  font-weight: 500;
+  margin: 0 !important;
+}
+
+.contact-hint a {
+  color: #00ff88;
+  text-decoration: underline;
+  font-weight: 700;
+}
+
+/* Consolidated Mobile Styles */
 @media (max-width: 768px) {
+  .registration-page {
+    padding: 80px 10px 40px;
+  }
+
   .registration-container {
-    padding: 2rem;
+    padding: 2rem 1.2rem;
+    width: calc(100% - 12px); /* Subtract shadow width */
+    margin: 0 auto;
+    box-shadow: 10px 10px 0px rgb(13, 254, 0);
+    border-radius: 2rem;
+    border-width: 3px;
   }
   
   .form-grid {
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1.2rem;
   }
   
   .form-group.full-width {
     grid-column: span 1;
   }
 
+  .form-group input {
+    padding: 1rem 1.2rem;
+    font-size: 1.05rem;
+    width: 100%;
+  }
+
+  .email-input-wrapper {
+    width: 100%;
+  }
+
+  .email-input-wrapper input {
+    padding-right: 3.2rem !important;
+  }
+
+  .google-auth-btn {
+    right: 0.5rem;
+    width: 34px;
+    height: 34px;
+  }
+
+  .google-icon {
+    width: 18px;
+    height: 18px;
+  }
+
   .payment-methods {
     flex-direction: column;
-    gap: 2rem;
+    gap: 1.5rem;
   }
 
   .step-title {
     font-size: 1.8rem;
+    margin-bottom: 0.2rem;
   }
 
   .amount-card {
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 1.5rem;
+    padding: 1.2rem;
+    font-size: 1.2rem;
   }
 
   .amount-value {
-    font-size: 2.2rem;
+    font-size: 2.4rem;
+  }
+
+  .transaction-input {
+    letter-spacing: 2px;
+    font-size: 1.2rem !important;
+  }
+
+  .submit-btn {
+    padding: 1.2rem;
+    font-size: 1.2rem;
+    border-width: 3px;
+  }
+
+  .mode-options {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .email-card {
+    padding: 2rem 1.2rem;
+  }
+
+  .email-card h3 {
+    font-size: 1.5rem;
+  }
+
+  .rules-agreement-checkbox {
+    padding: 1rem 0;
+    margin: 1rem 0;
+  }
+  
+  .checkbox-text {
+    font-size: 0.85rem;
+  }
+
+  .form-group input::placeholder {
+    font-size: 0.95rem;
   }
 }
 
 /* Submission Progress Overlay */
 .submission-overlay, .success-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.9);
-  backdrop-filter: blur(15px);
-  z-index: 9999;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(50px);
+  z-index: 999999;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
 }
 
-.overlay-content, .success-card {
+/* Minimal Premium Overlays */
+.minimal-loader {
+  width: 150px;
+  height: 150px;
+  position: relative;
+  margin: 0 auto;
+}
+
+.minimal-loader svg {
+  transform: rotate(-90deg);
+}
+
+.loader-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.8rem;
+  font-weight: 900;
+  color: #fff;
+}
+
+.submission-overlay {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(40px);
+}
+
+.minimal-success-card {
+  background: #111;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 4.5rem 2.5rem;
+  border-radius: 2.5rem;
+  width: 100%;
+  max-width: 440px;
   text-align: center;
-  width: 100%;
-  max-width: 500px;
-  animation: cardEntrance 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+  color: #fff;
 }
 
-.success-card {
-  background: #00ff88;
-  border: 6px solid #000;
-  border-radius: 3rem;
-  padding: 4rem 2rem;
-  box-shadow: 15px 15px 0px #000;
-  color: #000;
+.success-badge {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 2.5rem;
+  animation: badgeIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
-.success-icon {
-  font-size: 6rem;
-  margin-bottom: 2rem;
+@keyframes badgeIn {
+  from { transform: scale(0) rotate(-20deg); opacity: 0; }
+  to { transform: scale(1) rotate(0); opacity: 1; }
 }
 
-.success-card h2 {
-  font-size: 2.2rem;
+.minimal-success-title {
+  font-size: 2.6rem;
   font-weight: 900;
-  margin-bottom: 1rem;
-  -webkit-text-stroke: 1.5px #000;
+  color: #fff;
+  margin-bottom: 1.2rem;
+  letter-spacing: -1px;
 }
 
-.success-name {
-  font-size: 1.5rem;
-  font-weight: 800;
-  margin-bottom: 2rem;
-}
-
-.success-msg {
-  font-size: 1.1rem;
+.minimal-success-desc {
+  font-size: 1.05rem;
   line-height: 1.6;
-  margin-bottom: 3rem;
-  font-weight: 600;
-  color: rgba(0, 0, 0, 0.8);
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 3.5rem;
+  font-weight: 400;
+  padding: 0 10px;
 }
 
-.home-btn {
-  background: #000;
+.minimal-success-desc strong {
   color: #00ff88;
+}
+
+.minimal-home-btn {
+  background: #00ff88;
+  color: #000;
   border: none;
-  padding: 1.2rem 3rem;
-  border-radius: 5rem;
-  font-weight: 900;
-  font-size: 1.2rem;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.home-btn:hover {
-  transform: scale(1.05);
-  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-@keyframes cardEntrance {
-  from { transform: scale(0.8) translateY(40px); opacity: 0; }
-  to { transform: scale(1) translateY(0); opacity: 1; }
-}
-
-.progress-value {
-  font-size: 6rem;
-  font-weight: 900;
-  color: #ffea00;
-  -webkit-text-stroke: 3px #000;
-  text-shadow: 10px 10px 0px #ff0059;
-  margin-bottom: 2rem;
-  font-family: inherit;
-}
-
-.progress-bar-container {
+  padding: 1.3rem 0;
   width: 100%;
-  height: 25px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 4px solid #000;
-  border-radius: 20px;
-  overflow: hidden;
-  box-shadow: 6px 6px 0px #000;
+  border-radius: 1.2rem;
+  font-size: 1rem;
+  font-weight: 900;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
-.progress-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #ff0059, #ffea00);
-  transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+.minimal-home-btn:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.1);
+  box-shadow: 0 15px 30px rgba(0, 255, 136, 0.2);
+}
+
+.minimal-home-btn:active {
+  transform: translateY(-1px);
 }
 
 .progress-stage {
-  margin-top: 2rem;
-  font-size: 1.4rem;
-  font-weight: 800;
-  color: #fff;
-  text-transform: uppercase;
-  letter-spacing: 2px;
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-weight: 700 !important;
+  text-shadow: none !important;
 }
 
 .progress-disclaim {
@@ -659,11 +831,6 @@
   font-weight: 600;
 }
 
-@media (max-width: 600px) {
-  .mode-options {
-    grid-template-columns: 1fr;
-  }
-}
 
 /* Email Submission Styles */
 .email-submission-section {
@@ -682,8 +849,16 @@
 }
 
 .email-icon {
-  font-size: 4rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.email-icon img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
 }
 
 .email-card h3 {
@@ -766,15 +941,6 @@
   margin: 0 auto;
 }
 
-@media (max-width: 600px) {
-  .email-card {
-    padding: 2rem 1.5rem;
-  }
-  
-  .email-card h3 {
-    font-size: 1.5rem;
-  }
-}
 
 /* Rules Agreement Checkbox Styles */
 .rules-agreement-checkbox {
@@ -830,13 +996,3 @@
   text-decoration-color: #fff;
 }
 
-@media (max-width: 600px) {
-  .rules-agreement-checkbox {
-    padding: 1rem;
-    margin: 1rem 0;
-  }
-  
-  .checkbox-text {
-    font-size: 0.85rem;
-  }
-}

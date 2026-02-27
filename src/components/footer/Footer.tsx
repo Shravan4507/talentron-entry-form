@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom';
 import { assetPath } from '../../utils/assetPath';
-import RuleBookButton from '../navigation/RuleBookButton';
 import './Footer.css';
 
 const Footer = () => {
@@ -13,10 +12,7 @@ const Footer = () => {
               <img src={assetPath('/assets/logos/Logo-Star.png')} alt="Talentron Logo" className="footer-star-logo" />
               <img src={assetPath('/assets/logos/Logo_Talentron_1.png')} alt="Talentron Brand" className="footer-text-logo" />
             </div>
-            <p>Empowering the next generation of digital talent through innovation and technology.</p>
-            <div style={{ marginTop: '1.5rem' }}>
-              <RuleBookButton className="footer-btn" />
-            </div>
+            <p>Celebrate the spirit of art and creativity at Talentron '2K26 – Pune's premier student-led cultural extravaganza.</p>
           </div>
           <div className="footer-links-column">
             <h4>Quick Links</h4>
@@ -27,18 +23,34 @@ const Footer = () => {
               <Link to="/contact">Contact Us</Link>
             </div>
           </div>
+          <div className="footer-links-column">
+            <h4>Follow Us</h4>
+            <div className="footer-social-links">
+              <a 
+                href="https://www.instagram.com/zeal_talentron/" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="footer-social-link"
+                title="Follow us on Instagram"
+              >
+                <img src={assetPath('/assets/icons/instagram.png')} alt="Instagram" />
+              </a>
+            </div>
+          </div>
           <div className="footer-location">
             <h4>Location</h4>
-            <p>
-              <a 
-                href="https://maps.app.goo.gl/RXpzvbPwm4s2CqDW6" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="location-link"
-              >
-                Zeal College of Engineering and Research, Narhe, Pune, Maharashtra 411041
-              </a>
-            </p>
+            <a 
+              href="https://maps.app.goo.gl/RXpzvbPwm4s2CqDW6" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="location-link"
+            >
+              <img src={assetPath('/assets/icons/location.png')} alt="Location" className="footer-location-icon" />
+              <span>
+                Zeal College of Engineering and Research,<br />
+                Narhe, Pune, Maharashtra 411041
+              </span>
+            </a>
           </div>
         </div>
 

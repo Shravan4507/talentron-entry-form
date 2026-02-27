@@ -13,6 +13,7 @@
   flex-direction: column;
   border: 4px solid #000;
   width: 100%;
+  will-change: transform, box-shadow; /* Force GPU acceleration */
 }
 
 .pop-art-card:hover {
