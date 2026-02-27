@@ -1,21 +1,21 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
 import { assetPath } from '../../utils/assetPath';
 import './RuleBookButton.css';
 
 const RuleBookButton: React.FC<{ className?: string }> = ({ className }) => {
-    const [showTooltip, setShowTooltip] = useState(false);
-
-    const handleClick = (e: React.MouseEvent) => {
-        e.preventDefault();
-        setShowTooltip(true);
-        setTimeout(() => setShowTooltip(false), 2000);
+    const handleDownload = () => {
+        const link = document.createElement('a');
+        link.href = '/Rulebook.pdf';
+        link.download = 'Talentron_Rulebook_2026.pdf';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
     };
 
     return (
         <div className={`rule-book-wrapper ${className || ''}`}>
             <button 
-                onClick={handleClick}
+                onClick={handleDownload}
                 className="rule-book-btn"
                 type="button"
             >
@@ -24,19 +24,6 @@ const RuleBookButton: React.FC<{ className?: string }> = ({ className }) => {
                 </span>
                 DOWNLOAD RULE BOOK
             </button>
-            
-            <AnimatePresence>
-                {showTooltip && (
-                    <motion.div 
-                        className="coming-soon-tooltip"
-                        initial={{ opacity: 0, y: 10, scale: 0.9 }}
-                        animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 5, scale: 0.9 }}
-                    >
-                        Rule Book Coming Soon...
-                    </motion.div>
-                )}
-            </AnimatePresence>
         </div>
     );
 };

@@ -100,8 +100,7 @@ export const competitionsData: Competition[] = [
       "Competition-Specific Rules",
       "Round 1 duration: Max 3 minutes.",
       "Final Round duration: Max 5 minutes.",
-      "Group size: mini 3 to max 10 participants.",
-      "Judging criteria: Coordination, formations, energy, and overall impact."
+      "Group size: mini 3 to max 10 participants."
     ],
     prize: "Certificates, Trophies and Cash Prizes"
   },
