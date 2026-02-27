@@ -12,7 +12,7 @@ const Rules = () => {
             id: 'eligibility',
             title: 'ELIGIBILITY',
             points: [
-                'The competition is open to participants aged 16 to 27 years.',
+                'The competition is open to participants aged 16 to 30 years.',
                 'Participants must carry a valid college ID or government ID for verification.'
             ]
         },
@@ -40,8 +40,8 @@ const Rules = () => {
             id: 'punctuality',
             title: 'REPORTING & PUNCTUALITY',
             points: [
-                'Participants must be present 30 minutes before their respective competition\'s Round 1.',
-                'Performance slots are allocated by the Management Team.',
+                'Participants must be present 30 minutes before respective event.',
+                'Performance slots are allocated by the Management Team on First Come First Serve basis.',
                 'If a participant or team is absent during their slot, they may be marked absent for that round.'
             ]
         },
@@ -58,10 +58,8 @@ const Rules = () => {
             id: 'tracks',
             title: 'TRACK SUBMISSION',
             points: [
-                'If a track is required, participants can send it to the provided email ID.',
-                'Tracks can also be submitted directly on the day of Round 1.',
-                'If selected for the Final Round, the final track should be shared with us in advance.',
-                'Participants are advised to keep a backup of their tracks in a pendrive.'
+                "Performance tracks should be shared via email.",
+                "We recommend keeping a backup of your track in your device or in a pendrive.",
             ]
         },
         {
@@ -69,6 +67,7 @@ const Rules = () => {
             title: 'PROPS, INSTRUMENTS & COSTUMES',
             points: [
                 'All props, costumes, and instruments are to be managed by the participants.',
+                'Please inform the Management Team about specific requirements in advance. (if any)',
                 'Participants are requested to remove their props immediately after the performance.',
                 'The safety and care of the venue and equipment are shared responsibilities of all participants.'
             ]
@@ -86,7 +85,6 @@ const Rules = () => {
             points: [
                 'We encourage creative expression while keeping content suitable for a diverse audience.',
                 'Political or religious themes should be handled with sensitivity towards all communities.',
-                'Please ensure all performances are original and free of plagiarism.'
             ]
         },
         {
@@ -106,10 +104,18 @@ const Rules = () => {
             ]
         },
         {
+            id: 'judging-behavior',
+            title: 'JUDGING & BEHAVIOR',
+            points: [
+                "JUDGING: The judges' decision is final. No arguments or appeals will be entertained regarding the results.",
+                "BEHAVIOR: Any misconduct with volunteers, staff, or fellow participants will lead to the expulsion of the entire team/individual."
+            ]
+        },
+        {
             id: 'management-rights',
             title: 'MANAGEMENT RIGHTS',
             points: [
-                'The Management Team reserves the right to adjust rules, schedules, or formats if necessary.',
+                'The Management Team reserves the right to adjust rules, schedules, or formats if necessary in severe cases.',
                 'Any such updates will be communicated promptly to the participants.'
             ]
         }

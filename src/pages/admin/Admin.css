@@ -1,24 +1,32 @@
-/* Admin Portal Styles */
+/* Minimal Admin Dashboard Styles */
+:root {
+  --admin-bg: #0a0a0a;
+  --card-bg: #141414;
+  --border-color: #222;
+  --text-main: #eee;
+  --text-dim: #888;
+  --accent-blue: #0070f3;
+  --accent-green: #00703c;
+  --accent-yellow: #f5a623;
+  --accent-red: #e00;
+}
 
-.admin-login-page, .admin-dashboard-page {
+.admin-login-page {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: var(--admin-bg);
   padding: 2rem;
-  z-index: 10;
-  position: relative;
 }
 
 .login-card {
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(20px);
-  border: 4px solid #000;
-  border-radius: 2.5rem;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
   padding: 3rem;
+  border-radius: 12px;
   width: 100%;
-  max-width: 450px;
-  box-shadow: 15px 15px 0px #ffea00;
+  max-width: 400px;
   text-align: center;
 }
 
@@ -27,159 +35,262 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  text-align: left;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.login-form input {
+  background: #000;
+  border: 1px solid var(--border-color);
+  color: #fff;
+  padding: 0.8rem 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.login-form input:focus {
+  outline: none;
+  border-color: var(--accent-blue);
 }
 
 .login-error {
-  color: #ff0059;
-  font-weight: 800;
-  font-size: 0.9rem;
-  text-transform: uppercase;
+  color: var(--accent-red);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-align: center;
 }
 
 .login-btn {
-  background: #ffea00;
-  color: #000;
-  border: 3px solid #000;
+  background: var(--accent-blue);
+  color: #fff;
+  border: none;
   padding: 1rem;
-  border-radius: 7rem;
-  font-weight: 900;
-  font-size: 1.1rem;
+  border-radius: 6px;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 5px 5px 0px #000;
-  transition: all 0.2s;
+  font-size: 1rem;
+  transition: opacity 0.2s;
 }
 
-.login-btn:active {
-  transform: scale(0.95);
+.login-btn:hover {
+  opacity: 0.9;
 }
 
 .home-btn {
   background: transparent;
-  color: rgba(255,255,255,0.5);
+  color: var(--text-dim);
   border: none;
-  font-weight: 700;
-  cursor: pointer;
-  text-transform: uppercase;
   font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
 }
 
-/* Dashboard */
-.dashboard-container {
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(20px);
-  border: 4px solid #000;
-  border-radius: 2.5rem;
-  padding: 4rem;
-  width: 100%;
-  max-width: 900px;
-  box-shadow: 20px 20px 0px #00ff88;
+.home-btn:hover {
+  color: #fff;
 }
 
-.dashboard-header {
+.admin-dashboard-page {
+  min-height: 100vh;
+  background: var(--admin-bg);
+  color: var(--text-main);
+  padding: 4rem; /* Increased padding for the whole page */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.admin-container {
+  max-width: 1200px;
+  margin: 4rem auto 0; /* Significant top margin */
+}
+
+/* Header */
+.admin-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 3rem;
-  flex-wrap: wrap;
-  gap: 1.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.logout-btn {
-  background: #ff0059;
+.admin-header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.admin-logout {
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-dim);
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.admin-logout:hover {
+  background: #222;
   color: #fff;
-  border: 3px solid #000;
-  padding: 0.8rem 1.5rem;
-  border-radius: 7rem;
-  font-weight: 800;
-  cursor: pointer;
-  box-shadow: 4px 4px 0px #000;
 }
 
-.stats-grid {
+/* Stats Summary */
+.admin-stats-summary {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
 }
 
-.admin-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 3px solid rgba(255, 255, 255, 0.1);
-  border-radius: 2rem;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.stat-box {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  padding: 1.5rem;
+  border-radius: 8px;
 }
 
-.admin-card h3 {
-  color: #ffea00;
-  font-weight: 900;
+.stat-label {
+  font-size: 0.8rem;
+  color: var(--text-dim);
   text-transform: uppercase;
-  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
 }
 
-.admin-card p {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.9rem;
-  line-height: 1.4;
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
 }
 
-.btn-group {
+/* Controls */
+.admin-controls {
   display: flex;
   gap: 1rem;
-}
-
-.action-btn {
-  flex: 1;
-  padding: 1rem;
-  border-radius: 1rem;
-  border: 3px solid #000;
-  font-weight: 900;
-  font-size: 0.9rem;
-  cursor: pointer;
-  box-shadow: 4px 4px 0px #000;
-  transition: all 0.2s;
-  text-transform: uppercase;
-}
-
-.action-btn:active {
-  transform: scale(0.95);
-}
-
-.action-btn.excel { background: #00ff88; color: #000; }
-.action-btn.csv { background: #00a1ff; color: #fff; }
-.action-btn.storage { background: #ff8c00; color: #fff; width: 100%; }
-
-.export-loader {
-  margin-top: 2rem;
-  text-align: center;
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 1.5rem;
   align-items: center;
-  gap: 1rem;
 }
 
-.spinner {
-  width: 40px;
-  height: 40px;
-  border: 4px solid rgba(255,255,255,0.1);
-  border-top: 4px solid #00ff88;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+.admin-search {
+  flex: 1;
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  color: white;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+.admin-tabs {
+  display: flex;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.admin-tabs button {
+  background: var(--card-bg);
+  border: none;
+  border-right: 1px solid var(--border-color);
+  color: var(--text-dim);
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+}
+
+.admin-tabs button:last-child {
+  border-right: none;
+}
+
+.admin-tabs button.active {
+  background: #222;
+  color: #fff;
+}
+
+.export-btn {
+  background: var(--accent-blue);
+  color: white;
+  border: none;
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* Table Area */
+.admin-table-wrapper {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.minimal-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.minimal-table th {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+}
+
+.minimal-table td {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.9rem;
+}
+
+.status-pill {
+  font-size: 0.7rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.status-pill.pending { background: #3c3c00; color: #ffea00; }
+.status-pill.approved { background: #003c20; color: #00ff88; }
+
+.row-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.action-link {
+  color: var(--accent-blue);
+  text-decoration: none;
+  font-size: 0.85rem;
+}
+
+.action-confirm {
+  background: #222;
+  border: 1px solid #444;
+  color: #eee;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.action-confirm:hover {
+  background: var(--accent-green);
+  border-color: var(--accent-green);
+  color: white;
 }
 
 @media (max-width: 768px) {
-  .dashboard-container {
-    padding: 2rem;
-  }
-  .stats-grid {
-    grid-template-columns: 1fr;
-  }
-  .btn-group {
-    flex-direction: column;
-  }
+  .admin-stats-summary { grid-template-columns: 1fr 1fr; }
+  .admin-controls { flex-direction: column; align-items: stretch; }
 }

@@ -20,7 +20,7 @@ const RuleBookButton: React.FC<{ className?: string }> = ({ className }) => {
                 type="button"
             >
                 <span className="btn-icon">
-                    <img src={assetPath('/assets/icons/send.png')} alt="icon" />
+                    <img src={assetPath('/assets/icons/downloads.png')} alt="icon" />
                 </span>
                 DOWNLOAD RULE BOOK
             </button>

@@ -35,7 +35,7 @@ const PrivacyPolicy: React.FC = () => {
                 <h2>2. How We Use Your Information</h2>
                 <p>Your data is processed solely for the organization of Talentron '26:</p>
                 <ul>
-                    <li>Verifying eligibility (age 16-27) and academic status.</li>
+                    <li>Verifying eligibility (age 16-30) and academic status.</li>
                     <li>Processing payments and confirming successful registrations.</li>
                     <li>Communicating schedules, Round 1 slots, and rules updates.</li>
                     <li>Generating certificates of participation and excellence.</li>

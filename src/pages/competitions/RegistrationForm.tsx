@@ -8,10 +8,11 @@ import SearchableDropdown from '../../components/searchable-dropdown/SearchableD
 import DatePicker from '../../components/date-picker/DatePicker';
 import collegesData from '../../data/colleges.json';
 import { db, storage, auth, googleProvider } from '../../lib/firebase';
-import { collection, doc, setDoc, getDoc, updateDoc, serverTimestamp, query, where, getDocs, limit } from 'firebase/firestore';
+import { collection, doc, setDoc, getDoc, updateDoc, serverTimestamp, query, where, getDocs, limit, addDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { signInWithPopup, onAuthStateChanged } from 'firebase/auth';
 import type { User } from 'firebase/auth';
+import { getWelcomeEmailHtml } from '../../templates/welcomeEmail';
 import './RegistrationForm.css';
 
 interface FormData {
@@ -271,7 +272,7 @@ const RegistrationForm: React.FC = () => {
     };
 
     const handleComposeEmail = () => {
-        const recipient = "shravan45x@gmail.com";
+        const recipient = "support@talentron.in";
         const subject = `Round 1 Video - ${formData.firstName} ${formData.lastName} - ${category}`;
         const body = `Hi Talentron Team,
  
@@ -362,8 +363,8 @@ Team Type: ${formData.teamType}
             // DOB and Age
             if (!formData.dob || formData.dob.length < 10) {
                 newErrors.dob = "Please enter a valid Date of Birth.";
-            } else if (age !== null && (age < 16 || age > 27)) {
-                newErrors.dob = "Participant age must be between 16 and 27.";
+            } else if (age !== null && (age < 16 || age > 30)) {
+                newErrors.dob = "Participant age must be between 16 and 30.";
             }
 
             // Sex
@@ -479,6 +480,24 @@ Team Type: ${formData.teamType}
                 return;
             }
 
+            // 0a. Duplicate Check (One email per Genre)
+            setSubmissionStage('Verifying previous entries...');
+            const qDup = query(
+                collection(db, "registrations"), 
+                where("email", "==", formData.email),
+                where("genre", "==", formData.genre),
+                limit(1)
+            );
+            const dupSnap = await getDocs(qDup);
+            if (!dupSnap.empty) {
+                const existing = dupSnap.docs[0].data();
+                if (existing.status !== 'rejected') { 
+                    setIsSubmitting(false);
+                    alert(`You are already registered for ${formData.genre}! Please check your email for the confirmation.`);
+                    return;
+                }
+            }
+
             // 0b. ATOMIC LOCK for Transaction ID (Race Condition Fix)
             setSubmissionStage('Securing transaction lock...');
             const lockRef = doc(db, "transaction_locks", formData.transactionId);
@@ -564,6 +583,28 @@ Team Type: ${formData.teamType}
                 screenshotFileName: formData.paymentScreenshot ? formData.paymentScreenshot.name : '',
                 status: 'pending' // Final status for admin review
             });
+
+            // 4. Trigger Confirmation Email via Extension (Local HTML approach)
+            try {
+                const emailHtml = getWelcomeEmailHtml(
+                    formData.firstName,
+                    formData.genre,
+                    formData.teamType,
+                    formData.transactionId,
+                    amount
+                );
+
+                await addDoc(collection(db, "mail"), {
+                    to: formData.email,
+                    message: {
+                        subject: `Registration Received - ${formData.firstName} | Talentron '26`,
+                        html: emailHtml
+                    }
+                });
+            } catch (mailErr) {
+                console.error("Mail trigger failed:", mailErr);
+                // We don't block the UI for email failures, registration is still valid
+            }
             
             sessionStorage.setItem('last_submission_time', Date.now().toString());
             setSubmissionProgress(100);
@@ -844,9 +885,8 @@ Team Type: ${formData.teamType}
                                 
                                 <div className="email-instructions">
                                     <ul>
-                                        <li><strong>Deadline:</strong> Send by <strong>14th March</strong></li>
                                         <li><strong>Format:</strong> Drive Link or Attachment</li>
-                                        <li><strong>Email:</strong> shravan45x@gmail.com</li>
+                                        <li><strong>Email:</strong> support@talentron.in</li>
                                     </ul>
                                 </div>
 

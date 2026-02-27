@@ -18,7 +18,7 @@ const Contact = () => {
             team: "MANAGEMENT",
             role: "Technical Support",
             phone: "+91 80104 53267",
-            email: "admin@talentron.in",
+            email: "support@talentron.in",
             instagram: "talentron.zcoer",
             image: assetPath("/assets/members/Support.png")
         }

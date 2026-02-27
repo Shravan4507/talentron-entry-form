@@ -40,11 +40,11 @@
     background: #000;
     color: #00ff88;
     padding: 0.8rem 1.5rem;
-    border-radius: 12px;
+    border-radius: 3rem;
     font-weight: 900;
     font-size: 0.95rem;
     white-space: nowrap;
-    border: 2px solid #00ff88;
+    border: 1px solid #00ff88;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
     z-index: 100;
     pointer-events: none;
@@ -65,7 +65,7 @@
     width: 20px;
     height: 20px;
     object-fit: contain;
-    filter: brightness(0) invert(1);
+    filter: brightness(1) invert(0);
     opacity: 0.9;
 }
 
