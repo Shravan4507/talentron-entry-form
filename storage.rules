@@ -1,0 +1,16 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /payments/{allPaths=**} {
+      // Allow upload (Write) only for small images (1MB)
+      allow write: if (request.resource.size < 1024 * 1024)
+                   && request.resource.contentType.matches('image/.*');
+      
+      // Allow the app to get the file link (Get) after upload
+      allow get: if true; 
+
+      // ONLY Admin (You) can see the whole list of files
+      allow list: if request.auth != null && request.auth.uid == 'hrAEy4UJ8zWKqUXWSqpy4oh3ufk1';
+    }
+  }
+}

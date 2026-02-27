@@ -8,7 +8,7 @@ import SearchableDropdown from '../../components/searchable-dropdown/SearchableD
 import DatePicker from '../../components/date-picker/DatePicker';
 import collegesData from '../../data/colleges.json';
 import { db, storage, auth, googleProvider } from '../../lib/firebase';
-import { collection, doc, setDoc, getDoc, updateDoc, serverTimestamp, query, where, getDocs } from 'firebase/firestore';
+import { collection, doc, setDoc, getDoc, updateDoc, serverTimestamp, query, where, getDocs, limit } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { signInWithPopup, onAuthStateChanged } from 'firebase/auth';
 import type { User } from 'firebase/auth';
@@ -139,7 +139,7 @@ const RegistrationForm: React.FC = () => {
 
             // 1. Preemptive Check: Is this email already in our database?
             setSubmissionStage('Verifying eligibility...');
-            const q = query(collection(db, "registrations"), where("email", "==", user.email));
+            const q = query(collection(db, "registrations"), where("email", "==", user.email), limit(1));
             const snap = await getDocs(q);
 
             if (!snap.empty) {
@@ -450,7 +450,7 @@ Team Type: ${formData.teamType}
             
             // Comprehensive Email Check (Only 1 registration allowed total)
             const emailRef = collection(db, "registrations");
-            const emailAnyQ = query(emailRef, where("email", "==", formData.email));
+            const emailAnyQ = query(emailRef, where("email", "==", formData.email), limit(1));
             const emailSnap = await getDocs(emailAnyQ);
             
             if (!emailSnap.empty) {
