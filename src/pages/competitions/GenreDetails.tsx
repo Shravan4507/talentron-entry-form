@@ -1,12 +1,23 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import OutlinedTitle from '../../components/heading/OutlinedTitle';
 import SEO from '../../components/navigation/SEO';
+import { assetPath } from '../../utils/assetPath';
 import { competitionsData } from '../../data/competitionsData';
 import './GenreDetails.css';
 
 const GenreDetails: React.FC = () => {
     const { genre } = useParams<{ genre: string }>();
+
+    // Map genre names to their respective logo assets
+    const genreImageMap: Record<string, string> = {
+        'music': '/assets/logos/music.png',
+        'dance': '/assets/logos/dance.png',
+        'drama': '/assets/logos/dramatics.png',
+        'band': '/assets/logos/Band.png',
+        'street play': '/assets/logos/street play.png'
+    };
+
+    const headerImage = genreImageMap[genre?.toLowerCase() || ''];
 
     // Filter competitions belonging to this category
     const categoryCompetitions = competitionsData.filter(
@@ -43,13 +54,15 @@ const GenreDetails: React.FC = () => {
             />
             
             <div className="genre-header">
-                <OutlinedTitle 
-                    text={genre?.toLowerCase() === 'street play' ? 'NUKKAD NATAK' : (genre?.toUpperCase() || 'GENRE')} 
-                    fillColor="linear-gradient(180deg, #f0ff00 0%, #ff0070 100%)" 
-                    outlineColor="#000000" 
-                    shadowColor="#000000"
-                    className="small"
-                />
+                {headerImage ? (
+                    <img 
+                        src={assetPath(headerImage)} 
+                        alt={genre || 'Competition Genre'} 
+                        className="genre-header-image" 
+                    />
+                ) : (
+                    <h1 className="genre-title-fallback">{genre?.toUpperCase()}</h1>
+                )}
             </div>
 
             <div className="genre-content">
@@ -63,9 +76,10 @@ const GenreDetails: React.FC = () => {
                                     <div className="comp-info-main">
                                         <h2>{comp.name}</h2>
                                         <div className="comp-badges">
-                                            <span className="badge type">{comp.type}</span>
-                                            {comp.prize && <span className="badge prize">🏆 {comp.prize}</span>}
-                                        </div>
+                                             <span className="badge type">{comp.type}</span>
+                                             {comp.prize && <span className="badge prize">🏆 {comp.prize}</span>}
+                                             {comp.fees && <span className="badge fee">₹{comp.fees} per person</span>}
+                                         </div>
                                         <p className="description">{comp.description}</p>
                                     </div>
 

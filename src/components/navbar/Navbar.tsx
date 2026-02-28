@@ -12,6 +12,8 @@ const Navbar = () => {
     { label: 'Home', link: '/' },
     { label: 'Rules', link: '/rules' },
     { label: 'Competitions', link: '/competitions' },
+    { label: 'Schedule', link: '/schedule' },
+    { label: 'Sponsors', link: '/sponsors' },
   ];
 
   // Close menu when route changes

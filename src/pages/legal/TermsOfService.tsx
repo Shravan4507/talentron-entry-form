@@ -1,4 +1,4 @@
-import OutlinedTitle from '../../components/heading/OutlinedTitle';
+import { assetPath } from '../../utils/assetPath';
 import SEO from '../../components/navigation/SEO';
 import './LegalPage.css';
 
@@ -11,12 +11,10 @@ const TermsOfService: React.FC = () => {
             />
 
             <div className="legal-header">
-                <OutlinedTitle 
-                    text="TERMS OF SERVICE" 
-                    fillColor="linear-gradient(180deg, #ffea00 0%, #ffc800 100%)" 
-                    outlineColor="#000000" 
-                    shadowColor="#000000"
-                    className="small"
+                <img 
+                    src={assetPath('/assets/logos/terms_of_service.png')} 
+                    alt="Terms of Service" 
+                    className="legal-header-image" 
                 />
                 <p className="last-updated">Last Updated: February 2026</p>
             </div>

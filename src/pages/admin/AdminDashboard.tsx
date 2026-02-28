@@ -13,7 +13,11 @@ import './Admin.css';
 const AdminDashboard = () => {
     const navigate = useNavigate();
     const [registrations, setRegistrations] = useState<any[]>([]);
+    const [inquiries, setInquiries] = useState<any[]>([]);
+    const [stalls, setStalls] = useState<any[]>([]);
+    const [auditLogs, setAuditLogs] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [dashboardView, setDashboardView] = useState<'registrations' | 'inquiries' | 'stalls' | 'history'>('registrations');
     const [activeTab, setActiveTab] = useState<'all' | 'pending' | 'approved' | 'rejected'>('pending');
     const [searchQuery, setSearchQuery] = useState('');
 
@@ -29,9 +33,30 @@ const AdminDashboard = () => {
             setIsLoading(false);
         });
 
+        const qMsg = query(collection(db, "contact_messages"), orderBy("submittedAt", "desc"));
+        const unsubscribeMsgs = onSnapshot(qMsg, (snapshot) => {
+            const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            setInquiries(data);
+        });
+
+        const qStall = query(collection(db, "stall_inquiries"), orderBy("submittedAt", "desc"));
+        const unsubscribeStalls = onSnapshot(qStall, (snapshot) => {
+            const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            setStalls(data);
+        });
+
+        const qAudit = query(collection(db, "audit_logs"), orderBy("timestamp", "desc"));
+        const unsubscribeAudit = onSnapshot(qAudit, (snapshot) => {
+            const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            setAuditLogs(data);
+        });
+
         return () => {
             unsubscribeAuth();
             unsubscribeRegs();
+            unsubscribeMsgs();
+            unsubscribeStalls();
+            unsubscribeAudit();
         };
     }, [navigate]);
 
@@ -66,6 +91,27 @@ const AdminDashboard = () => {
         }
         return base;
     }, [registrations, activeTab, searchQuery]);
+
+    const filteredMessages = useMemo(() => {
+        if (!searchQuery) return inquiries;
+        const q = searchQuery.toLowerCase();
+        return inquiries.filter(m => 
+            m.name?.toLowerCase().includes(q) || 
+            m.email?.toLowerCase().includes(q) || 
+            m.message?.toLowerCase().includes(q)
+        );
+    }, [inquiries, searchQuery]);
+
+    const filteredStalls = useMemo(() => {
+        if (!searchQuery) return stalls;
+        const q = searchQuery.toLowerCase();
+        return stalls.filter(s => 
+            s.fullName?.toLowerCase().includes(q) || 
+            s.businessName?.toLowerCase().includes(q) || 
+            s.stallType?.toLowerCase().includes(q) ||
+            s.message?.toLowerCase().includes(q)
+        );
+    }, [stalls, searchQuery]);
 
     const handleApprove = async (reg: any) => {
         if (!window.confirm(`Confirm participation for ${reg.firstName}? This will generate a sequential invoice.`)) return;
@@ -229,7 +275,35 @@ const AdminDashboard = () => {
         <div className="admin-dashboard-page">
             <div className="admin-container">
                 <header className="admin-header">
-                    <h1>Talentron '26 Operations</h1>
+                    <div className="admin-header-main">
+                        <h1>Operations Hub</h1>
+                        <div className="dashboard-switcher">
+                            <button 
+                                className={dashboardView === 'registrations' ? 'active' : ''} 
+                                onClick={() => setDashboardView('registrations')}
+                            >
+                                Registrations
+                            </button>
+                            <button 
+                                className={dashboardView === 'inquiries' ? 'active' : ''} 
+                                onClick={() => setDashboardView('inquiries')}
+                            >
+                                Inquiries {inquiries.filter(m => m.status === 'unread').length > 0 && <span className="unread-dot"></span>}
+                            </button>
+                            <button 
+                                className={dashboardView === 'stalls' ? 'active' : ''} 
+                                onClick={() => setDashboardView('stalls')}
+                            >
+                                Stalls {stalls.filter(s => s.status === 'unread').length > 0 && <span className="unread-dot"></span>}
+                            </button>
+                            <button 
+                                className={dashboardView === 'history' ? 'active' : ''} 
+                                onClick={() => setDashboardView('history')}
+                            >
+                                History
+                            </button>
+                        </div>
+                    </div>
                     <button className="admin-logout" onClick={handleLogout}>Log Out</button>
                 </header>
 
@@ -256,69 +330,197 @@ const AdminDashboard = () => {
                     <input 
                         type="text" 
                         className="admin-search" 
-                        placeholder="Search records..." 
+                        placeholder={
+                            dashboardView === 'registrations' ? "Search registrations..." : 
+                            dashboardView === 'inquiries' ? "Search messages..." :
+                            dashboardView === 'stalls' ? "Search stall inquiries..." :
+                            "Search audit logs..."
+                        } 
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                     />
-                    <div className="admin-tabs">
-                        <button className={activeTab === 'pending' ? 'active' : ''} onClick={() => setActiveTab('pending')}>Pending ({stats.pending})</button>
-                        <button className={activeTab === 'approved' ? 'active' : ''} onClick={() => setActiveTab('approved')}>Approved</button>
-                        <button className={activeTab === 'rejected' ? 'active' : ''} onClick={() => setActiveTab('rejected')}>Rejected</button>
-                        <button className={activeTab === 'all' ? 'active' : ''} onClick={() => setActiveTab('all')}>All</button>
-                    </div>
-                    <button className="export-btn" onClick={exportToExcel}>Export .XLSX</button>
+                    {dashboardView === 'registrations' && (
+                        <div className="admin-tabs">
+                            <button className={activeTab === 'pending' ? 'active' : ''} onClick={() => setActiveTab('pending')}>Pending ({stats.pending})</button>
+                            <button className={activeTab === 'approved' ? 'active' : ''} onClick={() => setActiveTab('approved')}>Approved</button>
+                            <button className={activeTab === 'rejected' ? 'active' : ''} onClick={() => setActiveTab('rejected')}>Rejected</button>
+                            <button className={activeTab === 'all' ? 'active' : ''} onClick={() => setActiveTab('all')}>All</button>
+                        </div>
+                    )}
+                    {dashboardView === 'registrations' && <button className="export-btn" onClick={exportToExcel}>Export .XLSX</button>}
                 </div>
 
                 <div className="admin-table-wrapper">
-                    <table className="minimal-table">
-                        <thead>
-                            <tr>
-                                <th>Participant</th>
-                                <th>Category</th>
-                                <th>Tx Check</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {isLoading ? (
-                                <tr><td colSpan={5} style={{textAlign: 'center', padding: '2rem'}}>Loading...</td></tr>
-                            ) : filteredData.length === 0 ? (
-                                <tr><td colSpan={5} style={{textAlign: 'center', padding: '2rem'}}>No records found.</td></tr>
-                            ) : (
-                                filteredData.map(reg => (
-                                    <tr key={reg.id}>
-                                        <td>
-                                            <div style={{fontWeight: 600}}>{reg.firstName} {reg.lastName}</div>
-                                            <div style={{fontSize: '0.75rem', color: 'var(--text-dim)'}}>{reg.cellPhone}</div>
-                                        </td>
-                                        <td>
-                                            <div>{reg.genre}</div>
-                                            <div style={{fontSize: '0.75rem', color: 'var(--text-dim)'}}>{reg.teamType}</div>
-                                        </td>
-                                        <td>
-                                            <div style={{fontWeight: 600}}>₹{reg.totalActualAmount}</div>
-                                            <div style={{fontSize: '0.75rem', borderBottom: '1px solid #333', display: 'inline-block'}}>{reg.transactionId}</div>
-                                        </td>
-                                        <td>
-                                            <span className={`status-pill ${reg.status}`}>{reg.status}</span>
-                                        </td>
-                                        <td className="row-actions">
-                                            {reg.screenshotURL && (
-                                                <a href={reg.screenshotURL} target="_blank" rel="noreferrer" className="action-link">Proof</a>
-                                            )}
-                                            {reg.status === 'pending' && (
-                                                <>
-                                                    <button className="action-confirm" onClick={() => handleApprove(reg)}>Approve</button>
-                                                    <button className="action-confirm" style={{color: 'var(--accent-red)'}} onClick={() => handleReject(reg)}>Reject</button>
-                                                </>
-                                            )}
-                                        </td>
-                                    </tr>
-                                ))
-                            )}
-                        </tbody>
-                    </table>
+                    {dashboardView === 'registrations' ? (
+                        <table className="minimal-table">
+                            <thead>
+                                <tr>
+                                    <th>Participant</th>
+                                    <th>Category</th>
+                                    <th>Tx Check</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {isLoading ? (
+                                    <tr><td colSpan={5} style={{textAlign: 'center', padding: '2rem'}}>Loading...</td></tr>
+                                ) : filteredData.length === 0 ? (
+                                    <tr><td colSpan={5} style={{textAlign: 'center', padding: '2rem'}}>No records found.</td></tr>
+                                ) : (
+                                    filteredData.map(reg => (
+                                        <tr key={reg.id}>
+                                            <td>
+                                                <div style={{fontWeight: 600}}>{reg.firstName} {reg.lastName}</div>
+                                                <div style={{fontSize: '0.75rem', color: 'var(--text-dim)'}}>{reg.cellPhone}</div>
+                                            </td>
+                                            <td>
+                                                <div>{reg.genre}</div>
+                                                <div style={{fontSize: '0.75rem', color: 'var(--text-dim)'}}>{reg.teamType}</div>
+                                            </td>
+                                            <td>
+                                                <div style={{fontWeight: 600}}>₹{reg.totalActualAmount}</div>
+                                                <div style={{fontSize: '0.75rem', borderBottom: '1px solid #333', display: 'inline-block'}}>{reg.transactionId}</div>
+                                            </td>
+                                            <td>
+                                                <span className={`status-pill ${reg.status}`}>{reg.status}</span>
+                                            </td>
+                                            <td className="row-actions">
+                                                {reg.screenshotURL && (
+                                                    <a href={reg.screenshotURL} target="_blank" rel="noreferrer" className="action-link">Proof</a>
+                                                )}
+                                                {reg.status === 'pending' && (
+                                                    <>
+                                                        <button className="action-confirm" onClick={() => handleApprove(reg)}>Approve</button>
+                                                        <button className="action-confirm" style={{color: 'var(--accent-red)'}} onClick={() => handleReject(reg)}>Reject</button>
+                                                    </>
+                                                )}
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    ) : dashboardView === 'inquiries' ? (
+                        <table className="minimal-table">
+                            <thead>
+                                <tr>
+                                    <th>Sender</th>
+                                    <th>Message</th>
+                                    <th>Received</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredMessages.length === 0 ? (
+                                    <tr><td colSpan={4} style={{textAlign: 'center', padding: '2rem'}}>No messages yet.</td></tr>
+                                ) : (
+                                    filteredMessages.map(msg => (
+                                        <tr key={msg.id}>
+                                            <td>
+                                                <div style={{fontWeight: 600}}>{msg.name}</div>
+                                                <div style={{fontSize: '0.75rem', color: 'var(--accent-blue)'}}>{msg.email}</div>
+                                            </td>
+                                            <td style={{maxWidth: '400px'}}>
+                                                <div style={{fontSize: '0.9rem', lineHeight: '1.4'}}>{msg.message}</div>
+                                            </td>
+                                            <td style={{fontSize: '0.75rem', color: 'var(--text-dim)'}}>
+                                                {msg.submittedAt?.toDate?.() ? msg.submittedAt.toDate().toLocaleString('en-IN') : 'Just now'}
+                                            </td>
+                                            <td>
+                                                <span className={`status-pill ${msg.status || 'unread'}`}>{msg.status || 'unread'}</span>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    ) : dashboardView === 'history' ? (
+                        <table className="minimal-table">
+                            <thead>
+                                <tr>
+                                    <th>Admin</th>
+                                    <th>Action</th>
+                                    <th>Participant / Target</th>
+                                    <th>Timestamp</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {auditLogs.length === 0 ? (
+                                    <tr><td colSpan={4} style={{textAlign: 'center', padding: '2rem'}}>No logs yet.</td></tr>
+                                ) : (
+                                    auditLogs.filter(log => {
+                                        if (!searchQuery) return true;
+                                        const q = searchQuery.toLowerCase();
+                                        return (
+                                            log.adminEmail?.toLowerCase().includes(q) || 
+                                            log.type?.toLowerCase().includes(q) || 
+                                            log.participantName?.toLowerCase().includes(q) ||
+                                            log.invoiceNumber?.toLowerCase().includes(q)
+                                        );
+                                    }).map(log => (
+                                        <tr key={log.id}>
+                                            <td>
+                                                <div style={{fontWeight: 600, fontSize: '0.8rem'}}>{log.adminEmail}</div>
+                                            </td>
+                                            <td>
+                                                <span className={`status-pill ${log.type?.toLowerCase()}`} style={{background: log.type === 'APPROVAL' ? '#003c20' : '#3c1010', color: log.type === 'APPROVAL' ? '#00ff88' : '#ff5555'}}>
+                                                    {log.type}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div style={{fontWeight: 600}}>{log.participantName}</div>
+                                                {log.invoiceNumber && <div style={{fontSize: '0.7rem', color: 'var(--text-dim)'}}>{log.invoiceNumber}</div>}
+                                                {log.reason && <div style={{fontSize: '0.8rem', color: 'var(--accent-red)'}}>{log.reason}</div>}
+                                            </td>
+                                            <td style={{fontSize: '0.75rem', color: 'var(--text-dim)'}}>
+                                                {log.timestamp?.toDate?.() ? log.timestamp.toDate().toLocaleString('en-IN') : 'Just now'}
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    ) : (
+                        <table className="minimal-table">
+                            <thead>
+                                <tr>
+                                    <th>Business / Contact</th>
+                                    <th>Stall Details</th>
+                                    <th>Requirements</th>
+                                    <th>Received</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {filteredStalls.length === 0 ? (
+                                    <tr><td colSpan={5} style={{textAlign: 'center', padding: '2rem'}}>No stall inquiries yet.</td></tr>
+                                ) : (
+                                    filteredStalls.map(stall => (
+                                        <tr key={stall.id}>
+                                            <td>
+                                                <div style={{fontWeight: 600}}>{stall.businessName}</div>
+                                                <div style={{fontSize: '0.8rem'}}>{stall.fullName}</div>
+                                                <div style={{fontSize: '0.75rem', color: 'var(--accent-blue)'}}>{stall.phoneNumber}</div>
+                                            </td>
+                                            <td>
+                                                <span className={`status-pill ${stall.stallType}`} style={{background: '#333'}}>{stall.stallType}</span>
+                                            </td>
+                                            <td style={{maxWidth: '300px'}}>
+                                                <div style={{fontSize: '0.85rem', lineHeight: '1.4'}}>{stall.message}</div>
+                                            </td>
+                                            <td style={{fontSize: '0.75rem', color: 'var(--text-dim)'}}>
+                                                {stall.submittedAt?.toDate?.() ? stall.submittedAt.toDate().toLocaleString('en-IN') : 'Just now'}
+                                            </td>
+                                            <td>
+                                                <span className={`status-pill ${stall.status || 'unread'}`}>{stall.status || 'unread'}</span>
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
+                            </tbody>
+                        </table>
+                    )}
                 </div>
             </div>
         </div>

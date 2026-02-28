@@ -27,7 +27,7 @@
     margin-bottom: clamp(-20rem, -18vw, -6rem); /* Reduced negative margin to add space */
     width: auto;
     object-fit: contain;
-    filter: drop-shadow(clamp(4px, 0.5vw, 8px) clamp(4px, 0.5vw, 8px) 0px #000);
+    filter: drop-shadow(0px 5px 5px #000);
     z-index: 2;
 }
 
@@ -45,7 +45,7 @@
     margin-bottom: clamp(-15rem, -10vw, -4rem);
     width: auto;
     object-fit: contain;
-    filter: drop-shadow(clamp(6px, 0.8vw, 14px) clamp(6px, 0.8vw, 14px) 0px #000);
+    filter: drop-shadow(0px 5px 5px #000);
 }
 
 .comp-description {

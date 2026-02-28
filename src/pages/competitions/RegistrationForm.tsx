@@ -85,6 +85,7 @@ const RegistrationForm: React.FC = () => {
     const [errors, setErrors] = useState<{ [key: string]: string }>({});
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+    const [showTxGuide, setShowTxGuide] = useState(false);
     const screenshotInputRef = useRef<HTMLInputElement>(null);
 
     // Navigation Guard (Dirty Form)
@@ -969,7 +970,10 @@ Team Type: ${formData.teamType}
                                 </div>
 
                                 <div className="form-group full-width">
-                                    <label>12 Digit UPI Transaction ID*</label>
+                                    <div className="label-with-help">
+                                        <label>12 Digit UPI Transaction ID*</label>
+                                        <button type="button" className="help-link-btn" onClick={() => setShowTxGuide(true)}>Where is this?</button>
+                                    </div>
                                     <input 
                                         type="text" 
                                         maxLength={12} 
@@ -1101,6 +1105,47 @@ Team Type: ${formData.teamType}
                                     CONTINUE
                                 </button>
                             </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+
+            <AnimatePresence>
+                {showTxGuide && (
+                    <motion.div 
+                        className="guide-overlay"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        onClick={() => setShowTxGuide(false)}
+                    >
+                        <motion.div 
+                            className="guide-modal"
+                            initial={{ scale: 0.9, y: 20 }}
+                            animate={{ scale: 1, y: 0 }}
+                            exit={{ scale: 0.9, y: 20 }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            <button className="close-guide" onClick={() => setShowTxGuide(false)}>×</button>
+                            <h3>Finding your Transaction ID</h3>
+                            <div className="guide-steps">
+                                <div className="guide-step">
+                                    <div className="step-num">01</div>
+                                    <p>Go to your Payment App (GPay, PhonePe, Paytm, etc.)</p>
+                                </div>
+                                <div className="guide-step">
+                                    <div className="step-num">02</div>
+                                    <p>Open the "Transaction History" and find the payment.</p>
+                                </div>
+                                <div className="guide-step highlight">
+                                    <div className="step-num">03</div>
+                                    <p>Look for **UTR**, **Ref No.**, or **UPI Transaction ID**. It is exactly **12 digits** long.</p>
+                                </div>
+                            </div>
+                            <div className="guide-hint">
+                                <strong>Warning:</strong> Entering a Phone Number or UPI ID instead of the Transaction ID will lead to registration cancellation.
+                            </div>
+                            <button className="got-it-btn" onClick={() => setShowTxGuide(false)}>GOT IT</button>
                         </motion.div>
                     </motion.div>
                 )}

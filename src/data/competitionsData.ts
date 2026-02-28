@@ -6,6 +6,7 @@ export interface Competition {
   image?: string;
   rules?: string[];
   prize?: string;
+  fees?: number;
 }
 
 export const competitionsData: Competition[] = [
@@ -33,7 +34,8 @@ export const competitionsData: Competition[] = [
       "Please inform the Management Team about specific requirements in advance. (if any)",
       "A maximum of 3 calls will be made for the participant to reach the stage."
     ],
-    prize: "Certificates, Trophies and Cash Prizes"
+    prize: "Certificates, Trophies and Cash Prizes",
+    fees: 200
   },
   { 
     category: "Music", 
@@ -55,7 +57,8 @@ export const competitionsData: Competition[] = [
       "Final Round duration: Max 4 minutes.",
       "Self-accompaniment with instruments is permitted."
     ],
-    prize: "Certificates, Trophies and Cash Prizes"
+    prize: "Certificates, Trophies and Cash Prizes",
+    fees: 150
   },
 
   // Dance
@@ -80,7 +83,8 @@ export const competitionsData: Competition[] = [
       "All dance styles are welcome (Classical, Western, Folk, etc.).",
       "Participants are responsible for managing and clearing their own props."
     ],
-    prize: "Certificates, Trophies and Cash Prizes"
+    prize: "Certificates, Trophies and Cash Prizes",
+    fees: 200
   },
   { 
     category: "Dance", 
@@ -102,7 +106,8 @@ export const competitionsData: Competition[] = [
       "Final Round duration: Max 5 minutes.",
       "Group size: mini 3 to max 10 participants."
     ],
-    prize: "Certificates, Trophies and Cash Prizes"
+    prize: "Certificates, Trophies and Cash Prizes",
+    fees: 150
   },
 
   // Drama
@@ -129,7 +134,8 @@ export const competitionsData: Competition[] = [
       "Technical Coordination: One team representative must coordinate cues at the technical console. Soundtracks (MP3) must be submitted to the Tech Team of the Event One hour before the event.",
       "Script Submission: A soft copy of the script or a detailed synopsis must be provided during registration for content vetting."
     ],  
-    prize: "Certificates, Trophies and Cash Prizes"
+    prize: "Certificates, Trophies and Cash Prizes",
+    fees: 100
   },
 
   // Band
@@ -147,19 +153,20 @@ export const competitionsData: Competition[] = [
       "Lyrics and presentation should be suitable for a general audience.",
       "Language: Performances are permitted in English, Hindi, or any regional languages.",
       "Competition-Specific Rules",
-      "Team Size: mini 3 to max 10 members.",
+      "Team Size: mini 5 to max 10 members.",
       "Round 1 (Online) duration: (Video Duration) Max 4 minutes.",
       "Participant should submit their recent performance video as well for the Round 1 (without any EDITING)",
       "Final Round (Live) duration: Max 10 minutes",
       "Bands must bring their own instruments, and accessories.",
     ],
-    prize: "Certificates, Trophies and Cash Prizes"
+    prize: "Certificates, Trophies and Cash Prizes",
+    fees: 200
   },
 
   // Street Play
   { 
     category: "Street Play", 
-    name: "Nukkad Natak", 
+    name: "Nukkad Natak (Street Play)", 
     type: "Group", 
     description: "Raw and socially relevant theatre performed in open spaces to awaken and inspire.",
     rules: [
@@ -177,6 +184,7 @@ export const competitionsData: Competition[] = [
       "No props will be provided by the management.",
       "Any props or other materials will be managed by the participanting team itself.",
     ],
-    prize: "Certificates, Trophies and Cash Prizes"
+    prize: "Certificates, Trophies and Cash Prizes",
+    fees: 100
   }
 ];

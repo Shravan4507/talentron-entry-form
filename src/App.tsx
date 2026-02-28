@@ -9,8 +9,12 @@ import Contact from './pages/contact/Contact';
 import PrivacyPolicy from './pages/legal/PrivacyPolicy';
 import TermsOfService from './pages/legal/TermsOfService';
 import NotFound from './pages/NotFound';
+import Schedule from './pages/schedule/Schedule';
+import Sponsors from './pages/sponsors/Sponsors';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
+import BookStall from './pages/book-stall/BookStall';
+import FAQ from './pages/faq/FAQ';
 import Grainient from './components/background/Grainient';
 import Navbar from './components/navbar/Navbar';
 import Footer from './components/footer/Footer';
@@ -18,6 +22,7 @@ import ScrollToTop from './components/navigation/ScrollToTop';
 import PageTransition from './components/navigation/PageTransition';
 import TopLoadingBar from './components/navigation/TopLoadingBar';
 import BackToTop from './components/navigation/BackToTop';
+import VersionChecker from './components/version/VersionChecker';
 import './components/background/Grainient.css';
 import './App.css';
 
@@ -65,18 +70,27 @@ const router = createBrowserRouter([
       { path: 'competitions/:genre', element: <GenreDetails /> },
       { path: 'register/:category', element: <RegistrationForm /> },
       { path: 'rules', element: <Rules /> },
+      { path: 'schedule', element: <Schedule /> },
+      { path: 'sponsors', element: <Sponsors /> },
       { path: 'contact', element: <Contact /> },
       { path: 'privacy-policy', element: <PrivacyPolicy /> },
       { path: 'terms-of-service', element: <TermsOfService /> },
       { path: 'admin-login', element: <AdminLogin /> },
       { path: 'admin-dashboard', element: <AdminDashboard /> },
+      { path: 'book-stall', element: <BookStall /> },
+      { path: 'faq', element: <FAQ /> },
       { path: '*', element: <NotFound /> },
     ],
   },
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <RouterProvider router={router} />
+      <VersionChecker />
+    </>
+  );
 }
 
 export default App;

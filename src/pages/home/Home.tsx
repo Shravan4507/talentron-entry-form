@@ -48,15 +48,34 @@ const Home = () => {
                             className="hero-main-image" 
                         />
                     </div>
-                    <div className="cta-container">
-                        <button 
-                            className="primary-cta"
-                            onClick={() => navigate('/competitions')}
-                        >
-                            REGISTER NOW
-                        </button>
-                        <RuleBookButton className="hero-btn" />
+                </div>
+            </div>
+
+            <div className="prizes-and-ctas">
+                <div className="prize-pool-section">
+                    <div className="prize-image-container">
+                        <img 
+                            src={assetPath('/assets/logos/price_pool.png')} 
+                            alt="Total Prize Pool 1 Lakh Plus" 
+                            className="prize-pool-image"
+                        />
                     </div>
+                </div>
+
+                <div className="cta-container">
+                    <button 
+                        className="primary-cta"
+                        onClick={() => navigate('/competitions')}
+                    >
+                        REGISTER NOW
+                    </button>
+                    <button 
+                        className="primary-cta secondary"
+                        onClick={() => navigate('/schedule')}
+                    >
+                        VIEW SCHEDULE
+                    </button>
+                    <RuleBookButton className="hero-btn" />
                 </div>
             </div>
         </div>

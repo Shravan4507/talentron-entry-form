@@ -1,0 +1,259 @@
+.schedule-page {
+    padding: 120px 20px 80px;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+.schedule-container {
+    width: 100%;
+    max-width: 1000px;
+}
+
+.schedule-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.schedule-title-img {
+    max-width: 850px;
+    margin-top: -7rem;
+    margin-bottom: -4rem;
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0px 5px 5px #000);
+}
+
+.phases-list {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.phase-card {
+    background: rgba(0, 0, 0, 0.85);
+    border: 3px solid #000;
+    border-radius: 3rem;
+    padding: 40px;
+    backdrop-filter: blur(20px);
+    box-shadow: 10px 10px 0px #fa00cc;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.phase-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 100%;
+    background: var(--phase-color);
+}
+
+.phase-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 30px;
+    gap: 20px;
+}
+
+.phase-date-label {
+    display: block;
+    font-weight: 700;
+    letter-spacing: 2px;
+    font-size: 0.9rem;
+    color: var(--phase-color);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+}
+
+.phase-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    line-height: 1.1;
+    font-family: 'Outfit', sans-serif;
+}
+
+.calendar-btn {
+    background: rgba(255, 255, 255, 0);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.calendar-btn:active {
+    transform: scale(0.98);
+}
+
+.timer-wrapper {
+    margin: 40px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.timer-grid {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.timer-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 70px;
+}
+
+.unit-val {
+    font-size: 3.5rem;
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    font-family: 'Outfit', sans-serif;
+    color: #fff;
+}
+
+.unit-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    margin-top: 8px;
+}
+
+.timer-sep {
+    font-size: 2.5rem;
+    font-weight: 100;
+    opacity: 0.3;
+    padding-bottom: 25px;
+}
+
+.timer-live-badge {
+    padding: 15px 40px;
+    background: #00ff88;
+    color: #000;
+    border-radius: 50px;
+    font-weight: 900;
+    font-size: 1.5rem;
+    letter-spacing: 4px;
+    box-shadow: 0 0 30px rgba(0, 255, 136, 0.3);
+    animation: timerPulse 2s infinite;
+}
+
+@keyframes timerPulse {
+    0% { transform: scale(1); box-shadow: 0 0 0px rgba(0, 255, 136, 0); }
+    50% { transform: scale(1.05); box-shadow: 0 0 40px rgba(0, 255, 136, 0.5); }
+    100% { transform: scale(1); box-shadow: 0 0 0px rgba(0, 255, 136, 0); }
+}
+
+.phase-desc {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 30px;
+    max-width: 700px;
+}
+
+.highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.highlight-item {
+    display: flex;
+    gap: 20px;
+}
+
+.highlight-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--phase-color);
+    margin-top: 8px;
+    box-shadow: 0 0 10px var(--phase-color);
+}
+
+.highlight-text {
+    flex: 1;
+    font-size: 1rem;
+}
+
+.highlight-note {
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-top: 4px;
+    line-height: 1.4;
+}
+
+.schedule-footer-note {
+    margin-top: 60px;
+    text-align: center;
+    padding: 30px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.schedule-footer-note p {
+    color: var(--text-dim);
+    font-size: 0.95rem;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.venue-link {
+    color: var(--text-dim);
+    text-decoration: none;
+    font-weight: 700;
+    border-bottom: 2px solid var(--accent-pink);
+    transition: all 0.2s ease;
+}
+
+.venue-link:hover {
+    background: var(--accent-pink);
+    color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .phase-card {
+        padding: 30px 20px;
+    }
+
+    .phase-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .calendar-btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .unit-val {
+        font-size: 2.2rem;
+    }
+
+    .timer-unit {
+        min-width: 50px;
+    }
+
+    .timer-sep {
+        font-size: 1.5rem;
+    }
+
+    .phase-title {
+        font-size: 1.6rem;
+    }
+}
