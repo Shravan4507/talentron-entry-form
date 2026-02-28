@@ -75,7 +75,7 @@ const NotFound: React.FC = () => {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                 >
-                    <img src={assetPath('/assets/icons/send.png')} alt="" className="btn-inline-icon" />
+                    <img src={assetPath('/assets/icons/send.webp')} alt="" className="btn-inline-icon" />
                     BACK TO MAIN STAGE
                 </motion.button>
             </div>

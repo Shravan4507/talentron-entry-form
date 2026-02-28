@@ -880,7 +880,7 @@ Team Type: ${formData.teamType}
                             <h2 className="step-title">Step 2: {['Street Play', 'Band'].includes(category || '') ? 'Round 1' : 'Performance Track'} Submission</h2>
                             <div className="email-card">
                                 <div className="email-icon">
-                                    <img src={assetPath('/assets/icons/send.png')} alt="Send" />
+                                    <img src={assetPath('/assets/icons/send.webp')} alt="Send" />
                                 </div>
                                 <h3>Send your {['Street Play', 'Band'].includes(category || '') ? 'Round 1' : 'Performance Track'} via Email</h3>
                                 

@@ -43,14 +43,14 @@ const Competitions: React.FC = () => {
             <div className="comp-header">
                 <div className="subtitle-wrapper">
                     <img 
-                        src={assetPath('/assets/logos/the_stage_is_yours.png')} 
+                        src={assetPath('/assets/logos/the_stage_is_yours.webp')} 
                         alt="The Stage is Yours" 
                         className="comp-logo-subtitle" 
                     />
                 </div>
                 <div className="main-title-wrapper">
                     <img 
-                        src={assetPath('/assets/logos/art_forms.png')} 
+                        src={assetPath('/assets/logos/art_forms.webp')} 
                         alt="Art Forms" 
                         className="comp-logo-main" 
                     />

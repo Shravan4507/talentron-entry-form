@@ -131,7 +131,7 @@ const Rules = () => {
             <div className="rules-container">
                 <header className="rules-header">
                     <img 
-                        src={assetPath('/assets/logos/general_rules.png')} 
+                        src={assetPath('/assets/logos/general_rules.webp')} 
                         alt="General Rules" 
                         className="rules-title-img"
                     />

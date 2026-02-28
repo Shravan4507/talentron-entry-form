@@ -49,7 +49,7 @@ const Contact = () => {
             phone: "+91 94229 58592",
             email: "shravan45x@gmail.com",
             instagram: "069.f5",
-            image: assetPath("/assets/members/Shrvan.png")
+            image: assetPath("/assets/members/Shrvan.webp")
         },
         {
             name: "Team Talentron",
@@ -72,7 +72,7 @@ const Contact = () => {
             <div className="contact-container">
                 <header className="contact-header">
                     <div className="contact-hero-logo">
-                        <img src={assetPath('/assets/logos/contact_us.png')} alt="Contact Us" />
+                        <img src={assetPath('/assets/logos/contact_us.webp')} alt="Contact Us" />
                     </div>
                 </header>
 
@@ -155,10 +155,10 @@ const Contact = () => {
                                         
                                         <div className="organizer-contact-info">
                                             <a href={`tel:${person.phone.replace(/\s/g, '')}`} className="org-contact-link">
-                                                <img src={assetPath('/assets/icons/phone.png')} alt="" className="contact-icon" /> {person.phone}
+                                                <img src={assetPath('/assets/icons/phone.webp')} alt="" className="contact-icon" /> {person.phone}
                                             </a>
                                             <a href={`mailto:${person.email}`} className="org-contact-link">
-                                                <img src={assetPath('/assets/icons/envelope.png')} alt="" className="contact-icon" /> {person.email}
+                                                <img src={assetPath('/assets/icons/envelope.webp')} alt="" className="contact-icon" /> {person.email}
                                             </a>
                                         </div>
                                     </div>

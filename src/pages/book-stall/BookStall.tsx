@@ -55,7 +55,7 @@ const BookStall = () => {
             <div className="stall-container">
                 <header className="stall-header">
                     <img 
-                        src={assetPath('/assets/logos/book_stall.png')} 
+                        src={assetPath('/assets/logos/book_stall.webp')} 
                         alt="Book Your Stall" 
                         className="stall-header-image" 
                     />

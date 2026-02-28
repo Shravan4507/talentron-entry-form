@@ -12,7 +12,7 @@ const TermsOfService: React.FC = () => {
 
             <div className="legal-header">
                 <img 
-                    src={assetPath('/assets/logos/terms_of_service.png')} 
+                    src={assetPath('/assets/logos/terms_of_service.webp')} 
                     alt="Terms of Service" 
                     className="legal-header-image" 
                 />

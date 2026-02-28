@@ -25,8 +25,8 @@ const Navbar = () => {
     <nav className={`navbar ${isOpen ? 'menu-open' : ''}`}>
       <div className="navbar-container">
         <div className="navbar-brand" onClick={() => navigate('/')}>
-          <img src={assetPath('/assets/logos/Logo-Star.png')} alt="Talentron Logo" className="navbar-logo" />
-          <img src={assetPath('/assets/logos/Logo_Talentron_1.png')} alt="Talentron Brand" className="brand-logo-text" />
+          <img src={assetPath('/assets/logos/Logo-Star.webp')} alt="Talentron Logo" className="navbar-logo" />
+          <img src={assetPath('/assets/logos/Logo_Talentron_1.webp')} alt="Talentron Brand" className="brand-logo-text" />
         </div>
 
 

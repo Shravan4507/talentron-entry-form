@@ -9,8 +9,8 @@ const Footer = () => {
         <div className="footer-top">
           <div className="footer-brand">
             <div className="footer-brand-logos">
-              <img src={assetPath('/assets/logos/Logo-Star.png')} alt="Talentron Logo" className="footer-star-logo" />
-              <img src={assetPath('/assets/logos/Logo_Talentron_1.png')} alt="Talentron Brand" className="footer-text-logo" />
+              <img src={assetPath('/assets/logos/Logo-Star.webp')} alt="Talentron Logo" className="footer-star-logo" />
+              <img src={assetPath('/assets/logos/Logo_Talentron_1.webp')} alt="Talentron Brand" className="footer-text-logo" />
             </div>
             <p>Celebrate the spirit of art and creativity at Talentron '2K26 – Pune's premier student-led cultural extravaganza.</p>
           </div>
@@ -42,7 +42,7 @@ const Footer = () => {
                     className="footer-social-link"
                     title="Follow us on Instagram"
                 >
-                    <img src={assetPath('/assets/icons/instagram.png')} alt="Instagram" />
+                    <img src={assetPath('/assets/icons/instagram.webp')} alt="Instagram" />
                 </a>
             </div>
           </div>
@@ -54,7 +54,7 @@ const Footer = () => {
             rel="noopener noreferrer" 
             className="location-link"
             >
-            <img src={assetPath('/assets/icons/location.png')} alt="Location" className="footer-location-icon" />
+            <img src={assetPath('/assets/icons/location.webp')} alt="Location" className="footer-location-icon" />
             <span>
                 Zeal College of Engineering and Research,<br />
                 Narhe, Pune, Maharashtra 411041
@@ -65,7 +65,7 @@ const Footer = () => {
 
         <div className="footer-initiative">
           <a href="https://zealeducation.com/" target="_blank" rel="noopener noreferrer" className="initiative-logo">
-            <img src={assetPath('/assets/logos/Logo Circular.png')} alt="Zeal Education Logo" />
+            <img src={assetPath('/assets/logos/Logo Circular.webp')} alt="Zeal Education Logo" />
           </a>
           <div className="initiative-text">
             OFFICIAL INTER-COLLEGE COMPETITION OF ZCOER PUNE

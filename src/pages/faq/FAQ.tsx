@@ -79,7 +79,7 @@ const FAQ: React.FC = () => {
             <div className="faq-container">
                 <header className="faq-header">
                     <img 
-                        src={assetPath('/assets/logos/doubts.png')} 
+                        src={assetPath('/assets/logos/doubts.webp')} 
                         alt="Any Doubts?" 
                         className="faq-header-image" 
                     />

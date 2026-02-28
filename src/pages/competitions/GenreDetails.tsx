@@ -10,11 +10,11 @@ const GenreDetails: React.FC = () => {
 
     // Map genre names to their respective logo assets
     const genreImageMap: Record<string, string> = {
-        'music': '/assets/logos/music.png',
-        'dance': '/assets/logos/dance.png',
-        'drama': '/assets/logos/dramatics.png',
-        'band': '/assets/logos/Band.png',
-        'street play': '/assets/logos/street play.png'
+        'music': '/assets/logos/music.webp',
+        'dance': '/assets/logos/dance.webp',
+        'drama': '/assets/logos/dramatics.webp',
+        'band': '/assets/logos/Band.webp',
+        'street play': '/assets/logos/street play.webp'
     };
 
     const headerImage = genreImageMap[genre?.toLowerCase() || ''];

@@ -86,7 +86,7 @@ const Schedule: React.FC = () => {
             <div className="schedule-container">
                 <header className="schedule-header">
                     <img 
-                        src={assetPath('/assets/logos/schedule.png')} 
+                        src={assetPath('/assets/logos/schedule.webp')} 
                         alt="Event Schedule" 
                         className="schedule-title-img"
                     />

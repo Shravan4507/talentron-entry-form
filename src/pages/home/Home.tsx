@@ -43,7 +43,7 @@ const Home = () => {
                 <div className="hero-content">
                     <div className="hero-main-container">
                         <img 
-                            src={assetPath('/assets/logos/hero_section_4.png')} 
+                            src={assetPath('/assets/logos/hero_section_4.webp')} 
                             alt="Talentron '26 - Are You Ready? Join the biggest student-led competition in Pune." 
                             className="hero-main-image" 
                         />
@@ -55,7 +55,7 @@ const Home = () => {
                 <div className="prize-pool-section">
                     <div className="prize-image-container">
                         <img 
-                            src={assetPath('/assets/logos/price_pool.png')} 
+                            src={assetPath('/assets/logos/price_pool.webp')} 
                             alt="Total Prize Pool 1 Lakh Plus" 
                             className="prize-pool-image"
                         />

@@ -12,7 +12,7 @@ const PrivacyPolicy: React.FC = () => {
 
             <div className="legal-header">
                 <img 
-                    src={assetPath('/assets/logos/privacy_policy.png')} 
+                    src={assetPath('/assets/logos/privacy_policy.webp')} 
                     alt="Privacy Policy" 
                     className="legal-header-image" 
                 />

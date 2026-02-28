@@ -9,22 +9,22 @@ const Sponsors: React.FC = () => {
         {
             category: "Title Sponsor",
             sponsors: [
-                { name: "Sponsor Name", logo: "/assets/logos/Logo-Star.png", link: "#" }
+                { name: "Sponsor Name", logo: "/assets/logos/Logo-Star.webp", link: "#" }
             ]
         },
         {
             category: "Gold Sponsors",
             sponsors: [
-                { name: "Partner 1", logo: "/assets/logos/Logo-Star.png", link: "#" },
-                { name: "Partner 2", logo: "/assets/logos/Logo-Star.png", link: "#" }
+                { name: "Partner 1", logo: "/assets/logos/Logo-Star.webp", link: "#" },
+                { name: "Partner 2", logo: "/assets/logos/Logo-Star.webp", link: "#" }
             ]
         },
         {
             category: "Media Partners",
             sponsors: [
-                { name: "Media 1", logo: "/assets/logos/Logo-Star.png", link: "#" },
-                { name: "Media 2", logo: "/assets/logos/Logo-Star.png", link: "#" },
-                { name: "Media 3", logo: "/assets/logos/Logo-Star.png", link: "#" }
+                { name: "Media 1", logo: "/assets/logos/Logo-Star.webp", link: "#" },
+                { name: "Media 2", logo: "/assets/logos/Logo-Star.webp", link: "#" },
+                { name: "Media 3", logo: "/assets/logos/Logo-Star.webp", link: "#" }
             ]
         }
     ];
@@ -39,7 +39,7 @@ const Sponsors: React.FC = () => {
             <div className="sponsors-container">
                 <header className="sponsors-header">
                     <img 
-                        src={assetPath('/assets/logos/sponsors.png')} 
+                        src={assetPath('/assets/logos/sponsors.webp')} 
                         alt="Our Sponsors" 
                         className="sponsors-header-image" 
                     />
