@@ -108,7 +108,7 @@ export const competitionsData: Competition[] = [
   // Drama
   { 
     category: "Drama", 
-    name: "Natyotrav (Drama)", 
+    name: "Natyotsav (Drama)", 
     type: "Group", 
     description: "Full-scale theatrical productions brought to life with intensity and emotion.",
     rules: [
