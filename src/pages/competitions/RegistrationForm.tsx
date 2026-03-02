@@ -13,6 +13,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { signInWithPopup, onAuthStateChanged } from 'firebase/auth';
 import type { User } from 'firebase/auth';
 import { getWelcomeEmailHtml } from '../../templates/welcomeEmail';
+import { compressImage } from '../../utils/imageCompression';
 import './RegistrationForm.css';
 
 interface FormData {
@@ -86,6 +87,7 @@ const RegistrationForm: React.FC = () => {
     const [currentUser, setCurrentUser] = useState<User | null>(null);
     const [isGoogleLoading, setIsGoogleLoading] = useState(false);
     const [showTxGuide, setShowTxGuide] = useState(false);
+    const [submissionError, setSubmissionError] = useState<string | null>(null);
     const screenshotInputRef = useRef<HTMLInputElement>(null);
 
     // Navigation Guard (Dirty Form & Submission Lock)
@@ -121,6 +123,13 @@ const RegistrationForm: React.FC = () => {
         window.addEventListener('beforeunload', handleBeforeUnload);
         return () => window.removeEventListener('beforeunload', handleBeforeUnload);
     }, [isDirty, isSuccess, isSubmitting]);
+
+    // Force scroll to top when submission starts or succeeds (Psychological safety)
+    useEffect(() => {
+        if (isSubmitting || isSuccess) {
+            window.scrollTo({ top: 0, behavior: 'instant' });
+        }
+    }, [isSubmitting, isSuccess]);
 
     // Auth state observer
     useEffect(() => {
@@ -270,6 +279,14 @@ const RegistrationForm: React.FC = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
+        
+        // Integer-only validation for groupSize
+        if (name === 'groupSize') {
+            const intValue = value.replace(/\D/g, ''); // Strip non-digits
+            setFormData(prev => ({ ...prev, [name]: intValue }));
+            return;
+        }
+
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
@@ -448,14 +465,15 @@ Team Type: ${formData.teamType}
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' }); // Scroll to top to see loader immediately
         const newErrors: { [key: string]: string } = {};
 
         if (amount > 0 && !formData.paymentScreenshot) {
             newErrors.paymentScreenshot = "Please upload payment screenshot.";
             alert('Please upload a screenshot of your payment for verification.');
         } else if (formData.paymentScreenshot) {
-            if (formData.paymentScreenshot.size > 1024 * 1024) { // 1MB
-                newErrors.paymentScreenshot = "Screenshot must be less than 1MB. Please compress your image.";
+            if (formData.paymentScreenshot.size > 8 * 1024 * 1024) { // 8MB Hard limit
+                newErrors.paymentScreenshot = "Screenshot must be less than 8MB. Please use a regular screenshot.";
             }
         }
 
@@ -474,14 +492,14 @@ Team Type: ${formData.teamType}
 
         setIsSubmitting(true);
         setSubmissionProgress(10);
-        setSubmissionStage('Preparing secure upload...');
+        setSubmissionStage('Connecting to Talentron Servers...');
         setErrors({});
 
         const sessionId = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
         
         try {
             // 0. Pre-submission checks (Duplicates & Malpractice)
-            setSubmissionStage('Verifying registration uniqueness...');
+            setSubmissionStage('Verifying your unique entry...');
             
             // Comprehensive Email Check (Only 1 registration allowed total)
             const emailRef = collection(db, "registrations");
@@ -588,28 +606,49 @@ Team Type: ${formData.teamType}
 
             let screenshotURL = "";
 
-            // 2. Upload Screenshot to Firebase Storage
+            // 2. Upload Screenshot to Firebase Storage with Retry & Compression
             if (formData.paymentScreenshot) {
+                setSubmissionStage('Speed-optimizing your receipt...');
+                setSubmissionProgress(50);
+                
+                let fileToUpload: File | Blob = formData.paymentScreenshot;
+                
+                try {
+                    // Client-side compression (Converts to ~150KB sharp JPEG)
+                    fileToUpload = await compressImage(formData.paymentScreenshot);
+                } catch (compErr) {
+                    console.warn("Compression failed, uploading original:", compErr);
+                }
+
                 setSubmissionStage('Uploading payment receipt...');
-                setSubmissionProgress(60);
+                setSubmissionProgress(65);
                 
                 const fileExtension = formData.paymentScreenshot.name.split('.').pop();
                 const fileName = `payments/${formData.transactionId}_${Date.now()}.${fileExtension}`;
                 const storageRef = ref(storage, fileName);
                 
-                try {
-                    const uploadResult = await uploadBytes(storageRef, formData.paymentScreenshot);
-                    screenshotURL = await getDownloadURL(uploadResult.ref);
-                } catch (uploadErr) {
-                    console.error("Screenshot upload failed:", uploadErr);
-                    setSubmissionStage('Upload failed! Retrying...');
-                    // We don't crash here yet, we keep the doc in 'payment_upload_pending'
-                    throw new Error("Screenshot upload failed. Your data is saved, but please contact admin to provide proof.");
+                let retryCount = 0;
+                const maxRetries = 3;
+                
+                while (retryCount < maxRetries) {
+                    try {
+                        const uploadResult = await uploadBytes(storageRef, fileToUpload);
+                        screenshotURL = await getDownloadURL(uploadResult.ref);
+                        break; // Success!
+                    } catch (uploadErr) {
+                        retryCount++;
+                        if (retryCount >= maxRetries) {
+                            console.error("Storage upload max retries reached:", uploadErr);
+                            throw new Error("Could not upload screenshot even after 3 attempts. Please check your internet.");
+                        }
+                        setSubmissionStage(`Network blip! Retrying upload (${retryCount}/${maxRetries})...`);
+                        await new Promise(r => setTimeout(r, 2000)); // Wait 2s before retry
+                    }
                 }
             }
 
             // 3. Finalize Registration Status
-            setSubmissionStage('Finalizing entry...');
+            setSubmissionStage('Locking your spot in Phase 1...');
             setSubmissionProgress(90);
 
             await updateDoc(regDocRef, {
@@ -637,7 +676,6 @@ Team Type: ${formData.teamType}
                 });
             } catch (mailErr) {
                 console.error("Mail trigger failed:", mailErr);
-                // We don't block the UI for email failures, registration is still valid
             }
             
             sessionStorage.setItem('last_submission_time', Date.now().toString());
@@ -647,6 +685,7 @@ Team Type: ${formData.teamType}
             setTimeout(() => {
                 setIsSubmitting(false);
                 setIsSuccess(true);
+                setSubmissionError(null);
                 window.scrollTo(0, 0);
                 // Clear the rest of the form but KEEP the firstName and genre for the success card
                 setFormData(prev => ({
@@ -660,16 +699,28 @@ Team Type: ${formData.teamType}
                     paymentScreenshot: null,
                     agreedToRules: false
                 }));
-                // We don't reset the step to 1 here, we let the Success Overlay handle the view
             }, 800);
-        } catch (error) {
+        } catch (error: any) {
             console.error('Firebase Submission error:', error);
-            alert('There was an error connecting to our database. Please check your internet and try again.');
-            setIsSubmitting(false);
+            setSubmissionError(error.message || 'The connection was interrupted.');
+            setSubmissionStage('Safe Pause: Connection Issue');
+            
+            // Note: We don't setIsSubmitting(false) here because we want to show the RETRY UI in the overlay
         } finally {
             setSubmissionProgress(0);
-            setSubmissionStage('');
         }
+    };
+
+    const handleRetrySubmission = () => {
+        setSubmissionError(null);
+        handleSubmit(new Event('submit') as any);
+    };
+
+    const handleCancelSubmission = () => {
+        setIsSubmitting(false);
+        setSubmissionError(null);
+        setSubmissionStage('');
+        setSubmissionProgress(0);
     };
 
     const handleSuccessClose = async () => {
@@ -1108,8 +1159,26 @@ Team Type: ${formData.teamType}
                             >
                                 {submissionStage}
                             </motion.p>
-                            <p className="progress-disclaim">PLEASE DO NOT REFRESH OR CLOSE THIS WINDOW</p>
-                            <p className="progress-sub-disclaim">Sending your files and securing your entry...</p>
+
+                            {submissionError ? (
+                                <div className="submission-error-box animate-pop">
+                                    <p className="error-title">DON'T PANIC! YOUR DATA IS SAFE. 🛡️</p>
+                                    <p className="error-msg">A network fluctuation interrupted the upload. Your details are recorded, but we just need to try sending the receipt again.</p>
+                                    <div className="error-actions">
+                                        <button className="retry-action-btn" onClick={handleRetrySubmission}>RETRY RECEIPT UPLOAD</button>
+                                        <button className="cancel-action-btn" onClick={handleCancelSubmission}>CANCEL</button>
+                                    </div>
+                                    <p className="support-hint">
+                                        <img src={assetPath('/assets/icons/envelope.webp')} alt="Email" className="support-mini-icon" />
+                                        If this keeps happening, email your receipt to <strong>support@talentron.in</strong>
+                                    </p>
+                                </div>
+                            ) : (
+                                <>
+                                    <p className="progress-disclaim">PLEASE DO NOT REFRESH OR CLOSE THIS WINDOW</p>
+                                    <p className="progress-sub-disclaim">Securing your entry and notifying management...</p>
+                                </>
+                            )}
                         </div>
                     </motion.div>
                 )}

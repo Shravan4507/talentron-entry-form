@@ -13,6 +13,10 @@ const Footer = () => {
               <img src={assetPath('/assets/logos/Logo_Talentron_1.webp')} alt="Talentron Brand" className="footer-text-logo" />
             </div>
             <p>Celebrate the spirit of art and creativity at Talentron '2K26 – Pune's premier student-led cultural extravaganza.</p>
+            <div className="footer-contact-info">
+              <img src={assetPath('/assets/icons/envelope.webp')} alt="Email" className="footer-mini-icon" />
+              <a href="mailto:support@talentron.in">support@talentron.in</a>
+            </div>
           </div>
           <div className="footer-links-column">
             <h4>Navigations</h4>
@@ -36,7 +40,7 @@ const Footer = () => {
             <h4>Follow Us</h4>
             <div className="footer-social-links">
                 <a 
-                    href="https://www.instagram.com/zeal_talentron/" 
+                    href="https://www.instagram.com/zeal_talentron?utm_source=qr" 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="footer-social-link"

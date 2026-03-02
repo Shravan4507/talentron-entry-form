@@ -68,6 +68,35 @@
   color: rgba(255, 255, 255, 0.8);
 }
 
+.footer-contact-info {
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.footer-mini-icon {
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.7;
+}
+
+.footer-contact-info a {
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-family: 'Teen', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.5px;
+  text-transform: none;
+  transition: all 0.3s ease;
+}
+
+.footer-contact-info a:hover {
+  color: #ff0059;
+}
+
 .footer-social-links {
   display: flex;
   gap: 1rem;
