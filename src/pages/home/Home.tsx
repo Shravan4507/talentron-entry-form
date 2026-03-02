@@ -52,7 +52,7 @@ const Home = () => {
             </div>
 
             <div className="prizes-and-ctas">
-                <div className="prize-pool-section">
+                {/* <div className="prize-pool-section">
                     <div className="prize-image-container">
                         <img 
                             src={assetPath('/assets/logos/price_pool.webp')} 
@@ -60,7 +60,7 @@ const Home = () => {
                             className="prize-pool-image"
                         />
                     </div>
-                </div>
+                </div> */}
 
                 <div className="cta-container">
                     <button 

@@ -55,26 +55,26 @@
 }
 
 .prize-pool-section {
-    width: 100%;
-    padding: 2rem 5% 0;
-    display: flex;
-    justify-content: center;
+  width: 100%;
+  padding: 2rem 5% 0;
+  display: flex;
+  justify-content: center;
 }
 
 .prize-image-container {
-    width: 100%;
-    max-width: 800px;
-    display: flex;
-    margin-top: -2rem;
-    margin-bottom: -3rem;
-    justify-content: center;
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  margin-top: -2rem;
+  margin-bottom: -3rem;
+  justify-content: center;
 }
 
 .prize-pool-image {
-    width: 100%;
-    height: auto;
-    display: block;
-    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4));
+  width: 100%;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4));
 }
 
 .primary-cta {
