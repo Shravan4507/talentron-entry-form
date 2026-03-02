@@ -88,7 +88,7 @@ const RegistrationForm: React.FC = () => {
     const [showTxGuide, setShowTxGuide] = useState(false);
     const screenshotInputRef = useRef<HTMLInputElement>(null);
 
-    // Navigation Guard (Dirty Form)
+    // Navigation Guard (Dirty Form & Submission Lock)
     const isDirty = formData.firstName !== '' || 
                     formData.lastName !== '' || 
                     formData.email !== '' || 
@@ -98,7 +98,8 @@ const RegistrationForm: React.FC = () => {
                     formData.transactionId !== '';
 
     useBlocker(({ nextLocation }) => {
-        if (isDirty && !isSuccess && !isSubmitting && nextLocation.pathname !== location.pathname) {
+        if (isSubmitting) return true; // Hard block during submission
+        if (isDirty && !isSuccess && nextLocation.pathname !== location.pathname) {
             return !window.confirm("You have unsaved form data. Are you sure you want to leave this page?");
         }
         return false;
@@ -107,7 +108,12 @@ const RegistrationForm: React.FC = () => {
     // Also handle browser-level refresh/back
     useEffect(() => {
         const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-            if (isDirty && !isSuccess && !isSubmitting) {
+            if (isSubmitting) {
+                e.preventDefault();
+                e.returnValue = 'SUBMISSION IN PROGRESS: Do not close or refresh this window until completion.';
+                return e.returnValue;
+            }
+            if (isDirty && !isSuccess) {
                 e.preventDefault();
                 e.returnValue = '';
             }
@@ -132,6 +138,33 @@ const RegistrationForm: React.FC = () => {
         });
         return () => unsubscribe();
     }, [formData.email]);
+
+    // Form Persistence: Load from localStorage
+    useEffect(() => {
+        const savedData = localStorage.getItem('talentron_reg_form');
+        const savedStep = localStorage.getItem('talentron_reg_step');
+        if (savedData) {
+            try {
+                const parsed = JSON.parse(savedData);
+                // Only load if it's the same category
+                if (parsed.genre === category) {
+                    setFormData(prev => ({ ...prev, ...parsed, paymentScreenshot: null })); // Files can't be saved in localStorage
+                }
+            } catch (e) {
+                console.error("Failed to parse saved form data", e);
+            }
+        }
+        if (savedStep) {
+            setStep(Number(savedStep));
+        }
+    }, [category]);
+
+    // Form Persistence: Save to localStorage
+    useEffect(() => {
+        const dataToSave = { ...formData, paymentScreenshot: null };
+        localStorage.setItem('talentron_reg_form', JSON.stringify(dataToSave));
+        localStorage.setItem('talentron_reg_step', step.toString());
+    }, [formData, step]);
 
     const handleGoogleSignIn = async () => {
         setIsGoogleLoading(true);
@@ -656,6 +689,10 @@ Team Type: ${formData.teamType}
             console.error("Sign out error:", err);
         }
 
+        // 3. Clear persistence
+        localStorage.removeItem('talentron_reg_form');
+        localStorage.removeItem('talentron_reg_step');
+
         setIsSuccess(false);
         setFormData({
             firstName: '',
@@ -688,6 +725,19 @@ Team Type: ${formData.teamType}
                 title={`Register for ${category} - Step ${step}`}
                 description={`Step ${step} of the official entry form for ${category} at Talentron '26.`}
             />
+
+            {/* Top Submission Progress Bar */}
+            <AnimatePresence>
+                {isSubmitting && (
+                    <motion.div 
+                        className="top-progress-bar"
+                        initial={{ scaleX: 0, opacity: 0 }}
+                        animate={{ scaleX: submissionProgress / 100, opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ type: "spring", stiffness: 50, damping: 15 }}
+                    />
+                )}
+            </AnimatePresence>
 
             <div className="form-header">
                 <OutlinedTitle 
@@ -1015,13 +1065,13 @@ Team Type: ${formData.teamType}
                             </div>
                         </div>
                         <div className="form-footer">
-                            <button 
+                             <button 
                                 type="button" 
-                                className="submit-btn" 
+                                className={`submit-btn ${isSubmitting ? 'submitting' : ''}`} 
                                 onClick={handleSubmit}
                                 disabled={isSubmitting}
                             >
-                                {isSubmitting ? 'SUBMITTING...' : 'COMPLETE REGISTRATION'}
+                                {isSubmitting ? 'SUBMITTING... DO NOT CLOSE' : 'COMPLETE REGISTRATION'}
                             </button>
                             <button type="button" className="back-btn" onClick={prevStep} disabled={isSubmitting}>GO BACK</button>
                         </div>
@@ -1050,7 +1100,7 @@ Team Type: ${formData.teamType}
                                 </svg>
                                 <div className="loader-text">{submissionProgress}%</div>
                             </div>
-                            <motion.p 
+                             <motion.p 
                                 key={submissionStage}
                                 initial={{ opacity: 0, y: 10 }}
                                 animate={{ opacity: 1, y: 0 }}
@@ -1058,7 +1108,8 @@ Team Type: ${formData.teamType}
                             >
                                 {submissionStage}
                             </motion.p>
-                            <p className="progress-disclaim">Securing your entry...</p>
+                            <p className="progress-disclaim">PLEASE DO NOT REFRESH OR CLOSE THIS WINDOW</p>
+                            <p className="progress-sub-disclaim">Sending your files and securing your entry...</p>
                         </div>
                     </motion.div>
                 )}
