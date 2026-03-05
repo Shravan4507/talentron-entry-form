@@ -13,7 +13,7 @@ export const competitionsData: Competition[] = [
   // Music
   { 
     category: "Music", 
-    name: "Raag Rhythem (Singing)", 
+    name: "Raag Rhythm (Singing)", 
     type: "Solo", 
     description: "Showcase your vocal talent with soulful Hindi melodies, from classical to contemporary hits.",
     rules: [
