@@ -8,6 +8,7 @@ import { getRegistrationRejectedEmailHtml } from '../../templates/rejectionEmail
 import { getInvoiceEmailHtml } from '../../templates/invoiceTemplate';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import AdminManualEntry from './AdminManualEntry';
 import './Admin.css';
 
 const AdminDashboard = () => {
@@ -20,6 +21,7 @@ const AdminDashboard = () => {
     const [dashboardView, setDashboardView] = useState<'registrations' | 'inquiries' | 'stalls' | 'history'>('registrations');
     const [activeTab, setActiveTab] = useState<'all' | 'pending' | 'approved' | 'rejected'>('pending');
     const [searchQuery, setSearchQuery] = useState('');
+    const [showManualEntry, setShowManualEntry] = useState(false);
 
     useEffect(() => {
         const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
@@ -347,7 +349,28 @@ const AdminDashboard = () => {
                             <button className={activeTab === 'all' ? 'active' : ''} onClick={() => setActiveTab('all')}>All</button>
                         </div>
                     )}
-                    {dashboardView === 'registrations' && <button className="export-btn" onClick={exportToExcel}>Export .XLSX</button>}
+                    <div className="admin-action-btns">
+                        {dashboardView === 'registrations' && (
+                            <button 
+                                className="manual-entry-btn" 
+                                onClick={() => setShowManualEntry(true)}
+                                style={{
+                                    background: 'var(--accent-blue)',
+                                    color: '#000',
+                                    padding: '0.8rem 1.5rem',
+                                    fontFamily: 'Goride',
+                                    border: '2px solid #000',
+                                    borderRadius: '2rem',
+                                    boxShadow: '4px 4px 0px #fff',
+                                    cursor: 'pointer',
+                                    marginRight: '1rem'
+                                }}
+                            >
+                                + MANUAL ENTRY
+                            </button>
+                        )}
+                        {dashboardView === 'registrations' && <button className="export-btn" onClick={exportToExcel}>Export .XLSX</button>}
+                    </div>
                 </div>
 
                 <div className="admin-table-wrapper">
@@ -380,7 +403,9 @@ const AdminDashboard = () => {
                                             </td>
                                             <td>
                                                 <div style={{fontWeight: 600}}>₹{reg.totalActualAmount}</div>
-                                                <div style={{fontSize: '0.75rem', borderBottom: '1px solid #333', display: 'inline-block'}}>{reg.transactionId}</div>
+                                                <div style={{fontSize: '0.75rem', borderBottom: '1px solid #333', display: 'inline-block'}}>
+                                                    {reg.paymentMethod === 'cash' ? <span style={{color: 'var(--accent-green)'}}>💵 CASH</span> : (reg.transactionId || '---')}
+                                                </div>
                                             </td>
                                             <td>
                                                 <span className={`status-pill ${reg.status}`}>{reg.status}</span>
@@ -523,6 +548,13 @@ const AdminDashboard = () => {
                     )}
                 </div>
             </div>
+
+            {showManualEntry && (
+                <AdminManualEntry onSuccess={() => {
+                    setShowManualEntry(false);
+                    // Refresh is automatic due to onSnapshot
+                }} />
+            )}
         </div>
     );
 };

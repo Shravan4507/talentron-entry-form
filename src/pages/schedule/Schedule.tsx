@@ -28,12 +28,12 @@ const Schedule: React.FC = () => {
         };
     }, []);
 
-    const [round1Time, setRound1Time] = useState<CountdownTime>(calculateTimeLeft('2026-03-16T09:00:00'));
+    const [round1Time, setRound1Time] = useState<CountdownTime>(calculateTimeLeft('2026-03-18T09:00:00'));
     const [finalTime, setFinalTime] = useState<CountdownTime>(calculateTimeLeft('2026-03-23T09:00:00'));
 
     useEffect(() => {
         const timer = setInterval(() => {
-            setRound1Time(calculateTimeLeft('2026-03-16T09:00:00'));
+            setRound1Time(calculateTimeLeft('2026-03-18T09:00:00'));
             setFinalTime(calculateTimeLeft('2026-03-23T09:00:00'));
         }, 1000);
         return () => clearInterval(timer);
@@ -50,14 +50,11 @@ const Schedule: React.FC = () => {
         {
             id: 'round1',
             title: 'Phase 01: The Selection Heats',
-            date: 'March 16 - 17, 2026',
-            targetDate: '20260316T090000',
+            date: 'March 18, 20 & 21, 2026',
+            targetDate: '20260318T090000',
             countdown: round1Time,
-            description: 'Where the journey begins. Hundreds of participants across 5 categories will battle it out for a spot in the grand finale.',
-            highlights: [
-                { day: '16th March', events: 'Music & Drama Auditions', note: 'Vocal mastery and powerful storytelling.' },
-                { day: '17th March', events: 'Street Play & Dance', note: 'Social impact and high-energy rhythmic sets.' }
-            ],
+            description: 'Where the journey begins. Selection rounds for all categories will be held across these three days to find our finalists.',
+            highlights: [],
             color: '#ff0059'
         },
         {
@@ -67,9 +64,7 @@ const Schedule: React.FC = () => {
             targetDate: '20260323T090000',
             countdown: finalTime,
             description: 'The ultimate stage. Only the finest selected talents return to perform under the big lights for the championship titles.',
-            highlights: [
-                { day: '23rd March', events: 'Main Stage Finale', note: 'Mega performances followed by Grand Prize distribution.' }
-            ],
+            highlights: [],
             color: '#00d1ff'
         }
     ];
@@ -80,7 +75,7 @@ const Schedule: React.FC = () => {
         <div className="schedule-page">
             <SEO 
                 title="Event Schedule & Live Timers | Talentron '26"
-                description="Live countdown to Talentron '26. Check the schedule for Round 1 (March 16-17) and the Grand Finale (March 23)."
+                description="Live countdown to Talentron '26. Check the schedule for Round 1 (March 18, 20, 21) and the Grand Finale (March 23)."
             />
 
             <div className="schedule-container">
@@ -102,7 +97,7 @@ const Schedule: React.FC = () => {
                                 </div>
                                 <button 
                                     className="calendar-btn"
-                                    onClick={() => addToCalendar(phase.title, phase.id === 'round1' ? '20260316' : '20260323', phase.description)}
+                                    onClick={() => addToCalendar(phase.title, phase.id === 'round1' ? '20260318' : '20260323', phase.description)}
                                     title="Add to Google Calendar"
                                 >
                                     <span>Add to Calendar</span>
@@ -145,17 +140,6 @@ const Schedule: React.FC = () => {
 
                             <div className="phase-content">
                                 <p className="phase-desc">{phase.description}</p>
-                                <div className="highlights-grid">
-                                    {phase.highlights.map((item, idx) => (
-                                        <div key={idx} className="highlight-item">
-                                            <div className="highlight-dot"></div>
-                                            <div className="highlight-text">
-                                                <strong>{item.day}:</strong> {item.events}
-                                                <p className="highlight-note">{item.note}</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
                             </div>
                         </div>
                     ))}
