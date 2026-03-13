@@ -53,14 +53,14 @@ const Footer = () => {
           <div className="footer-location">
             <h4>Location</h4>
             <a 
-            href="https://maps.app.goo.gl/RXpzvbPwm4s2CqDW6" 
+            href="https://maps.app.goo.gl/BuGXDb8Nwpf7T4eC6" 
             target="_blank" 
             rel="noopener noreferrer" 
             className="location-link"
             >
             <img src={assetPath('/assets/icons/location.webp')} alt="Location" className="footer-location-icon" />
             <span>
-                Zeal College of Engineering and Research,<br />
+                Zeal Education Society,<br />
                 Narhe, Pune, Maharashtra 411041
             </span>
             </a>
@@ -72,7 +72,7 @@ const Footer = () => {
             <img src={assetPath('/assets/logos/Logo Circular.webp')} alt="Zeal Education Logo" />
           </a>
           <div className="initiative-text">
-            OFFICIAL INTER-COLLEGE COMPETITION OF ZCOER PUNE
+            OFFICIAL INTER-COLLEGE COMPETITION OF ZES PUNE
           </div>
         </div>
 
