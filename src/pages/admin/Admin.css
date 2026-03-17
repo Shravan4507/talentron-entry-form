@@ -315,6 +315,7 @@
 }
 
 .status-pill.pending { background: #3c3c00; color: #ffea00; }
+.status-pill.payment_upload_pending { background: #1a1a1a; color: #ffffff; border: 1px solid #444; }
 .status-pill.approved { background: #003c20; color: #00ff88; }
 
 .row-actions {

@@ -1,11 +1,13 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import { collection, orderBy, query, doc, onSnapshot, runTransaction } from 'firebase/firestore';
-import { db, auth } from '../../lib/firebase';
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { db, auth, storage } from '../../lib/firebase';
 import { getParticipationConfirmedEmailHtml } from '../../templates/participationConfirmedEmail';
 import { getRegistrationRejectedEmailHtml } from '../../templates/rejectionEmail';
 import { getInvoiceEmailHtml } from '../../templates/invoiceTemplate';
+import { compressImage } from '../../utils/imageCompression';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import AdminManualEntry from './AdminManualEntry';
@@ -22,6 +24,9 @@ const AdminDashboard = () => {
     const [activeTab, setActiveTab] = useState<'all' | 'pending' | 'approved' | 'rejected'>('pending');
     const [searchQuery, setSearchQuery] = useState('');
     const [showManualEntry, setShowManualEntry] = useState(false);
+    const screenshotInputRef = useRef<HTMLInputElement>(null);
+    const [pendingApprovalReg, setPendingApprovalReg] = useState<any>(null);
+    const [isUploading, setIsUploading] = useState(false);
 
     useEffect(() => {
         const unsubscribeAuth = onAuthStateChanged(auth, (user) => {
@@ -69,7 +74,7 @@ const AdminDashboard = () => {
 
     const stats = useMemo(() => {
         const total = registrations.length;
-        const pending = registrations.filter(r => r.status === 'pending').length;
+        const pending = registrations.filter(r => r.status === 'pending' || r.status === 'payment_upload_pending').length;
         const approved = registrations.filter(r => r.status === 'approved').length;
         const rejected = registrations.filter(r => r.status === 'rejected').length;
         const revenue = registrations
@@ -81,7 +86,11 @@ const AdminDashboard = () => {
 
     const filteredData = useMemo(() => {
         let base = registrations;
-        if (activeTab !== 'all') base = base.filter(r => r.status === activeTab);
+        if (activeTab === 'pending') {
+            base = base.filter(r => r.status === 'pending' || r.status === 'payment_upload_pending');
+        } else if (activeTab !== 'all') {
+            base = base.filter(r => r.status === activeTab);
+        }
 
         if (searchQuery) {
             const q = searchQuery.toLowerCase();
@@ -116,8 +125,45 @@ const AdminDashboard = () => {
     }, [stalls, searchQuery]);
 
     const handleApprove = async (reg: any) => {
-        if (!window.confirm(`Confirm participation for ${reg.firstName}? This will generate a sequential invoice.`)) return;
+        if (reg.status === 'payment_upload_pending' && !reg.screenshotURL) {
+            if (!window.confirm("This registration is missing a payment screenshot. You will be prompted to upload one to proceed with approval. Click OK to select file.")) return;
+            setPendingApprovalReg(reg);
+            screenshotInputRef.current?.click();
+            return;
+        }
 
+        if (!window.confirm(`Confirm participation for ${reg.firstName}? This will generate a sequential invoice.`)) return;
+        proceedWithApproval(reg);
+    };
+
+    const handleAdminScreenshotUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (!file || !pendingApprovalReg) return;
+
+        try {
+            setIsUploading(true);
+            const compressed = await compressImage(file);
+            const fileExtension = file.name.split('.').pop();
+            const fileName = `payments/${pendingApprovalReg.transactionId}_admin_${Date.now()}.${fileExtension}`;
+            const storageRef = ref(storage, fileName);
+            
+            const uploadResult = await uploadBytes(storageRef, compressed);
+            const screenshotURL = await getDownloadURL(uploadResult.ref);
+
+            // Directly proceed with approval using this URL
+            await proceedWithApproval(pendingApprovalReg, screenshotURL);
+            
+            setPendingApprovalReg(null);
+            if (screenshotInputRef.current) screenshotInputRef.current.value = '';
+        } catch (error) {
+            console.error("Manual screenshot upload failed:", error);
+            alert("Failed to upload screenshot. Please try again.");
+        } finally {
+            setIsUploading(false);
+        }
+    };
+
+    const proceedWithApproval = async (reg: any, manualScreenshotURL?: string) => {
         try {
             await runTransaction(db, async (transaction) => {
                 const regRef = doc(db, "registrations", reg.id);
@@ -128,7 +174,7 @@ const AdminDashboard = () => {
                 const counterSnap = await transaction.get(counterRef);
 
                 // Check for concurrency - has someone else approved it already?
-                if (regSnap.data()?.status !== 'pending') {
+                if (regSnap.data()?.status !== 'pending' && regSnap.data()?.status !== 'payment_upload_pending') {
                     throw new Error("Registration is no longer pending.");
                 }
                 
@@ -144,13 +190,19 @@ const AdminDashboard = () => {
                 transaction.set(counterRef, { invoiceCounter: nextNum }, { merge: true });
 
                 // 2. Update registration with Audit Trail
-                transaction.update(regRef, { 
+                const updateData: any = { 
                     status: 'approved',
                     invoiceNumber: invoiceNumber,
                     approvedAt: new Date(),
                     processedBy: auth.currentUser?.email || 'unknown',
                     processedAt: new Date()
-                });
+                };
+
+                if (manualScreenshotURL) {
+                    updateData.screenshotURL = manualScreenshotURL;
+                }
+
+                transaction.update(regRef, updateData);
 
                 // 3. Create Audit Log
                 transaction.set(auditRef, {
@@ -214,7 +266,7 @@ const AdminDashboard = () => {
                 const auditRef = doc(collection(db, "audit_logs"));
                 const regSnap = await transaction.get(regRef);
 
-                if (regSnap.data()?.status !== 'pending') {
+                if (regSnap.data()?.status !== 'pending' && regSnap.data()?.status !== 'payment_upload_pending') {
                     throw new Error("Registration is no longer pending.");
                 }
 
@@ -445,12 +497,14 @@ const AdminDashboard = () => {
                                                 {reg.screenshotURL && (
                                                     <a href={reg.screenshotURL} target="_blank" rel="noreferrer" className="action-link">Proof</a>
                                                 )}
-                                                {reg.status === 'pending' && (
+                                                {reg.status === 'pending' || reg.status === 'payment_upload_pending' ? (
                                                     <>
-                                                        <button className="action-confirm" onClick={() => handleApprove(reg)}>Approve</button>
-                                                        <button className="action-confirm" style={{color: 'var(--accent-red)'}} onClick={() => handleReject(reg)}>Reject</button>
+                                                        <button className="action-confirm" onClick={() => handleApprove(reg)} disabled={isUploading}>
+                                                            {isUploading && pendingApprovalReg?.id === reg.id ? 'Uploading...' : 'Approve'}
+                                                        </button>
+                                                        <button className="action-confirm" style={{color: 'var(--accent-red)'}} onClick={() => handleReject(reg)} disabled={isUploading}>Reject</button>
                                                     </>
-                                                )}
+                                                ) : null}
                                             </td>
                                         </tr>
                                     ))
@@ -586,6 +640,15 @@ const AdminDashboard = () => {
                     // Refresh is automatic due to onSnapshot
                 }} />
             )}
+
+            <input 
+                type="file" 
+                ref={screenshotInputRef} 
+                className="hidden-file-input"
+                style={{ display: 'none' }}
+                accept="image/*"
+                onChange={handleAdminScreenshotUpload}
+            />
         </div>
     );
 };
