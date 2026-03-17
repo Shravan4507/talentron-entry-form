@@ -88,6 +88,30 @@ export const competitionsData: Competition[] = [
   },
   { 
     category: "Dance", 
+    name: "Mudra Mix (Duet)", 
+    type: "Duet", 
+    description: "Perfect synchronization between two. Showcase your chemistry and technique.",
+    rules: [
+      "Common Rules",
+      "The competition is open to participants aged 16 to 30 years with valid ID.",
+      "Registration is mandatory for all performers.",
+      "Round 1 Mode: Offline at the venue; shortlisted performers will proceed to the Final Round.",
+      "Early Check-in : All participants must be present at the venue 30 minutes prior to the scheduled reporting time",
+      "Performance tracks should be shared via email.",
+      "We recommend keeping a backup of your track in a pendrive.",
+      "Costumes and movements should be suitable for a diverse audience.",
+      
+      "Competition-Specific Rules",
+      "Round 1 duration: Max 3 minutes.",
+      "Final Round duration: Max 5 minutes.",
+      "All dance styles are welcome (Classical, Western, Folk, etc.).",
+      "Participants are responsible for managing and clearing their own props."
+    ],
+    prize: "Certificates, Trophies and Cash Prizes",
+    fees: 150
+  },
+  { 
+    category: "Dance", 
     name: "Mudra Mix (Group)", 
     type: "Group", 
     description: "Synchronization, energy, and creativity. Bring your crew and dominate the floor.",

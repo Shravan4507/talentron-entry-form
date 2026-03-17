@@ -46,7 +46,7 @@ const getPerPersonPrice = (category: string, teamType: string): number => {
     }
     if (category === 'Dance') {
         if (teamType === 'Solo') return 200;
-        if (teamType === 'Group') return 150;
+        if (teamType === 'Group' || teamType === 'Duet') return 150;
     }
     if (category === 'Drama') return 100;
     if (category === 'Band') return 200;
@@ -931,7 +931,7 @@ Team Type: ${formData.teamType}
                             <div className="form-group full-width">
                                 <SearchableDropdown 
                                     label="Team*"
-                                    options={category === 'Music' ? ['Solo', 'Duet'] : ['Solo', 'Group']}
+                                    options={category === 'Music' ? ['Solo', 'Duet'] : (category === 'Dance' ? ['Solo', 'Duet', 'Group'] : ['Solo', 'Group'])}
                                     value={formData.teamType}
                                     onChange={(val) => setFormData(prev => ({ ...prev, teamType: val }))}
                                     placeholder="Select Team Type"
