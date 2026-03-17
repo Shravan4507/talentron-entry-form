@@ -255,12 +255,43 @@ const AdminDashboard = () => {
     };
 
     const exportToExcel = () => {
-        const order = ['submittedAt', 'firstName', 'lastName', 'genre', 'teamType', 'totalActualAmount', 'transactionId', 'email', 'status'];
+        const order = [
+            'submittedAt', 
+            'invoiceNumber',
+            'status',
+            'firstName', 
+            'lastName', 
+            'email', 
+            'cellPhone', 
+            'whatsappNumber', 
+            'dob', 
+            'sex', 
+            'collegeName', 
+            'genre', 
+            'teamType', 
+            'groupSize', 
+            'totalActualAmount', 
+            'paymentMethod',
+            'transactionId', 
+            'approvedAt',
+            'processedBy',
+            'manualEntry',
+            'addedByAdmin',
+            'screenshotURL',
+            'rejectionReason'
+        ];
+
         const data = registrations.map(item => {
             const obj: any = {};
             order.forEach(field => {
                 let val = item[field];
-                if (field === 'submittedAt' && val?.toDate) val = val.toDate().toLocaleString();
+                // Handle Firebase Timestamps
+                if ((field === 'submittedAt' || field === 'approvedAt' || field === 'processedAt') && val?.toDate) {
+                    val = val.toDate().toLocaleString('en-IN');
+                }
+                // Handle booleans
+                if (typeof val === 'boolean') val = val ? 'Yes' : 'No';
+                
                 obj[field] = val || '';
             });
             return obj;
@@ -270,7 +301,7 @@ const AdminDashboard = () => {
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Registrations");
         const buf = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-        saveAs(new Blob([buf]), "Talentron_Registrations.xlsx");
+        saveAs(new Blob([buf]), `Talentron_Registrations_${new Date().toISOString().split('T')[0]}.xlsx`);
     };
 
     return (
