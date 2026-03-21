@@ -35,6 +35,7 @@ interface FormData {
 }
 
 const UPI_ID = import.meta.env.VITE_UPI_ID || "your-upi-id@bank";
+const REGISTRATIONS_OPEN = false; // GLOBAL FLAG FOR REGISTRATION STATUS
 
 
 
@@ -57,7 +58,6 @@ const getPerPersonPrice = (category: string, teamType: string): number => {
 const RegistrationForm: React.FC = () => {
     const { category } = useParams<{ category: string }>();
     const navigate = useNavigate();
-    
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState<FormData>({
         firstName: '',
@@ -89,6 +89,42 @@ const RegistrationForm: React.FC = () => {
     const [showTxGuide, setShowTxGuide] = useState(false);
     const [submissionError, setSubmissionError] = useState<string | null>(null);
     const screenshotInputRef = useRef<HTMLInputElement>(null);
+
+    if (!REGISTRATIONS_OPEN) {
+        return (
+            <div className="registration-page closed">
+                <SEO title="Registrations Closed | Talentron '26" />
+                <div className="registration-container flex items-center justify-center min-h-[600px]">
+                    <motion.div 
+                        className="closed-notice-card"
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                    >
+                        <div className="closed-icon-badge">✦</div>
+                        <h1 className="closed-title">REGISTRATIONS CLOSED</h1>
+                        <p className="closed-message">
+                            Thanks for your superb responses! We have officially closed the registrations for Talentron '26.
+                        </p>
+                        
+                        <div className="closed-results-banner">
+                            <span className="banner-star">★</span>
+                            RESULTS HAVE BEEN DECLARED
+                            <span className="banner-star">★</span>
+                        </div>
+                        
+                        <p className="closed-hint">
+                            Shortlisted candidates have been notified via email. Visit the schedule page for round dates.
+                        </p>
+                        
+                        <div className="closed-actions">
+                            <button className="back-home-btn" onClick={() => navigate('/')}>BACK TO HOME</button>
+                            <button className="view-schedule-btn" onClick={() => navigate('/schedule')}>VIEW SCHEDULE</button>
+                        </div>
+                    </motion.div>
+                </div>
+            </div>
+        );
+    }
 
     // Navigation Guard (Dirty Form & Submission Lock)
     const isDirty = formData.firstName !== '' || 

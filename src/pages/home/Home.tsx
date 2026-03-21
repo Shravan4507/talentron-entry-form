@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import SEO from '../../components/navigation/SEO';
 import { assetPath } from '../../utils/assetPath';
 import RuleBookButton from '../../components/navigation/RuleBookButton';
@@ -10,33 +11,9 @@ const Home = () => {
     return (
         <div className="home-page">
             <SEO 
-                title="Official Entry Form | Talentron '26 | Zeal College Pune"
-                description="Register for Talentron '26, Pune's biggest college cultural festival at Zeal College of Engineering and Research. Music, Dance, Drama, and more. Showcase your talent now!"
-                keywords="Talentron, Talentron 2026, Zeal College Pune, ZCOER, Zeal Fest, Pune Cultural Competition, Talentron Registration, Singing Competition Pune, Dancing Competition Pune"
-                schema={{
-                    "@context": "https://schema.org",
-                    "@type": "Event",
-                    "name": "Talentron '26",
-                    "startDate": "2026-03-01", 
-                    "location": {
-                        "@type": "Place",
-                        "name": "Zeal College of Engineering and Research",
-                        "address": {
-                            "@type": "PostalAddress",
-                            "streetAddress": "Narhe",
-                            "addressLocality": "Pune",
-                            "addressRegion": "MH",
-                            "postalCode": "411041",
-                            "addressCountry": "IN"
-                        }
-                    },
-                    "description": "Talentron '26 is an inter-college cultural competition featuring music, dance, drama, and more.",
-                    "organizer": {
-                        "@type": "Organization",
-                        "name": "Zeal Education Society",
-                        "url": "https://www.talentron.in"
-                    }
-                }}
+                title="Registration Closed | Talentron 2K26 | Zeal College Pune"
+                description="Registration for Talentron 2K26 is now closed. Thanks for the superb response! Selection Round 1 results have been declared."
+                keywords="Talentron, Talentron 2026, Zeal College Pune, ZCOER, Zeal Fest, Results, Selection Round 1"
             />
             
             <div className="hero-section">
@@ -44,31 +21,29 @@ const Home = () => {
                     <div className="hero-main-container">
                         <img 
                             src={assetPath('/assets/logos/hero_section_3.webp')} 
-                            alt="Talentron '26 - Are You Ready? Join the biggest student-led competition in Pune." 
+                            alt="Talentron 2K26 Registration Closed" 
                             className="hero-main-image" 
                         />
+                    </div>
+                    
+                    <div className="closed-notice-overlay">
+                        <motion.div 
+                            className="notice-card"
+                            initial={{ y: 20, opacity: 0 }}
+                            animate={{ y: 0, opacity: 1 }}
+                            transition={{ duration: 0.6 }}
+                        >
+                            <h2 className="notice-title">REGISTRATIONS CLOSED</h2>
+                            <p className="notice-desc">Thanks for your superb responses! Registrations for Talentron 2K26 are now officially closed.</p>
+                            <div className="notice-divider" />
+                            <p className="notice-results">Results for Round 1 have been declared and shortlisted candidates have been notified via email.</p>
+                        </motion.div>
                     </div>
                 </div>
             </div>
 
             <div className="prizes-and-ctas">
-                {/* <div className="prize-pool-section">
-                    <div className="prize-image-container">
-                        <img 
-                            src={assetPath('/assets/logos/price_pool.webp')} 
-                            alt="Total Prize Pool 1 Lakh Plus" 
-                            className="prize-pool-image"
-                        />
-                    </div>
-                </div> */}
-
                 <div className="cta-container">
-                    <button 
-                        className="primary-cta"
-                        onClick={() => navigate('/competitions')}
-                    >
-                        REGISTER NOW
-                    </button>
                     <button 
                         className="primary-cta secondary"
                         onClick={() => navigate('/schedule')}

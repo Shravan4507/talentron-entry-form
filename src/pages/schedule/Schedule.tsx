@@ -46,6 +46,11 @@ const Schedule: React.FC = () => {
         window.open(url, '_blank');
     };
 
+    const isPhaseCompleted = (targetDate: string, days: number = 1): boolean => {
+        const end = +new Date(targetDate) + (days * 24 * 60 * 60 * 1000);
+        return +new Date() > end;
+    };
+
     const schedulePhases = [
         {
             id: 'round1',
@@ -53,6 +58,7 @@ const Schedule: React.FC = () => {
             date: 'March 18, 20 & 21, 2026',
             targetDate: '20260318T090000',
             countdown: round1Time,
+            isCompleted: isPhaseCompleted('2026-03-21T21:00:00', 0), // Completed after 21st night
             description: 'Where the journey begins. Selection rounds for all categories will be held across these three days to find our finalists.',
             highlights: [],
             color: '#ff0059'
@@ -63,6 +69,7 @@ const Schedule: React.FC = () => {
             date: 'March 23, 2026',
             targetDate: '20260323T090000',
             countdown: finalTime,
+            isCompleted: isPhaseCompleted('2026-03-23T21:00:00', 0),
             description: 'The ultimate stage. Only the finest selected talents return to perform under the big lights for the championship titles.',
             highlights: [],
             color: '#00d1ff'
@@ -111,7 +118,9 @@ const Schedule: React.FC = () => {
                             </div>
 
                             <div className="timer-wrapper">
-                                {phase.countdown.isExpired ? (
+                                {phase.isCompleted ? (
+                                    <div className="timer-completed-badge">COMPLETED</div>
+                                ) : phase.countdown.isExpired ? (
                                     <div className="timer-live-badge">LIVE NOW</div>
                                 ) : (
                                     <div className="timer-grid">

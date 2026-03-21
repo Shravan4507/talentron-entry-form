@@ -30,7 +30,6 @@ const Footer = () => {
           <div className="footer-links-column">
             <h4>Quick Links</h4>
             <div className="footer-quick-links">
-              <Link to="/sponsors">Our Sponsors</Link>
               <Link to="/contact">Contact Us</Link>
               <Link to="/book-stall">Book a Stall</Link>
               <Link to="/faq">FAQs</Link>

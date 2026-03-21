@@ -13,7 +13,6 @@ const Navbar = () => {
     { label: 'Rules', link: '/rules' },
     { label: 'Competitions', link: '/competitions' },
     { label: 'Schedule', link: '/schedule' },
-    { label: 'Sponsors', link: '/sponsors' },
   ];
 
   // Close menu when route changes
@@ -45,8 +44,8 @@ const Navbar = () => {
 
         {/* Desktop Register - Right */}
         <div className="navbar-right desktop">
-          <button className="nav-register-btn" onClick={() => navigate('/competitions')}>
-            Register Now
+          <button className="nav-register-btn" onClick={() => navigate('/')}>
+            RESULTS OUT
           </button>
         </div>
 
@@ -70,8 +69,8 @@ const Navbar = () => {
               {item.label}
             </Link>
           ))}
-          <button className="mobile-register-btn" onClick={() => navigate('/competitions')}>
-            Register Now
+          <button className="mobile-register-btn" onClick={() => navigate('/')}>
+            RESULTS OUT
           </button>
         </div>
       </div>

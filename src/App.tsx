@@ -10,7 +10,6 @@ import PrivacyPolicy from './pages/legal/PrivacyPolicy';
 import TermsOfService from './pages/legal/TermsOfService';
 import NotFound from './pages/NotFound';
 import Schedule from './pages/schedule/Schedule';
-import Sponsors from './pages/sponsors/Sponsors';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import BookStall from './pages/book-stall/BookStall';
@@ -71,7 +70,6 @@ const router = createBrowserRouter([
       { path: 'register/:category', element: <RegistrationForm /> },
       { path: 'rules', element: <Rules /> },
       { path: 'schedule', element: <Schedule /> },
-      { path: 'sponsors', element: <Sponsors /> },
       { path: 'contact', element: <Contact /> },
       { path: 'privacy-policy', element: <PrivacyPolicy /> },
       { path: 'terms-of-service', element: <TermsOfService /> },
