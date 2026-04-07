@@ -1,0 +1,157 @@
+.coming-soon-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #020202;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+    position: relative;
+    font-family: 'Inter', sans-serif;
+}
+
+.coming-soon-content {
+    z-index: 10;
+    max-width: 700px;
+    padding: 3rem;
+    backdrop-filter: blur(16px) saturate(180%);
+    background-color: rgba(0, 0, 0, 0.03);
+    border-radius: 3rem;
+    border-bottom: 3px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(255, 255, 255, 0.1);
+}
+
+.logo-container {
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+}
+
+.coming-soon-logo {
+    width: 250px;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.coming-soon-logo:hover {
+    transform: scale(1.05);
+}
+
+
+.title {
+    font-size: 4rem;
+    font-weight: 900;
+    font-family: 'iceland';
+    margin-bottom: 1.5rem;
+    background: linear-gradient(to bottom, #ffffff 50%, #888 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: -1px;
+}
+
+
+.message-box {
+    margin-top: 2rem;
+    font-size: 1.25rem;
+    line-height: 1.8;
+    color: #ccc;
+}
+
+.thank-you-msg {
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+}
+
+.announcement {
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.highlight {
+    color: #ffc800;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.footer-link {
+    margin-top: 3rem;
+    font-size: 0.9rem;
+    color: #555;
+    letter-spacing: 1px;
+}
+
+/* Decorative Blobs */
+.blob-1 {
+    position: absolute;
+    top: -10%;
+    right: -10%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255, 0, 89, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+    z-index: 1;
+    border-radius: 50%;
+    filter: blur(80px);
+    animation: blobAnim 15s infinite alternate;
+}
+
+.blob-2 {
+    position: absolute;
+    bottom: -15%;
+    left: -10%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(54, 0, 204, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
+    z-index: 1;
+    border-radius: 50%;
+    filter: blur(60px);
+    animation: blobAnim 12s infinite alternate-reverse;
+}
+
+@keyframes blobAnim {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(100px, 50px) scale(1.2); }
+}
+
+@media (max-width: 768px) {
+    .title { 
+        font-size: 2.8rem; 
+        line-height: 1.1;
+    }
+    
+    .coming-soon-content { 
+        padding: 2.5rem 1.5rem; 
+        width: 92%; 
+        margin: 1rem;
+        border-radius: 2rem;
+    }
+    
+    .coming-soon-logo {
+        width: 180px;
+    }
+    
+    .message-box { 
+        font-size: 1.1rem; 
+        margin-top: 1.5rem;
+    }
+    
+    .footer-link {
+        margin-top: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .title { 
+        font-size: 2.2rem; 
+    }
+    
+    .coming-soon-logo {
+        width: 150px;
+    }
+    
+    .message-box { 
+        font-size: 1rem; 
+    }
+}
+

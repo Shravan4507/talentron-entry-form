@@ -1,19 +1,8 @@
 import { createBrowserRouter, RouterProvider, Outlet, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
-import Home from './pages/home/Home';
-import Competitions from './pages/competitions/Competitions';
-import GenreDetails from './pages/competitions/GenreDetails';
-import RegistrationForm from './pages/competitions/RegistrationForm';
-import Rules from './pages/rules/Rules';
-import Contact from './pages/contact/Contact';
-import PrivacyPolicy from './pages/legal/PrivacyPolicy';
-import TermsOfService from './pages/legal/TermsOfService';
-import NotFound from './pages/NotFound';
-import Schedule from './pages/schedule/Schedule';
 import AdminLogin from './pages/admin/AdminLogin';
 import AdminDashboard from './pages/admin/AdminDashboard';
-import BookStall from './pages/book-stall/BookStall';
-import FAQ from './pages/faq/FAQ';
+import ComingSoon from './pages/coming-soon/ComingSoon';
 import Grainient from './components/background/Grainient';
 import Navbar from './components/navbar/Navbar';
 import Footer from './components/footer/Footer';
@@ -24,6 +13,7 @@ import BackToTop from './components/navigation/BackToTop';
 import VersionChecker from './components/version/VersionChecker';
 import './components/background/Grainient.css';
 import './App.css';
+
 
 function RootLayout() {
   const location = useLocation();
@@ -60,25 +50,24 @@ function RootLayout() {
 }
 
 const router = createBrowserRouter([
+  // The Coming Soon page is now the main entry point
   {
     path: '/',
+    element: <ComingSoon />,
+  },
+  // Admin routes remain accessible for the USER
+  {
+    path: '/admin',
     element: <RootLayout />,
     children: [
-      { index: true, element: <Home /> },
-      { path: 'competitions', element: <Competitions /> },
-      { path: 'competitions/:genre', element: <GenreDetails /> },
-      { path: 'register/:category', element: <RegistrationForm /> },
-      { path: 'rules', element: <Rules /> },
-      { path: 'schedule', element: <Schedule /> },
-      { path: 'contact', element: <Contact /> },
-      { path: 'privacy-policy', element: <PrivacyPolicy /> },
-      { path: 'terms-of-service', element: <TermsOfService /> },
-      { path: 'admin-login', element: <AdminLogin /> },
-      { path: 'admin-dashboard', element: <AdminDashboard /> },
-      { path: 'book-stall', element: <BookStall /> },
-      { path: 'faq', element: <FAQ /> },
-      { path: '*', element: <NotFound /> },
-    ],
+      { path: 'login', element: <AdminLogin /> },
+      { path: 'dashboard', element: <AdminDashboard /> },
+    ]
+  },
+  // Redirect any other route to ComingSoon
+  {
+    path: '*',
+    element: <ComingSoon />,
   },
 ]);
 
@@ -92,3 +81,4 @@ function App() {
 }
 
 export default App;
+
